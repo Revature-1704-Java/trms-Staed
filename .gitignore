@@ -1,6 +1,10 @@
 
 # Created by https://www.gitignore.io/api/java,maven,eclipse,netbeans,intellij,visualstudiocode
 
+# Ignore planning files
+requirements.md
+scratch.md
+
 ### Eclipse ###
 
 .metadata
