@@ -1,6 +1,6 @@
 package com.staed.factory;
 
-import java.sql.Time;
+import java.sql.Date;
 
 import com.staed.beans.Request;
 import com.staed.enums.EventType;
@@ -20,7 +20,7 @@ public class RequestFactory {
      * @param int cutoff - The minimum grade necessary to recieve reimbursement
      * @return Request
      */
-    public Request createUGRequest(int eId, Time eTime, String loc, 
+    public Request createUGRequest(int eId, Date eTime, String loc, 
         String desc, float cost, EventType type, String justification,
         String email, int cutoff) 
     {                                   
@@ -42,7 +42,7 @@ public class RequestFactory {
      * @param int cutoff - The minimum grade necessary to recieve reimbursement
      * @return Request
      */
-    public Request createNGRequest(int eId, Time eTime, String loc, 
+    public Request createNGRequest(int eId, Date eTime, String loc, 
         String desc, float cost, EventType type, String justification,
         String email, int cutoff)
     {
@@ -63,7 +63,7 @@ public class RequestFactory {
      * @param String email - An email detailing prior approval for this request
      * @return Request
      */
-    public Request createUPRequest(int eId, Time eTime, String loc, 
+    public Request createUPRequest(int eId, Date eTime, String loc, 
         String desc, float cost, EventType type, String justification,
         String email) 
     {                                   
@@ -84,7 +84,7 @@ public class RequestFactory {
      * @param String email - An email detailing prior approval for this request
      * @return Request
      */
-    public Request createNPRequest(int eId, Time eTime, String loc, 
+    public Request createNPRequest(int eId, Date eTime, String loc, 
         String desc, float cost, EventType type, String justification,
         String email, int cutoff)
     {
