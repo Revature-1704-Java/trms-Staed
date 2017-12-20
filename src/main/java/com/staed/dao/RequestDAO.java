@@ -3,16 +3,15 @@ package com.staed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
-import java.sql.CallableStatement;
 import java.sql.Date;
 
 import com.staed.beans.*;
-import com.staed.enums.EventType;
+import com.staed.stores.EventType;
 
 public class RequestDAO extends DAO<Request> {
     private String joinedTables = "FROM REQUEST R INNER JOIN EVENTTYPE EVT ON EVT.EVENTTYPEID = R.EVENTTYPEID INNER JOIN EMPLOYEE E ON E.EMPLOYEEID = R.EMPLOYEEID INNER JOIN DEPARTMENT D ON D.DEPARTMENTID = E.DEPARTMENTID INNER JOIN TITLE T ON T.TITLEID = E.TITLEID";
+    private static EventType evt;   // TODO: Init?
 
     public Request getRequest(int id) throws SQLException {
         String sql = "SELECT * " + joinedTables + " WHERE REQUESTID = ?";
@@ -48,30 +47,7 @@ public class RequestDAO extends DAO<Request> {
         String requestDesc = rs.getString("REQUESTDESCRIPTION");
         float cost = rs.getFloat("REIMBURSEMENTCOST");
         String format = rs.getString("GRADINGFORMAT");
-
-        int evtTypeId = rs.getInt("EVENTTYPEID");
-        EventType evtType;
-        switch (rs.getString("EVENTTYPENAME").toLowerCase()) {
-            case "university course":
-                evtType = EventType.UniversityCourse;
-                break;
-            case "seminar":
-                evtType = EventType.Seminars;
-                break;
-            case "certification preparation course":
-                evtType = EventType.CertificationPreparation;
-                break;
-            case "certification":
-                evtType = EventType.Certification;
-                break;
-            case "technical training":
-                evtType = EventType.TechnicalTraining;
-                break;
-            default:
-                evtType = EventType.Other;
-                break;
-        }
-        
+        String evtName = rs.getString("EVENTTYPENAME");
         String justification = rs.getString("WORKJUSTIFICATION");
         String email = rs.getString("APPROVALEMAIL");
         
@@ -94,7 +70,7 @@ public class RequestDAO extends DAO<Request> {
         }
 
         return new Request(requestId, employeeId, evtTime, evtLoc,
-            requestDesc, cost, format, evtTypeId, evtType, justification, email,
+            requestDesc, cost, format, evtName, justification, email,
             okdSuper, okdHead, okdBenCo, cutoff, status, urgent);
     }
 
@@ -109,7 +85,7 @@ public class RequestDAO extends DAO<Request> {
         ps.setString(5, obj.getDescription());
         ps.setFloat(6, obj.getCost());
         ps.setString(7, obj.getFormat());
-        ps.setInt(8, obj.getEventType().getKey());
+        ps.setInt(8, evt.getValue(obj.getEvent()));
         ps.setString(9, obj.getJustification());
         ps.setString(10, obj.getApprovalEmail());
         ps.setInt(11, obj.okdBySuper() ? 1 : 0);

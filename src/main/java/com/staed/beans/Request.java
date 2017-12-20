@@ -1,9 +1,6 @@
 package com.staed.beans;
 
 import java.sql.Date;
-import java.util.AbstractMap.SimpleEntry;
-
-import com.staed.enums.*;
 
 /**
  * A Request Object that maps to the row type of a Request Table
@@ -18,7 +15,7 @@ public class Request {
     private String description;
     private float cost;
     private String format;
-    private SimpleEntry<Integer, EventType> eventType;
+    private String eventName;
     private String justification;
 
     private String approvalEmail; // This might be better as an attached file
@@ -32,16 +29,16 @@ public class Request {
 
     /** Only RequestFactory should access to this */
     public Request (int employeeID, Date eventDate, String location, 
-                    String description, Float cost, String format,
-                    int eventTypeId, EventType eventTypeEnum, String justification,
-                    String approvalEmail, int gradeCutoff, Boolean urgent) {
+    String description, Float cost, String format, String eventName, 
+    String justification, String approvalEmail, int gradeCutoff, 
+    Boolean urgent) {
         this.employeeId = employeeID;
         this.eventDate = eventDate;
         this.location = location;
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventType = new SimpleEntry<>(eventTypeId, eventTypeEnum);
+        this.eventName = eventName;
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.gradeCutoff = gradeCutoff;
@@ -58,7 +55,7 @@ public class Request {
      * @param String description - Description
      * @param float cost - Amount of reimbursement requested
      * @param String format - The method by which the event is graded
-     * @param EventType eventType - Type of event, determines reimbursement amount
+     * @param String eventName - Type of event, determines reimbursement amount
      * @param String justification - Work-related justification for the request
      * @param String approvalEmail - An email detailing prior approval for this request
      * @param Boolean okdBySuper - Did the Direct Supervisor approve the request
@@ -69,11 +66,10 @@ public class Request {
      * @param Boolean urgent - Whether this request is urgent
      */
     public Request (int requestId, int employeeId, Date eventDate,
-                    String location, String description, float cost,
-                    String format, int eventTypeId, EventType eventTypeEnum,
-                    String justification, String approvalEmail,
-                    Boolean okdBySuper, Boolean okdByHead, Boolean okdByBenCo,
-                    int gradeCutoff, String status, Boolean urgent) {
+    String location, String description, float cost, String format,
+    String eventName, String justification, String approvalEmail,
+    Boolean okdBySuper, Boolean okdByHead, Boolean okdByBenCo,
+    int gradeCutoff, String status, Boolean urgent) {
         this.requestId = requestId;
         this.employeeId = employeeId;
         this.eventDate = eventDate;
@@ -81,7 +77,7 @@ public class Request {
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventType = new SimpleEntry<>(eventTypeId, eventTypeEnum);
+        this.eventName = eventName;
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.okdBySuper = okdBySuper;
@@ -101,7 +97,7 @@ public class Request {
     public String getDescription() { return description; }
     public float getCost() { return cost; }
     public String getFormat() { return format; }
-    public SimpleEntry<Integer, EventType> getEventType() { return eventType; }
+    public String getEvent() { return eventName; }
     public String getJustification() { return justification; }
     public String getApprovalEmail() { return approvalEmail; }
     public boolean okdBySuper() { return okdBySuper; }
@@ -111,24 +107,37 @@ public class Request {
     public String getStatus() { return status; }
     public boolean isUrgent() { return urgent; }
 
+    public void setSuperAppro(boolean val) { okdBySuper = val; }
+    public void setHeadAppro(boolean val) { okdByHead = val; }
+    public void setBenCoAppro(boolean val) { okdByBenCo = val; }
+
+    public void setStatus(String status) {
+        switch(status.toUpperCase()) {
+            case "OPEN": this.status = "OPEN"; break;
+            case "CLOSED": this.status = "CLOSED"; break;
+            case "PROCESSING": this.status = "PROCESSING"; break;
+            default: break;
+        }
+    }
+
     public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append("{\nRequest ID: " + requestId + ",\n");
-        res.append("Employee ID: " + employeeId + ",\n");
-        res.append("Event Date: " + eventDate.toString() + ",\n");
-        res.append("Event Location: " + location + ",\n");
-        res.append("Description: " + description + ",\n");
-        res.append("Reimbursement Cost: " + Float.toString(cost) + ",\n");
-        res.append("Grading Format: " + format.toString() + ",\n");
-        res.append("Type of Event: " + eventType.getValue().toString() + ",\n");
-        res.append("Work-Related Justification: " + justification + ",\n");
-        res.append("Approval Email: " + approvalEmail + ",\n");
-        res.append("Approved By the Direct Supervisor: " + okdBySuper + ",\n");
-        res.append("Approved By the Department Head: " + okdByHead + ",\n");
-        res.append("Approved by the Benefits Coordinator: " + okdByBenCo.toString() + ",\n");
-        res.append("Grade Cutoff: " + Integer.toString(gradeCutoff) + ",\n");
-        res.append("Status: " + status + ",\n");
-        res.append("Urgent: " + urgent.toString() + "\n}");
+        res.append("{ Request ID: " + requestId + ", ");
+        res.append("Employee ID: " + employeeId + ", ");
+        res.append("Event Date: " + eventDate.toString() + ", ");
+        res.append("Event Location: " + location + ", ");
+        res.append("Description: " + description + ", ");
+        res.append("Reimbursement Cost: " + Float.toString(cost) + ", ");
+        res.append("Grading Format: " + format.toString() + ", ");
+        res.append("Type of Event: " + eventName + ", ");
+        res.append("Work-Related Justification: " + justification + ", ");
+        res.append("Approval Email: " + approvalEmail + ", ");
+        res.append("Approved By the Direct Supervisor: " + okdBySuper + ", ");
+        res.append("Approved By the Department Head: " + okdByHead + ", ");
+        res.append("Approved by the Benefits Coordinator: " + okdByBenCo.toString() + ", ");
+        res.append("Grade Cutoff: " + Integer.toString(gradeCutoff) + ", ");
+        res.append("Status: " + status + ", ");
+        res.append("Urgent: " + urgent.toString() + " }\n");
         return res.toString();
     }
 }
