@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public abstract class DAO {
+public abstract class DAO<V> {
     /**
      * Creates a SQL connection and creates a PreparedStatement of the query
      * @param sql - The SQL query desired
@@ -60,8 +60,8 @@ public abstract class DAO {
      * it is a PreparedStatement or CallableStatement.
      * @return A List&lt;U&gt; and is either null or of indeterminate size.
      */
-    <T extends Statement, U> List<U> resultIterator(T stmt) throws SQLException {
-        List<U> list = new ArrayList<>();
+    <T extends Statement> List<V> resultIterator(T stmt) throws SQLException {
+        List<V> list = new ArrayList<>();
 
         if (stmt.getClass().isInstance(CallableStatement.class)) {
             ((CallableStatement) stmt).execute();
@@ -77,7 +77,9 @@ public abstract class DAO {
         return list;
     }
 
-    abstract<T> T extractRow(ResultSet rs) throws SQLException;
+    abstract V extractRow(ResultSet rs) throws SQLException;
+
+    abstract PreparedStatement packageObj(V t) throws SQLException;
 
     protected static Connection getConnection() {
         try {

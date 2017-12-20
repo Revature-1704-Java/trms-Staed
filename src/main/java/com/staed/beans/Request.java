@@ -1,6 +1,7 @@
 package com.staed.beans;
 
 import java.sql.Date;
+import java.util.AbstractMap.SimpleEntry;
 
 import com.staed.enums.*;
 
@@ -16,8 +17,8 @@ public class Request {
     private String location;
     private String description;
     private float cost;
-    private GradingFormat format;
-    private EventType eventType;
+    private String format;
+    private SimpleEntry<Integer, EventType> eventType;
     private String justification;
 
     private String approvalEmail; // This might be better as an attached file
@@ -31,8 +32,8 @@ public class Request {
 
     /** Only RequestFactory should access to this */
     public Request (int employeeID, Date eventDate, String location, 
-                    String description, Float cost, GradingFormat format,
-                    EventType eventType, String justification,
+                    String description, Float cost, String format,
+                    int eventTypeId, EventType eventTypeEnum, String justification,
                     String approvalEmail, int gradeCutoff, Boolean urgent) {
         this.employeeId = employeeID;
         this.eventDate = eventDate;
@@ -40,7 +41,7 @@ public class Request {
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventType = eventType;
+        this.eventType = new SimpleEntry<>(eventTypeId, eventTypeEnum);
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.gradeCutoff = gradeCutoff;
@@ -56,7 +57,7 @@ public class Request {
      * @param String location - Location of the event
      * @param String description - Description
      * @param float cost - Amount of reimbursement requested
-     * @param GradingFormat format - The method by which the event is graded
+     * @param String format - The method by which the event is graded
      * @param EventType eventType - Type of event, determines reimbursement amount
      * @param String justification - Work-related justification for the request
      * @param String approvalEmail - An email detailing prior approval for this request
@@ -69,7 +70,7 @@ public class Request {
      */
     public Request (int requestId, int employeeId, Date eventDate,
                     String location, String description, float cost,
-                    GradingFormat format, EventType eventType,
+                    String format, int eventTypeId, EventType eventTypeEnum,
                     String justification, String approvalEmail,
                     Boolean okdBySuper, Boolean okdByHead, Boolean okdByBenCo,
                     int gradeCutoff, String status, Boolean urgent) {
@@ -80,7 +81,7 @@ public class Request {
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventType = eventType;
+        this.eventType = new SimpleEntry<>(eventTypeId, eventTypeEnum);
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.okdBySuper = okdBySuper;
@@ -93,11 +94,22 @@ public class Request {
     }
 
     /** Getters and Setters */
-    public Integer getEmployeeID() {
-        return employeeId;
-    }
-    
-    // TODO: Add all the getters and setters
+    public int getRequestId() { return requestId; }
+    public int getEmployeeId() { return employeeId; }
+    public Date getDate() { return eventDate; }
+    public String getLocation() { return location; }
+    public String getDescription() { return description; }
+    public float getCost() { return cost; }
+    public String getFormat() { return format; }
+    public SimpleEntry<Integer, EventType> getEventType() { return eventType; }
+    public String getJustification() { return justification; }
+    public String getApprovalEmail() { return approvalEmail; }
+    public boolean okdBySuper() { return okdBySuper; }
+    public boolean okdByHead() { return okdByHead; }
+    public boolean okdByBenCo() { return okdByBenCo; }
+    public int getCutoff() { return gradeCutoff; }
+    public String getStatus() { return status; }
+    public boolean isUrgent() { return urgent; }
 
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -108,7 +120,7 @@ public class Request {
         res.append("Description: " + description + ",\n");
         res.append("Reimbursement Cost: " + Float.toString(cost) + ",\n");
         res.append("Grading Format: " + format.toString() + ",\n");
-        res.append("Type of Event: " + eventType.toString() + ",\n");
+        res.append("Type of Event: " + eventType.getValue().toString() + ",\n");
         res.append("Work-Related Justification: " + justification + ",\n");
         res.append("Approval Email: " + approvalEmail + ",\n");
         res.append("Approved By the Direct Supervisor: " + okdBySuper + ",\n");

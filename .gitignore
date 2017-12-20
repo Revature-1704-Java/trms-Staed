@@ -4,6 +4,7 @@
 # Ignore planning files
 requirements.md
 scratch.md
+connection.properties
 
 ### Eclipse ###
 
