@@ -14,6 +14,20 @@ import java.util.List;
 import java.util.Properties;
 
 public abstract class DAO<V> {
+	Connection conn = null;
+	
+	public DAO() {
+		this.conn = getConnection();
+	}
+	
+	public void close() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
     /**
      * Creates a SQL connection and creates a PreparedStatement of the query
      * @param sql - The SQL query desired
@@ -41,8 +55,6 @@ public abstract class DAO<V> {
      */
     @SuppressWarnings("unchecked")
 	<T extends Statement> T prepare(String sql, Class<T> type) throws SQLException {
-        Connection conn = getConnection();
-        
         if (type == PreparedStatement.class)
             return (T) conn.prepareStatement(sql);
         else if (type == CallableStatement.class)

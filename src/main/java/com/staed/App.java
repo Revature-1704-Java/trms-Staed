@@ -17,6 +17,7 @@ public class App {
             System.out.println(interpreter.parseConsole(scanner.nextLine()));
         }
         scanner.close();
+        interpreter.close();
     }
 
     public static void main(String[] args) {

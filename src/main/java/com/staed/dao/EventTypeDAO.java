@@ -8,10 +8,17 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This is only called once during initialization of the program
+ * and only handles that first retrieval of values
+ */
 public class EventTypeDAO extends DAO<SimpleEntry<String, Integer>>{
 	EventType evt = new EventType();
+	
+	public EventType getTypes() {
+		return evt;
+	}
 
-	// This should only be called once during initialization of the program
 	public HashMap<String, Integer> populateEventTypes() throws SQLException {
 		HashMap<String, Integer> cur = new HashMap<>();
 		PreparedStatement ps = prepareStatement("SELECT * FROM EVENTTYPE");

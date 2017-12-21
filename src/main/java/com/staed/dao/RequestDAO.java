@@ -3,6 +3,7 @@ package com.staed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
 
@@ -36,6 +37,20 @@ public class RequestDAO extends DAO<Request> {
     public int addRequest(Request obj) throws SQLException {
         PreparedStatement ps = packageObj(obj);
         return ps.executeUpdate();
+    }
+    
+    public List<String> getRequestColumns() throws SQLException {
+    	String sql = "SELECT column_name FROM USER_TAB_COLUMNS WHERE table_name = 'REQUEST'";
+    	PreparedStatement ps = prepareStatement(sql);
+    	List<String> list = new ArrayList<>();
+    	ResultSet rs = ps.executeQuery();
+    	while (rs.next()) {
+    		list.add(rs.getString("COLUMN_NAME").toUpperCase());
+    	}
+    	rs.close();
+    	ps.close();
+    	
+    	return list;
     }
 
     @Override
@@ -76,24 +91,28 @@ public class RequestDAO extends DAO<Request> {
 
 	@Override
 	PreparedStatement packageObj(Request obj) throws SQLException {
-        String sql = "INSERT INTO REQUEST VALUES (0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO REQUEST(EMPLOYEEID, EVENTTIME, EVENTLOCATION,"
+        		+ " REQUESTDESCRIPTION, REIMBURSEMENTCOST, GRADINGFORMAT, "
+        		+ "EVENTTYPEID, WORKJUSTIFICATION, APPROVALEMAIL, "
+        		+ "DIRECTSUPERVISORAPPROVED, DEPARTMENTHEADAPPROVED, "
+        		+ "BENEFITSCOORDINATORAPPROVED, GRADECUTOFF, STATUS, URGENT) "
+        		+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = prepareStatement(sql);
-        ps.setInt(1, 0);
-        ps.setInt(2, obj.getEmployeeId());
-        ps.setDate(3, obj.getDate());
-        ps.setString(4, obj.getLocation());
-        ps.setString(5, obj.getDescription());
-        ps.setFloat(6, obj.getCost());
-        ps.setString(7, obj.getFormat());
-        ps.setInt(8, evt.getValue(obj.getEvent()));
-        ps.setString(9, obj.getJustification());
-        ps.setString(10, obj.getApprovalEmail());
-        ps.setInt(11, obj.okdBySuper() ? 1 : 0);
-        ps.setInt(12, obj.okdByHead() ? 1 : 0);
-        ps.setInt(13, obj.okdByBenCo() ? 1 : 0);
-        ps.setInt(14, obj.getCutoff());
-        ps.setString(15, obj.getStatus());
-        ps.setInt(16, obj.isUrgent() ? 1 : 0);
+        ps.setInt(1, obj.getEmployeeId());
+        ps.setDate(2, obj.getEventDate());
+        ps.setString(3, obj.getLocation());
+        ps.setString(4, obj.getDescription());
+        ps.setFloat(5, obj.getCost());
+        ps.setString(6, obj.getFormat());
+        ps.setInt(7, evt.getValue(obj.getEventName()));
+        ps.setString(8, obj.getJustification());
+        ps.setString(9, obj.getApprovalEmail());
+        ps.setInt(10, obj.getOkdBySuper() ? 1 : 0);
+        ps.setInt(11, obj.getOkdByHead() ? 1 : 0);
+        ps.setInt(12, obj.getOkdByBenCo() ? 1 : 0);
+        ps.setInt(13, obj.getGradeCutoff());
+        ps.setString(14, obj.getStatus());
+        ps.setInt(15, obj.getUrgent() ? 1 : 0);
         return ps;
 	}
 }

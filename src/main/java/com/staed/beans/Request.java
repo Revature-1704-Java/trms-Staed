@@ -7,6 +7,7 @@ import java.sql.Date;
  * in a PL/SQL database
  */
 public class Request {
+	
     private int requestId;
 
     private int employeeId;
@@ -90,7 +91,7 @@ public class Request {
     }
 
     /** Getters and Setters */
-    public int getRequestId() { return requestId; }
+    /*public int getRequestId() { return requestId; }
     public int getEmployeeId() { return employeeId; }
     public Date getDate() { return eventDate; }
     public String getLocation() { return location; }
@@ -105,12 +106,132 @@ public class Request {
     public boolean okdByBenCo() { return okdByBenCo; }
     public int getCutoff() { return gradeCutoff; }
     public String getStatus() { return status; }
-    public boolean isUrgent() { return urgent; }
+    public boolean isUrgent() { return urgent; }*/
+    
+    public int getRequestId() {
+    	return requestId;
+    }
+    
+    public void setRequestId(int requestId) {
+    	this.requestId = requestId;
+    }
+    
+    public int getEmployeeId() {
+		return employeeId;
+	}
 
-    public void setSuperAppro(boolean val) { okdBySuper = val; }
-    public void setHeadAppro(boolean val) { okdByHead = val; }
-    public void setBenCoAppro(boolean val) { okdByBenCo = val; }
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
+	}
 
+	public Date getEventDate() {
+		return eventDate;
+	}
+
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public float getCost() {
+		return cost;
+	}
+
+	public void setCost(float cost) {
+		this.cost = cost;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public String getJustification() {
+		return justification;
+	}
+
+	public void setJustification(String justification) {
+		this.justification = justification;
+	}
+
+	public String getApprovalEmail() {
+		return approvalEmail;
+	}
+
+	public void setApprovalEmail(String approvalEmail) {
+		this.approvalEmail = approvalEmail;
+	}
+
+	public Boolean getOkdBySuper() {
+		return okdBySuper;
+	}
+
+	public void setOkdBySuper(Boolean okdBySuper) {
+		this.okdBySuper = okdBySuper;
+	}
+
+	public Boolean getOkdByHead() {
+		return okdByHead;
+	}
+
+	public void setOkdByHead(Boolean okdByHead) {
+		this.okdByHead = okdByHead;
+	}
+
+	public Boolean getOkdByBenCo() {
+		return okdByBenCo;
+	}
+
+	public void setOkdByBenCo(Boolean okdByBenCo) {
+		this.okdByBenCo = okdByBenCo;
+	}
+
+	public int getGradeCutoff() {
+		return gradeCutoff;
+	}
+
+	public void setGradeCutoff(int gradeCutoff) {
+		this.gradeCutoff = gradeCutoff;
+	}
+
+	public Boolean getUrgent() {
+		return urgent;
+	}
+
+	public void setUrgent(Boolean urgent) {
+		this.urgent = urgent;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+	
     public void setStatus(String status) {
         switch(status.toUpperCase()) {
             case "OPEN": this.status = "OPEN"; break;
@@ -124,7 +245,7 @@ public class Request {
         StringBuilder res = new StringBuilder();
         res.append("{ Request ID: " + requestId + ", ");
         res.append("Employee ID: " + employeeId + ", ");
-        res.append("Event Date: " + eventDate.toString() + ", ");
+        res.append("Event Time: " + eventDate.toString() + ", ");
         res.append("Event Location: " + location + ", ");
         res.append("Description: " + description + ", ");
         res.append("Reimbursement Cost: " + Float.toString(cost) + ", ");
