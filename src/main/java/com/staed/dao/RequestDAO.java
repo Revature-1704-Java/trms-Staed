@@ -17,13 +17,13 @@ public class RequestDAO extends DAO<Request> {
         String sql = "SELECT * " + joinedTables + " WHERE REQUESTID = ?";
         PreparedStatement ps = prepareStatement(sql);
         ps.setInt(1, id);
-        List<Request> rI = resultIterator(ps);
+        List<Request> rI = preparedIterator(ps);
         return rI.isEmpty() ? null : rI.get(0);
     }
 
     public List<Request> getAllRequest() throws SQLException {
         String sql = "SELECT * " + joinedTables;
-        return resultIterator(prepareStatement(sql));
+        return preparedIterator(prepareStatement(sql));
     }    
 
     public int _DeleteRequest(int id) throws SQLException {

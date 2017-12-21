@@ -68,9 +68,18 @@ public class Service {
         }
     }
 
-    // Check old request
+    // TODO: Check old request
+    public boolean checkRequest() {
+        return false;
+    }
 
-    // Approve old requests
+    // TODO: Approve old requests
+    public boolean approve() {
+        return false;
+    }
 
-    // Pass the buck
+    // TODO: Pass the buck
+    public boolean passUpstream() {
+        return false;
+    }
 }

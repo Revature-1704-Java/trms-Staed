@@ -14,7 +14,7 @@ public class App {
     public void run() {
         while(scanner.hasNextLine() && !interpreter.stopped()) {
             // TODO: Handle returned string
-            interpreter.parseConsole(scanner.nextLine());
+            System.out.println(interpreter.parseConsole(scanner.nextLine()));
         }
         scanner.close();
     }

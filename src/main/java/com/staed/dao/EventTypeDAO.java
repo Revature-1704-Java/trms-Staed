@@ -15,7 +15,7 @@ public class EventTypeDAO extends DAO<SimpleEntry<String, Integer>>{
 	public HashMap<String, Integer> populateEventTypes() throws SQLException {
 		HashMap<String, Integer> cur = new HashMap<>();
 		PreparedStatement ps = prepareStatement("SELECT * FROM EVENTTYPE");
-		List<SimpleEntry<String, Integer>> rs = resultIterator(ps);
+		List<SimpleEntry<String, Integer>> rs = preparedIterator(ps);
 
 		rs.forEach( elem -> {
 			cur.put(elem.getKey(), elem.getValue());

@@ -32,6 +32,7 @@ public class Interpreter {
             case "add":
                 ans = _ConsoleAdd();
                 break;
+            case "exit":	// meant to fall through to case "quit"
             case "quit":
                 stopped = true;
                 ans = "Good bye.";

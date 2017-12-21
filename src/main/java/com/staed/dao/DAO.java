@@ -39,15 +39,24 @@ public abstract class DAO<V> {
      * @param Class&lt;T&gt; - A PreparedStatement or CallableStatement class
      * @return Either a PreparedStatement or CallableStatement
      */
-    <T extends Statement> T prepare(String sql, Class<T> type) throws SQLException {
+    @SuppressWarnings("unchecked")
+	<T extends Statement> T prepare(String sql, Class<T> type) throws SQLException {
         Connection conn = getConnection();
-
-        if (type.isInstance(PreparedStatement.class))
+        
+        if (type == PreparedStatement.class)
             return (T) conn.prepareStatement(sql);
-        else if (type.isInstance(CallableStatement.class))
+        else if (type == CallableStatement.class)
             return (T) conn.prepareCall(sql);
         else
             return null;
+    }
+    
+    List<V> preparedIterator(PreparedStatement stmt) throws SQLException {
+    	return resultIterator(stmt, PreparedStatement.class);
+    }
+    
+    List<V> callableIterator(CallableStatement stmt) throws SQLException {
+    	return resultIterator(stmt, CallableStatement.class);
     }
 
     /**
@@ -60,12 +69,12 @@ public abstract class DAO<V> {
      * it is a PreparedStatement or CallableStatement.
      * @return A List&lt;U&gt; and is either null or of indeterminate size.
      */
-    <T extends Statement> List<V> resultIterator(T stmt) throws SQLException {
+    <T extends Statement> List<V> resultIterator(T stmt, Class<T> type) throws SQLException {
         List<V> list = new ArrayList<>();
-
-        if (stmt.getClass().isInstance(CallableStatement.class)) {
+        
+        if (type == CallableStatement.class) {
             ((CallableStatement) stmt).execute();
-        } else if (stmt.getClass().isInstance(PreparedStatement.class)) {
+        } else if (type == PreparedStatement.class) {
             ResultSet rs = ((PreparedStatement) stmt).executeQuery();
             while (rs.next()) {
                 list.add(extractRow(rs));
