@@ -1,6 +1,6 @@
 package com.staed.beans;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.AbstractMap.SimpleEntry;
 
 /**
@@ -12,7 +12,7 @@ public class Request {
     private int requestId;
 
     private int employeeId;
-    private Date eventDate;
+    private LocalDate eventDate;
     private String location;
     private String description;
     private float cost;
@@ -25,12 +25,25 @@ public class Request {
     private Boolean okdByHead = false;
     private Boolean okdByBenCo = false;
 
-    private int gradeCutoff;
+    private int gradeCutoff = 70;
     private String status = "Open";
-    private Boolean urgent;
+    private Boolean urgent = false;
+
+    /** Empty Constructor for Modifying */
+    public Request() {
+        this.employeeId = 0;
+        this.eventDate = LocalDate.now(); 
+        this.location = "";
+        this.description = "";
+        this.cost = 0;
+        this.format = "Grade";
+        this.event = new SimpleEntry<>("Other", 6);
+        this.justification = "";
+        this.approvalEmail = "";
+    }
 
     /** Only RequestFactory should access to this */
-    public Request (int employeeID, Date eventDate, String location, 
+    public Request (int employeeID, LocalDate eventDate, String location, 
     String description, Float cost, String format, SimpleEntry<String, Integer> event, 
     String justification, String approvalEmail, int gradeCutoff, 
     Boolean urgent) {
@@ -67,7 +80,7 @@ public class Request {
      * @param String status - Where the request is in the process
      * @param Boolean urgent - Whether this request is urgent
      */
-    public Request (int requestId, int employeeId, Date eventDate,
+    public Request (int requestId, int employeeId, LocalDate eventDate,
     String location, String description, float cost, String format,
     SimpleEntry<String, Integer> event, String justification, String approvalEmail,
     Boolean okdBySuper, Boolean okdByHead, Boolean okdByBenCo,
@@ -107,11 +120,11 @@ public class Request {
 		this.employeeId = employeeId;
 	}
 
-	public Date getEventDate() {
+	public LocalDate getEventDate() {
 		return eventDate;
 	}
 
-	public void setEventDate(Date eventDate) {
+	public void setEventDate(LocalDate eventDate) {
 		this.eventDate = eventDate;
 	}
 

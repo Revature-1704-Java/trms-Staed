@@ -39,7 +39,7 @@ public class Interpreter {
         String ans = "";
         switch(args[0].toLowerCase()) {
         	case "login":
-        		// TODO: make login with username / password
+        		ans = _ConsoleLogin(args);
         		break;
             case "get":
                 ans = _ConsoleGet(args);
@@ -89,7 +89,7 @@ public class Interpreter {
     	return _ConvertToGeneric(buffer, type);
     }
     
-    private Date _ConsoleLoopUntilValidDate(Scanner sc, String field) {
+    private LocalDate _ConsoleLoopUntilValidDate(Scanner sc, String field) {
     	LocalDate today = LocalDate.now();
     	
     	String buffer = sc.nextLine().trim();
@@ -98,7 +98,7 @@ public class Interpreter {
     		System.out.println("The specified date must be at least one week from now.");
     		buffer = sc.nextLine().trim();
     	}
-    	return Date.valueOf(LocalDate.parse(buffer));
+    	return LocalDate.parse(buffer);
     }
     
     private Float _ConsoleLoopUntilValidFloat(Scanner sc, String field) {
@@ -135,7 +135,7 @@ public class Interpreter {
     		
     		int eId = _ConsoleLoopUntilValid(sc, "employee id",
     				"\\d+", Integer.class);
-    		Date date = _ConsoleLoopUntilValidDate(sc, "date of the event");
+    		LocalDate date = _ConsoleLoopUntilValidDate(sc, "date of the event");
     		String loc =_ConsoleLoopUntilValid(sc, "location",
     				".*", String.class);
     		String desc = _ConsoleLoopUntilValid(sc, "description",
@@ -191,6 +191,10 @@ public class Interpreter {
     }
     
     private String _ConsoleModify(String[] args) {
+    	if (service.getUser() == null
+    			|| service.getUser().getId() != service.current().getEmployeeId())
+    		return "You don't have permission to do that.";
+    	
     	String ans = null;
     	if (args.length < 2) {
     		ans = "You didn't specify what part of the request you wanted to change.";
@@ -206,7 +210,7 @@ public class Interpreter {
     			Request cur = service.current(); 
     			switch (args[1].toLowerCase()) {
     			case "eventtime":
-    				Date newDate = _ConsoleLoopUntilValidDate(sc, "date of the event");
+    				LocalDate newDate = _ConsoleLoopUntilValidDate(sc, "date of the event");
     				cur.setEventDate(newDate);
     				break;
     			case "eventlocation":
@@ -231,8 +235,8 @@ public class Interpreter {
     			case "eventtypeid":
     				String type = _ConsoleIterator(sc, " event type",
     						service.getTypes().getKeys().iterator(), "Other");
-    				// TODO: Fix this iterator
-    				SimpleEntry<String, Integer> event = new SimpleEntry<>(type, 6);
+    				SimpleEntry<String, Integer> event = 
+    						new SimpleEntry<>(type, service.getTypes().getValue(type));
     				cur.setEvent(event);
     				break;
     			case "workjustification":
@@ -288,7 +292,20 @@ public class Interpreter {
     	}
     	return ans;
     }
-
+    
+    private String _ConsoleLogin(String[] args) {
+    	String ans = null;
+    	if (args.length < 3) {
+    		ans = "You need to specify both username and password separated by a space";
+    	} else {
+    		if (service.login(args[1], args[2]))
+    			System.out.println("Logged in as "  + service.getUser().getFirstname()
+				+ " " + service.getUser().getLastname());
+    		else
+    			System.out.println("Incorrect username or password.");
+    	}
+    	return ans;
+    }
     public boolean stopped() {
         return stopped;
     }

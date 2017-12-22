@@ -1,6 +1,6 @@
 package com.staed.factory;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.AbstractMap.SimpleEntry;
 
 import com.staed.beans.Request;
@@ -11,7 +11,7 @@ public class RequestFactory {
     /**
      * Creates a URGENT reimbursement request
      * @param int eId - Unique employee ID
-     * @param Time eTime - Date of the event to be reimbursed
+     * @param LocalDate eTime - Date of the event to be reimbursed
      * @param String loc - Location of the event
      * @param String desc - Description
      * @param float cost - Amount of reimbursement requested
@@ -23,7 +23,7 @@ public class RequestFactory {
      * @param int cutoff - The minimum grade necessary to receive reimbursement
      * @return Request
      */
-    public Request createRequestUrgent(int eId, Date eTime, String loc, 
+    public Request newUrgentInstance(int eId, LocalDate eTime, String loc, 
         String desc, float cost, String format, SimpleEntry<String, Integer> event, String justification,
         String email, int cutoff) 
     {                                   
@@ -35,7 +35,7 @@ public class RequestFactory {
     /**
      * Creates a normal reimbursement request
      * @param int eId - Unique employee ID
-     * @param Time eTime - Date of the event to be reimbursed
+     * @param LocalDate eTime - Date of the event to be reimbursed
      * @param String loc - Location of the event
      * @param String desc - Description
      * @param float cost - Amount of reimbursement requested
@@ -47,12 +47,16 @@ public class RequestFactory {
      * @param int cutoff - The minimum grade necessary to receive reimbursement
      * @return Request
      */
-    public Request createRequest(int eId, Date eTime, String loc, 
+    public Request newInstance(int eId, LocalDate eTime, String loc, 
         String desc, float cost, String format, SimpleEntry<String, Integer> event, String justification,
         String email, int cutoff)
     {
         Request r = new Request(eId, eTime, loc, desc, cost,
             format, event, justification, email, cutoff, false);
         return r;
+    }
+    
+    public Request newEmptyInstance() {
+    	return new Request();
     }
 }

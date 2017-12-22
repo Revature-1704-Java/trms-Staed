@@ -3,6 +3,7 @@ package com.staed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,14 @@ public class RequestDAO extends DAO<Request> {
     public List<Request> getAllRequest() throws SQLException {
         String sql = "SELECT * " + joinedTables;
         return preparedIterator(prepareStatement(sql));
-    }    
+    }
+    
+    public List<Request> getEmployeeRequests(int id) throws SQLException {
+    	String sql = "SELECT * " + joinedTables + " WHERE EMPLOYEEID = ?";
+    	PreparedStatement ps = prepareStatement(sql);
+    	ps.setInt(1, id);
+    	return preparedIterator(ps);
+    }
 
     public int _DeleteRequest(int id) throws SQLException {
         String sql = "DELETE FROM REQUEST WHERE REQUESTID = ?";
@@ -56,7 +64,7 @@ public class RequestDAO extends DAO<Request> {
     Request extractRow(ResultSet rs) throws SQLException {
         int requestId = rs.getInt("REQUESTID");
         int employeeId = rs.getInt("EMPLOYEEID");
-        Date evtTime = rs.getDate("EVENTTIME");
+        LocalDate evtTime = rs.getDate("EVENTTIME").toLocalDate();
         String evtLoc = rs.getString("EVENTLOCATION");
         String requestDesc = rs.getString("REQUESTDESCRIPTION");
         float cost = rs.getFloat("REIMBURSEMENTCOST");
@@ -103,7 +111,7 @@ public class RequestDAO extends DAO<Request> {
         		+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?)";
         PreparedStatement ps = prepareStatement(sql);
         ps.setInt(1, obj.getEmployeeId());
-        ps.setDate(2, obj.getEventDate());
+        ps.setDate(2, Date.valueOf(obj.getEventDate()));
         ps.setString(3, obj.getLocation());
         ps.setString(4, obj.getDescription());
         ps.setFloat(5, obj.getCost());

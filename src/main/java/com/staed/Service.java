@@ -1,12 +1,14 @@
 package com.staed;
 
-import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Iterator;
 import java.util.List;
 
+import com.staed.beans.Employee;
 import com.staed.beans.Request;
+import com.staed.dao.EmployeeDAO;
 import com.staed.dao.EventTypeDAO;
 import com.staed.dao.RequestDAO;
 import com.staed.factory.RequestFactory;
@@ -16,12 +18,16 @@ import com.staed.stores.EventType;
 public class Service {
     private static RequestDAO requestDAO = new RequestDAO();
     private static EventTypeDAO eventDAO = new EventTypeDAO();
+    private static EmployeeDAO employeeDAO = new EmployeeDAO();
+    
     private RequestFactory rf;
     private Request currentRequest;
+    private Employee currentUser;
     
     public Service() {
         this.rf = new RequestFactory();
         this.currentRequest = null;
+        this.currentUser = null;
         
         try {
 			eventDAO.populateEventTypes();
@@ -41,6 +47,10 @@ public class Service {
     
     public EventType getTypes() {
     	return eventDAO.getTypes();
+    }
+    
+    public Employee getUser() {
+    	return currentUser;
     }
     
     public List<String> getPossibleFields() {
@@ -70,8 +80,21 @@ public class Service {
             return false;
         }
     }
+    
+    public boolean login(String username, String password) {
+    	try {
+    		currentUser = employeeDAO.login(username, password);
+    		if (currentUser == null) 
+    			return true;
+    		else
+    			return true;
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return false;
+    }
 
-    public void generateRequest(int eId, Date date, String loc, String desc,
+    public void generateRequest(int eId, LocalDate date, String loc, String desc,
     float cost, String format, String type, String justify, String email,
     boolean superOk, boolean headOk, boolean benCoOk, int cutoff, String status,
     boolean isUrgent) {
@@ -83,9 +106,9 @@ public class Service {
     	
         Request req;
         if (isUrgent)
-            req = rf.createRequestUrgent(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
+            req = rf.newUrgentInstance(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
         else
-            req = rf.createRequest(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
+            req = rf.newInstance(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
 
         req.setOkdBySuper(superOk);
         req.setOkdByHead(headOk);
@@ -99,12 +122,7 @@ public class Service {
 
     public boolean pushRequest() {
         try {
-//        	if (currentRequest.getRequestId() != 0 && requestDAO.getRequest(currentRequest.getRequestId()) != null) {
-//        		System.out.println("That request already exists in the system. Did you mean to update instead?");
-//        		return false;
-//        	} else {
-        		return requestDAO.addRequest(currentRequest) > 0 ? true : false;
-//        	}
+        	return requestDAO.addRequest(currentRequest) > 0 ? true : false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
