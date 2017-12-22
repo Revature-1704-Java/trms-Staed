@@ -1,6 +1,7 @@
 package com.staed.beans;
 
 import java.sql.Date;
+import java.util.AbstractMap.SimpleEntry;
 
 /**
  * A Request Object that maps to the row type of a Request Table
@@ -16,7 +17,7 @@ public class Request {
     private String description;
     private float cost;
     private String format;
-    private String eventName;
+    private SimpleEntry<String, Integer> event;
     private String justification;
 
     private String approvalEmail; // This might be better as an attached file
@@ -30,7 +31,7 @@ public class Request {
 
     /** Only RequestFactory should access to this */
     public Request (int employeeID, Date eventDate, String location, 
-    String description, Float cost, String format, String eventName, 
+    String description, Float cost, String format, SimpleEntry<String, Integer> event, 
     String justification, String approvalEmail, int gradeCutoff, 
     Boolean urgent) {
         this.employeeId = employeeID;
@@ -39,7 +40,7 @@ public class Request {
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventName = eventName;
+        this.event = event;
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.gradeCutoff = gradeCutoff;
@@ -56,7 +57,7 @@ public class Request {
      * @param String description - Description
      * @param float cost - Amount of reimbursement requested
      * @param String format - The method by which the event is graded
-     * @param String eventName - Type of event, determines reimbursement amount
+     * @param SimpleEntry&lt;String, Integer&gt; - Pair of event name and id, determines reimbursement amount
      * @param String justification - Work-related justification for the request
      * @param String approvalEmail - An email detailing prior approval for this request
      * @param Boolean okdBySuper - Did the Direct Supervisor approve the request
@@ -68,7 +69,7 @@ public class Request {
      */
     public Request (int requestId, int employeeId, Date eventDate,
     String location, String description, float cost, String format,
-    String eventName, String justification, String approvalEmail,
+    SimpleEntry<String, Integer> event, String justification, String approvalEmail,
     Boolean okdBySuper, Boolean okdByHead, Boolean okdByBenCo,
     int gradeCutoff, String status, Boolean urgent) {
         this.requestId = requestId;
@@ -78,7 +79,7 @@ public class Request {
         this.description = description;
         this.cost = cost;
         this.format = format;
-        this.eventName = eventName;
+        this.event = event;
         this.justification = justification;
         this.approvalEmail = approvalEmail;
         this.okdBySuper = okdBySuper;
@@ -89,24 +90,6 @@ public class Request {
         this.urgent = urgent;
 
     }
-
-    /** Getters and Setters */
-    /*public int getRequestId() { return requestId; }
-    public int getEmployeeId() { return employeeId; }
-    public Date getDate() { return eventDate; }
-    public String getLocation() { return location; }
-    public String getDescription() { return description; }
-    public float getCost() { return cost; }
-    public String getFormat() { return format; }
-    public String getEvent() { return eventName; }
-    public String getJustification() { return justification; }
-    public String getApprovalEmail() { return approvalEmail; }
-    public boolean okdBySuper() { return okdBySuper; }
-    public boolean okdByHead() { return okdByHead; }
-    public boolean okdByBenCo() { return okdByBenCo; }
-    public int getCutoff() { return gradeCutoff; }
-    public String getStatus() { return status; }
-    public boolean isUrgent() { return urgent; }*/
     
     public int getRequestId() {
     	return requestId;
@@ -164,12 +147,12 @@ public class Request {
 		this.format = format;
 	}
 
-	public String getEventName() {
-		return eventName;
+	public SimpleEntry<String, Integer> getEvent() {
+		return event;
 	}
 
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
+	public void setEvent(SimpleEntry<String, Integer> other) {
+		this.event = other;
 	}
 
 	public String getJustification() {
@@ -250,7 +233,7 @@ public class Request {
         res.append("Description: " + description + ", ");
         res.append("Reimbursement Cost: " + Float.toString(cost) + ", ");
         res.append("Grading Format: " + format.toString() + ", ");
-        res.append("Type of Event: " + eventName + ", ");
+        res.append("EventName: " + event.getKey() + ", ");
         res.append("Work-Related Justification: " + justification + ", ");
         res.append("Approval Email: " + approvalEmail + ", ");
         res.append("Approved By the Direct Supervisor: " + okdBySuper + ", ");

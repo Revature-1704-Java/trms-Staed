@@ -3,16 +3,15 @@ package com.staed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
 
 import com.staed.beans.*;
-import com.staed.stores.EventType;
 
 public class RequestDAO extends DAO<Request> {
     private String joinedTables = "FROM REQUEST R INNER JOIN EVENTTYPE EVT ON EVT.EVENTTYPEID = R.EVENTTYPEID INNER JOIN EMPLOYEE E ON E.EMPLOYEEID = R.EMPLOYEEID INNER JOIN DEPARTMENT D ON D.DEPARTMENTID = E.DEPARTMENTID INNER JOIN TITLE T ON T.TITLEID = E.TITLEID";
-    private static EventType evt;   // TODO: Init?
 
     public Request getRequest(int id) throws SQLException {
         String sql = "SELECT * " + joinedTables + " WHERE REQUESTID = ?";
@@ -62,7 +61,11 @@ public class RequestDAO extends DAO<Request> {
         String requestDesc = rs.getString("REQUESTDESCRIPTION");
         float cost = rs.getFloat("REIMBURSEMENTCOST");
         String format = rs.getString("GRADINGFORMAT");
+        
         String evtName = rs.getString("EVENTTYPENAME");
+        int evtId = rs.getInt("EVENTTYPEID");
+        SimpleEntry<String, Integer> event = new SimpleEntry<>(evtName, evtId);
+        
         String justification = rs.getString("WORKJUSTIFICATION");
         String email = rs.getString("APPROVALEMAIL");
         
@@ -85,18 +88,19 @@ public class RequestDAO extends DAO<Request> {
         }
 
         return new Request(requestId, employeeId, evtTime, evtLoc,
-            requestDesc, cost, format, evtName, justification, email,
+            requestDesc, cost, format, event, justification, email,
             okdSuper, okdHead, okdBenCo, cutoff, status, urgent);
     }
 
 	@Override
 	PreparedStatement packageObj(Request obj) throws SQLException {
-        String sql = "INSERT INTO REQUEST(EMPLOYEEID, EVENTTIME, EVENTLOCATION,"
-        		+ " REQUESTDESCRIPTION, REIMBURSEMENTCOST, GRADINGFORMAT, "
-        		+ "EVENTTYPEID, WORKJUSTIFICATION, APPROVALEMAIL, "
-        		+ "DIRECTSUPERVISORAPPROVED, DEPARTMENTHEADAPPROVED, "
-        		+ "BENEFITSCOORDINATORAPPROVED, GRADECUTOFF, STATUS, URGENT) "
-        		+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO REQUEST(EMPLOYEEID, EVENTTIME, "
+        		+ "EVENTLOCATION, REQUESTDESCRIPTION, REIMBURSEMENTCOST, "
+        		+ "GRADINGFORMAT, EVENTTYPEID, WORKJUSTIFICATION, "
+        		+ "APPROVALEMAIL, DIRECTSUPERVISORAPPROVED, "
+        		+ "DEPARTMENTHEADAPPROVED, BENEFITSCOORDINATORAPPROVED, "
+        		+ "GRADECUTOFF, STATUS, URGENT) VALUES "
+        		+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?)";
         PreparedStatement ps = prepareStatement(sql);
         ps.setInt(1, obj.getEmployeeId());
         ps.setDate(2, obj.getEventDate());
@@ -104,7 +108,9 @@ public class RequestDAO extends DAO<Request> {
         ps.setString(4, obj.getDescription());
         ps.setFloat(5, obj.getCost());
         ps.setString(6, obj.getFormat());
-        ps.setInt(7, evt.getValue(obj.getEventName()));
+        //
+        ps.setInt(7, obj.getEvent().getValue());
+        //
         ps.setString(8, obj.getJustification());
         ps.setString(9, obj.getApprovalEmail());
         ps.setInt(10, obj.getOkdBySuper() ? 1 : 0);
@@ -113,6 +119,16 @@ public class RequestDAO extends DAO<Request> {
         ps.setInt(13, obj.getGradeCutoff());
         ps.setString(14, obj.getStatus());
         ps.setInt(15, obj.getUrgent() ? 1 : 0);
+        
+        System.out.println(sql);
+        System.out.println(obj.getEmployeeId() + ", " + obj.getEventDate() + ", "
+        		+ obj.getLocation() + ", " + obj.getDescription() + ", "
+        		+ obj.getCost() + ", " + obj.getFormat() + ", " + obj.getEvent().getValue() + ", "
+        		+ obj.getJustification() + ", " + obj.getApprovalEmail() + ", "
+        		+ (obj.getOkdBySuper() ? 1 : 0) + ", " + (obj.getOkdByHead() ? 1 : 0) + ", "
+        		+ (obj.getOkdByBenCo() ? 1 : 0) + ", " + obj.getGradeCutoff() + ", "
+        		+ obj.getStatus() + ", " + (obj.getUrgent() ? 1 : 0));
+        
         return ps;
 	}
 }

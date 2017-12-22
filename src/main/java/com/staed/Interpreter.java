@@ -3,6 +3,9 @@ package com.staed;
 import com.staed.beans.Request;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -86,6 +89,18 @@ public class Interpreter {
     	return _ConvertToGeneric(buffer, type);
     }
     
+    private Date _ConsoleLoopUntilValidDate(Scanner sc, String field) {
+    	LocalDate today = LocalDate.now();
+    	
+    	String buffer = sc.nextLine().trim();
+    	while (!buffer.matches(dateRegex) || LocalDate.parse(buffer).isBefore(today.plus(1, ChronoUnit.WEEKS))) {
+    		System.out.println("That isn't a valid " + field + " in yyyy-mm-dd.");
+    		System.out.println("The specified date must be at least one week from now.");
+    		buffer = sc.nextLine().trim();
+    	}
+    	return Date.valueOf(LocalDate.parse(buffer));
+    }
+    
     private Float _ConsoleLoopUntilValidFloat(Scanner sc, String field) {
     	System.out.println("Enter the " + field + ":");
     	String buffer = sc.nextLine().trim();
@@ -120,8 +135,7 @@ public class Interpreter {
     		
     		int eId = _ConsoleLoopUntilValid(sc, "employee id",
     				"\\d+", Integer.class);
-    		Date date = _ConsoleLoopUntilValid(sc, "date of the event in yyyy-mm-dd", 
-    				dateRegex, Date.class);
+    		Date date = _ConsoleLoopUntilValidDate(sc, "date of the event");
     		String loc =_ConsoleLoopUntilValid(sc, "location",
     				".*", String.class);
     		String desc = _ConsoleLoopUntilValid(sc, "description",
@@ -192,9 +206,7 @@ public class Interpreter {
     			Request cur = service.current(); 
     			switch (args[1].toLowerCase()) {
     			case "eventtime":
-    				Date newDate = _ConsoleLoopUntilValid(sc, 
-    						"date of the event in yyyy-mm-dd",
-    						dateRegex, Date.class);
+    				Date newDate = _ConsoleLoopUntilValidDate(sc, "date of the event");
     				cur.setEventDate(newDate);
     				break;
     			case "eventlocation":
@@ -219,7 +231,9 @@ public class Interpreter {
     			case "eventtypeid":
     				String type = _ConsoleIterator(sc, " event type",
     						service.getTypes().getKeys().iterator(), "Other");
-    				cur.setEventName(type);
+    				// TODO: Fix this iterator
+    				SimpleEntry<String, Integer> event = new SimpleEntry<>(type, 6);
+    				cur.setEvent(event);
     				break;
     			case "workjustification":
     				String justify = _ConsoleLoopUntilValid(sc, "work-related justification",

@@ -2,6 +2,7 @@ package com.staed;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,11 +75,17 @@ public class Service {
     float cost, String format, String type, String justify, String email,
     boolean superOk, boolean headOk, boolean benCoOk, int cutoff, String status,
     boolean isUrgent) {
+    	SimpleEntry<String, Integer> event;
+    	if (eventDAO.getTypes().getKeys().contains(type))
+    		event = new SimpleEntry<>(type, eventDAO.getTypes().getValue(type));
+    	else
+    		event = new SimpleEntry<>("Other", eventDAO.getTypes().getValue("Other"));
+    	
         Request req;
         if (isUrgent)
-            req = rf.createRequestUrgent(eId, date, loc, desc, cost, format, type, justify, email, cutoff);
+            req = rf.createRequestUrgent(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
         else
-            req = rf.createRequest(eId, date, loc, desc, cost, format, type, justify, email, cutoff);
+            req = rf.createRequest(eId, date, loc, desc, cost, format, event, justify, email, cutoff);
 
         req.setOkdBySuper(superOk);
         req.setOkdByHead(headOk);
@@ -92,12 +99,12 @@ public class Service {
 
     public boolean pushRequest() {
         try {
-        	if (currentRequest.getRequestId() != 0 && requestDAO.getRequest(currentRequest.getRequestId()) != null) {
-        		System.out.println("That request already exists in the system. Did you mean to update instead?");
-        		return false;
-        	} else {
+//        	if (currentRequest.getRequestId() != 0 && requestDAO.getRequest(currentRequest.getRequestId()) != null) {
+//        		System.out.println("That request already exists in the system. Did you mean to update instead?");
+//        		return false;
+//        	} else {
         		return requestDAO.addRequest(currentRequest) > 0 ? true : false;
-        	}
+//        	}
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
