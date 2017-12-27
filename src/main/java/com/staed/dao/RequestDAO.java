@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.staed.beans.Request;
 
+import stores.FieldValueWrapper;
+
 public class RequestDAO extends DAO<Request> {
 	
 	@Override
@@ -72,6 +74,25 @@ public class RequestDAO extends DAO<Request> {
 		}
 		return null;
 	}
+
+	public int getAddedRequestId(Request request) {
+		String sql = "SELECT * FROM REQUEST WHERE EMPLOYEEEMAIL=? AND "
+			+ "STATE=? AND COST=? AND EVENTDATE=? AND LASTREVIEWED=?";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setString(1, request.getEmail());
+			ps.setInt(2, request.getState());
+			ps.setFloat(3, request.getCost());
+			ps.setDate(4, Date.valueOf(request.getEventDate()));
+			ps.setDate(5, Date.valueOf(request.getLastReviewed()));
+
+			List<Request> reqIter = preparedIterator(ps);
+			return !reqIter.isEmpty() ? reqIter.get(0).getId() : 0;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
 	
 	public List<Request> getAllRequest(String email) {
 		List<Request> list = new ArrayList<>();
@@ -97,13 +118,18 @@ public class RequestDAO extends DAO<Request> {
 		}
 	}
 	
-	// TODO Implement RequestDAO update
-	public<T> int updateRequest(T param, String fieldName) {
-		return 0;
+	public int updateRequest(int id, List<FieldValueWrapper> fields) {
+		String sql = "UPDATE REQUEST SET ";
+		for (FieldValueWrapper field : fields) {
+			sql += field.get().getKey() + " = ?,";
+		}
+		sql = sql.substring(0, sql.lastIndexOf(','));
+		sql += " WHERE ID = ?";
+		
+		return super.update(sql, fields);
 	}
 	
 	public int deleteRequest(int id) {
-		// TODO Check for permission before delete
 		String sql = "DELETE FROM REQUEST WHERE ID = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {

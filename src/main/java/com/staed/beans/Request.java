@@ -30,6 +30,8 @@ public class Request {;
     	this.lastReviewed = lastReviewed;
     }
 
+    // TODO Add a method to convert parameters into FieldValueWrappers
+
     public String toString() {
         return "Request [ Id: " + id + ", Employee Email: " + employeeEmail
              + ", Event Type Id: " + evtTypeId + ", Grade Format Id: "

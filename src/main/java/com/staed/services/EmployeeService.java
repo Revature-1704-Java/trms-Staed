@@ -25,6 +25,13 @@ public class EmployeeService extends Service {
 		return user;
 	}
 	
+	/**
+	 * Checks to see if an employee with this email and password exists in the
+	 * database
+	 * @param String - The employee's email
+	 * @param String - The employee's password
+	 * @return A boolean indicating success or failure
+	 */
 	public boolean login(String email, String pass) {
 		user = empDAO.loginInfo(email, pass);
 		
@@ -34,6 +41,12 @@ public class EmployeeService extends Service {
 			return false;
 	}
 	
+	/**
+	 * Returns all the employees that have the passed in email
+	 * as a supervisor, department head, or benefits coordinator
+	 * @param String - The email of the manager
+	 * @return - A list of emails of the employees under this manager
+	 */
 	public List<String> getSubordinates(String email) {
 		List<String> list = new ArrayList<>();
 		

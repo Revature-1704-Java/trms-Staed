@@ -37,12 +37,9 @@ public class Interpreter {
 	 * Fetch all the requests made by employees subordinate to the current user
 	 * @return A JSON String
 	 */
-    public String display() {
+    public String display(String managerEmail) {
     	Gson gson = new Gson();
     	List<Request> list = new ArrayList<>();
-    	
-    	// TODO Get manager's email
-    	String managerEmail = "";
     	
     	empServ.getSubordinates(managerEmail).forEach(email -> {
     		reqServ.displayAll(email).forEach(request -> {
@@ -57,21 +54,16 @@ public class Interpreter {
      * Attempts to insert a new Request to the DB
      * @return String indicating success or failure
      */
-    public String submit() {
-    	// TODO Retrieve fields
-    	String email = null;
-    	int evtTypeId = 0;
-    	int formatId = 0;
-		int state = 0;
-    	float cost = 0;
-    	LocalDate evtDate = null;
-		Period timeMissed = null;
-		LocalDate lastReviewed = null;
+	public String submit(String email, int eventTypeId, int gradingFormatId,
+		int state, float cost, LocalDate eventDate, Period timeMissed, 
+		LocalDate lastReviewed) {
 		
-    	if (reqServ.add(email, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed))
+		if (reqServ.add(email, eventTypeId, gradingFormatId, state, cost,
+			eventDate, timeMissed, lastReviewed)) {
     		return "Added reimbursement request successfully";
-    	else
-    		return "Failed to add reimbursement request";
+		} else {
+			return "Failed to add reimbursement request";
+		}
     }
     
     /**
@@ -79,8 +71,11 @@ public class Interpreter {
      * @return String indicating success or failure
      */
     public String update() {
-    	reqServ.modifyRequest();
-    	return null;
+    	if (reqServ.modifyRequest()) {
+			return "Successfully updated reimbursement";
+		} else {
+			return "Failed to update reimbursement";
+		}
     }
     
     /**
