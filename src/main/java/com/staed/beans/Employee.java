@@ -1,137 +1,83 @@
 package com.staed.beans;
 
-import java.time.LocalDate;
-
 public class Employee {
-	private int id;
-	private String password;
-	
-	private String firstname;
-	private String lastname;
-	private String email;
-	private float awarded;
-	private LocalDate lastAwarded;
-	
-	private int titleId;
-	private int departmentId;
-	private int superId;
-	
-	// Only used by internals
-	public Employee(int id, String password, String firstname, String lastname,
-			String email, float awarded, LocalDate lastAwarded, int titleId,
-			int departmentId, int superId) {
-		this.id = id;
-		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.awarded = awarded;
-		this.lastAwarded = lastAwarded;
-		this.titleId = titleId;
-		this.departmentId = departmentId;
-		this.superId = superId;
+    private String email;
+    private String password;
+    private String name;
+    private int typeId;
+    
+    private String superEmail;
+    private String headEmail;
+    private String benCoEmail;
+    
+
+    public Employee(String email, String password, String name, int typeId, String superEmail, String headEmail, String benCoEmail) {
+    	this.email = email;
+    	this.password = password;
+    	this.name = name;
+    	this.typeId = typeId;
+    	
+    	this.superEmail = superEmail;
+    	this.headEmail = headEmail;
+    	this.benCoEmail = benCoEmail;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee [ Email: " + email + ", Name: " + name + ", TypeId: "
+        		+ typeId + ", Super Email: " + superEmail + ", Head Email: "
+        		+ headEmail + ", BenCo Email: " + benCoEmail + "]";
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+	public String getSuperEmail() {
+		return superEmail;
 	}
 
-	public Employee(String password, String firstname, String lastname,
-			String email, float awarded, int titleId, int departmentId,
-			int superId) {
-		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.awarded = awarded;
-		this.titleId = titleId;
-		this.departmentId = departmentId;
-		this.superId = superId;
+	public void setSuperEmail(String superEmail) {
+		this.superEmail = superEmail;
 	}
 
-	public int getId() {
-		return id;
+	public String getHeadEmail() {
+		return headEmail;
 	}
 
-	@Override
-	public String toString() {
-		return "{EmployeeId=" + id + ", Password="
-				+ password + ", FirstName=" + firstname + ", LastName="
-				+ lastname + ", Email=" + email + ", Awarded=" + awarded
-				+ ", LastAwarded=" + lastAwarded + ", TitleId=" + titleId
-				+ ", DepartmentId=" + departmentId + ", SupervisorId="
-				+ superId + "}";
+	public void setHeadEmail(String headEmail) {
+		this.headEmail = headEmail;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public String getBenCoEmail() {
+		return benCoEmail;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public float getAwarded() {
-		return awarded;
-	}
-
-	public void setAwarded(float awarded) {
-		this.awarded = awarded;
-	}
-
-	public LocalDate getLastAwarded() {
-		return lastAwarded;
-	}
-
-	public void setLastAwarded(LocalDate lastAwarded) {
-		this.lastAwarded = lastAwarded;
-	}
-
-	public int getTitleId() {
-		return titleId;
-	}
-
-	public void setTitleId(int titleId) {
-		this.titleId = titleId;
-	}
-
-	public int getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(int departmentId) {
-		this.departmentId = departmentId;
-	}
-
-	public int getSuperId() {
-		return superId;
-	}
-
-	public void setSuperId(int superId) {
-		this.superId = superId;
+	public void setBenCoEmail(String benCoEmail) {
+		this.benCoEmail = benCoEmail;
 	}
 }

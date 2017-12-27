@@ -9,98 +9,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Properties;
 
-public abstract class DAO<V> {
-	Connection conn = null;
-	
-	public DAO() {
-		this.conn = getConnection();
-	}
-	
-	public void close() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-    /**
-     * Creates a SQL connection and creates a PreparedStatement of the query
-     * @param sql - The SQL query desired
-     * @return A PreparedStatement of the query
-     */
-    PreparedStatement prepareStatement(String sql) throws SQLException {
-        return prepare(sql, PreparedStatement.class);
-    }
+public abstract class DAO<T> {
+    static Connection conn;
 
-    /**
-     * Creates a SQL connection and creates a CallableStatement of the query
-     * @param sql - The SQL query desired
-     * @return A CallableStatement of the query
-     */
-    CallableStatement prepareCallable(String sql) throws SQLException {
-        return prepare(sql, CallableStatement.class);
+    public DAO() {
+        DAO.conn = getConnection();
     }
-
-    /**
-     * Create the SQL connection and return either a PreparedStatement
-     * or CallableStatement of the SQL query
-     * @param String - The SQL query desired
-     * @param Class&lt;T&gt; - A PreparedStatement or CallableStatement class
-     * @return Either a PreparedStatement or CallableStatement
-     */
-    @SuppressWarnings("unchecked")
-	<T extends Statement> T prepare(String sql, Class<T> type) throws SQLException {
-        if (type == PreparedStatement.class)
-            return (T) conn.prepareStatement(sql);
-        else if (type == CallableStatement.class)
-            return (T) conn.prepareCall(sql);
-        else
-            return null;
-    }
-    
-    List<V> preparedIterator(PreparedStatement stmt) throws SQLException {
-    	return resultIterator(stmt, PreparedStatement.class);
-    }
-    
-    List<V> callableIterator(CallableStatement stmt) throws SQLException {
-    	return resultIterator(stmt, CallableStatement.class);
-    }
-
-    /**
-     * Given a SQL query, it will either process it as a PreparedStatement
-     * or a CallableStatement. If the query is a PreparedStatement, this
-     * will return a list<Obj> of the result set whose size is indeterminate.
-     * If the query is a CallableStatement, it will be executed and return an
-     * empty list<Obj>.
-     * @param T - A type extending from java.sql.Statement, handled only if
-     * it is a PreparedStatement or CallableStatement.
-     * @return A List&lt;U&gt; and is either null or of indeterminate size.
-     */
-    <T extends Statement> List<V> resultIterator(T stmt, Class<T> type) throws SQLException {
-        List<V> list = new ArrayList<>();
-        
-        if (type == CallableStatement.class) {
-            ((CallableStatement) stmt).execute();
-        } else if (type == PreparedStatement.class) {
-            ResultSet rs = ((PreparedStatement) stmt).executeQuery();
-            while (rs.next()) {
-                list.add(extractRow(rs));
-            }
-            rs.close();
-        }
-        stmt.close();
-
-        return list;
-    }
-
-    abstract V extractRow(ResultSet rs) throws SQLException;
-
-    abstract PreparedStatement packageObj(V t) throws SQLException;
 
     protected static Connection getConnection() {
         try {
@@ -111,11 +29,73 @@ public abstract class DAO<V> {
             String url = prop.getProperty("url");
             String user = prop.getProperty("user");
             String password = prop.getProperty("password");
-
             return DriverManager.getConnection(url, user, password);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
+
+    public void close() {
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void finalize() {
+        close();
+    }
+
+    PreparedStatement prepareStatement(String sql) {
+        try {
+			return conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+
+    CallableStatement prepareCallable(String sql) {
+        try {
+			return conn.prepareCall(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+
+    List<T> preparedIterator(PreparedStatement stmt) {
+        return resultIterator(stmt, PreparedStatement.class);
+    }
+
+    List<T> callableIterator(CallableStatement stmt) {
+        return resultIterator(stmt, CallableStatement.class);
+    }
+
+    <V extends Statement> List<T> resultIterator(V stmt, Class<V> type) {
+        List<T> list = new ArrayList<>();
+
+        try {
+	        if (type == CallableStatement.class) {
+	            ((CallableStatement) stmt).execute();
+	        } else if (type == PreparedStatement.class) {
+	            ResultSet rs = ((PreparedStatement) stmt).executeQuery();
+	            while (rs.next()) {
+	                list.add(extractRow(rs));
+	            }
+	            rs.close();
+	        }
+	        stmt.close();
+        } catch (SQLException ex) {
+        	ex.printStackTrace();
+        }
+
+        return list;
+    }
+
+    abstract T extractRow(ResultSet rs);
+
+    abstract PreparedStatement prepareInsert(T t);
 }

@@ -1,0 +1,54 @@
+package beans;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import com.staed.beans.Attachment;
+
+class AttachmentTest {
+	private Attachment a, b;
+	
+	@BeforeEach
+	void init() {
+		a = new Attachment("hoopa.txt", 1, "A good file");
+		b = new Attachment("jaja.json", 2, 1, "Makes you laugh");
+	}
+
+	@DisplayName("Attachment Constructor")
+	@Test
+	void constructorTest() {
+		assertNotNull(a);
+		assertNotNull(b);
+	}
+	
+	@DisplayName("Attachment Getters and Setters")
+	@Test
+	void getterSetterTest() {
+		assertEquals("jaja.json", b.getFilename());
+		b.setFilename("nolaughs.json");
+		assertEquals("nolaughs.json", b.getFilename());
+		
+		assertEquals(2, b.getRequestId());
+		b.setRequestId(4);
+		assertEquals(4, b.getRequestId());
+		
+		assertEquals(1, b.getApprovedAtState());
+		b.setApprovedAtState(0);
+		assertEquals(0, b.getApprovedAtState());
+		
+		assertEquals("Makes you laugh", b.getDescription());
+		b.setDescription("No fun zone");
+		assertEquals("No fun zone", b.getDescription());
+	}
+	
+	@DisplayName("Attachment toString")
+	@Test
+	void toStringTest() {
+		String expected = "Attachment [filename=hoopa.txt, requestId=1, "
+				+ "approvedAtState=0, description=A good file]";
+		assertEquals(expected, a.toString());
+	}
+}

@@ -1,142 +1,117 @@
 package com.staed.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.AbstractMap.SimpleEntry;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
-import com.staed.beans.*;
+import com.staed.beans.Request;
 
 public class RequestDAO extends DAO<Request> {
-    private String joinedTables = "FROM REQUEST R INNER JOIN EVENTTYPE EVT ON EVT.EVENTTYPEID = R.EVENTTYPEID INNER JOIN EMPLOYEE E ON E.EMPLOYEEID = R.EMPLOYEEID INNER JOIN DEPARTMENT D ON D.DEPARTMENTID = E.DEPARTMENTID INNER JOIN TITLE T ON T.TITLEID = E.TITLEID";
-
-    public Request getRequest(int id) throws SQLException {
-        String sql = "SELECT * " + joinedTables + " WHERE REQUESTID = ?";
-        PreparedStatement ps = prepareStatement(sql);
-        ps.setInt(1, id);
-        List<Request> rI = preparedIterator(ps);
-        return rI.isEmpty() ? null : rI.get(0);
-    }
-
-    public List<Request> getAllRequest() throws SQLException {
-        String sql = "SELECT * " + joinedTables;
-        return preparedIterator(prepareStatement(sql));
-    }
-    
-    public List<Request> getEmployeeRequests(int id) throws SQLException {
-    	String sql = "SELECT * " + joinedTables + " WHERE EMPLOYEEID = ?";
-    	PreparedStatement ps = prepareStatement(sql);
-    	ps.setInt(1, id);
-    	return preparedIterator(ps);
-    }
-
-    public int _DeleteRequest(int id) throws SQLException {
-        String sql = "DELETE FROM REQUEST WHERE REQUESTID = ?";
-        PreparedStatement ps = prepareCallable(sql);
-        ps.setInt(1, id);
-        return ps.executeUpdate();
-    }
-
-    public int addRequest(Request obj) throws SQLException {
-        PreparedStatement ps = packageObj(obj);
-        return ps.executeUpdate();
-    }
-    
-    public List<String> getRequestColumns() throws SQLException {
-    	String sql = "SELECT column_name FROM USER_TAB_COLUMNS WHERE table_name = 'REQUEST'";
-    	PreparedStatement ps = prepareStatement(sql);
-    	List<String> list = new ArrayList<>();
-    	ResultSet rs = ps.executeQuery();
-    	while (rs.next()) {
-    		list.add(rs.getString("COLUMN_NAME").toUpperCase());
-    	}
-    	rs.close();
-    	ps.close();
-    	
-    	return list;
-    }
-
-    @Override
-    Request extractRow(ResultSet rs) throws SQLException {
-        int requestId = rs.getInt("REQUESTID");
-        int employeeId = rs.getInt("EMPLOYEEID");
-        LocalDate evtTime = rs.getDate("EVENTTIME").toLocalDate();
-        String evtLoc = rs.getString("EVENTLOCATION");
-        String requestDesc = rs.getString("REQUESTDESCRIPTION");
-        float cost = rs.getFloat("REIMBURSEMENTCOST");
-        String format = rs.getString("GRADINGFORMAT");
-        
-        String evtName = rs.getString("EVENTTYPENAME");
-        int evtId = rs.getInt("EVENTTYPEID");
-        SimpleEntry<String, Integer> event = new SimpleEntry<>(evtName, evtId);
-        
-        String justification = rs.getString("WORKJUSTIFICATION");
-        String email = rs.getString("APPROVALEMAIL");
-        
-        Boolean okdSuper = false;
-        if (rs.getInt("DIRECTSUPERVISORAPPROVED") > 0)
-            okdSuper = true;
-        Boolean okdHead = false;
-        if (rs.getInt("DEPARTMENTHEADAPPROVED") > 0)
-            okdHead = true;
-        Boolean okdBenCo = false;
-        if (rs.getInt("BENEFITSCOORDINATORAPPROVED") > 0)
-            okdBenCo = true;
-
-        int cutoff = rs.getInt("GRADECUTOFF");
-        String status = rs.getString("STATUS");
-        
-        Boolean urgent = false;
-        if (rs.getInt("URGENT") > 0) {
-            urgent = true;
-        }
-
-        return new Request(requestId, employeeId, evtTime, evtLoc,
-            requestDesc, cost, format, event, justification, email,
-            okdSuper, okdHead, okdBenCo, cutoff, status, urgent);
-    }
+	
+	@Override
+	Request extractRow(ResultSet rs) {
+		try {
+			int id = rs.getInt("ID");
+			String email = rs.getString("EMPLOYEEEMAIL");
+			int evtTypeId = rs.getInt("EVENTTYPEID");
+			int formatId = rs.getInt("GRADEFORMATID");
+			int state = rs.getInt("STATE");
+			float cost = rs.getFloat("COST");
+			LocalDate evtDate = rs.getDate("EVENTDATE").toLocalDate();
+			Period timeMissed = Period.parse(rs.getString("WORKTIMEMISSED"));
+			LocalDate lastReviewed = rs.getDate("LASTREVIEWED").toLocalDate();
+			
+			return new Request(id, email, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	@Override
-	PreparedStatement packageObj(Request obj) throws SQLException {
-        String sql = "INSERT INTO REQUEST(EMPLOYEEID, EVENTTIME, "
-        		+ "EVENTLOCATION, REQUESTDESCRIPTION, REIMBURSEMENTCOST, "
-        		+ "GRADINGFORMAT, EVENTTYPEID, WORKJUSTIFICATION, "
-        		+ "APPROVALEMAIL, DIRECTSUPERVISORAPPROVED, "
-        		+ "DEPARTMENTHEADAPPROVED, BENEFITSCOORDINATORAPPROVED, "
-        		+ "GRADECUTOFF, STATUS, URGENT) VALUES "
-        		+ "(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?)";
-        PreparedStatement ps = prepareStatement(sql);
-        ps.setInt(1, obj.getEmployeeId());
-        ps.setDate(2, Date.valueOf(obj.getEventDate()));
-        ps.setString(3, obj.getLocation());
-        ps.setString(4, obj.getDescription());
-        ps.setFloat(5, obj.getCost());
-        ps.setString(6, obj.getFormat());
-        //
-        ps.setInt(7, obj.getEvent().getValue());
-        //
-        ps.setString(8, obj.getJustification());
-        ps.setString(9, obj.getApprovalEmail());
-        ps.setInt(10, obj.getOkdBySuper() ? 1 : 0);
-        ps.setInt(11, obj.getOkdByHead() ? 1 : 0);
-        ps.setInt(12, obj.getOkdByBenCo() ? 1 : 0);
-        ps.setInt(13, obj.getGradeCutoff());
-        ps.setString(14, obj.getStatus());
-        ps.setInt(15, obj.getUrgent() ? 1 : 0);
-        
-        System.out.println(sql);
-        System.out.println(obj.getEmployeeId() + ", " + obj.getEventDate() + ", "
-        		+ obj.getLocation() + ", " + obj.getDescription() + ", "
-        		+ obj.getCost() + ", " + obj.getFormat() + ", " + obj.getEvent().getValue() + ", "
-        		+ obj.getJustification() + ", " + obj.getApprovalEmail() + ", "
-        		+ (obj.getOkdBySuper() ? 1 : 0) + ", " + (obj.getOkdByHead() ? 1 : 0) + ", "
-        		+ (obj.getOkdByBenCo() ? 1 : 0) + ", " + obj.getGradeCutoff() + ", "
-        		+ obj.getStatus() + ", " + (obj.getUrgent() ? 1 : 0));
-        
-        return ps;
+	PreparedStatement prepareInsert(Request t) {
+		String sql = "INSERT INTO REQUEST VALUES (?,?,?,?,?,?,?,?,?)";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setString(2, t.getEmail());
+			ps.setInt(3, t.getEventTypeId());
+			ps.setInt(4, t.getFormatId());
+			ps.setInt(5, t.getState());
+			ps.setFloat(6, t.getCost());
+			ps.setDate(7, Date.valueOf(t.getEventDate()));
+			ps.setString(8, t.getTimeMissed().toString());
+			ps.setDate(9, Date.valueOf(t.getLastReviewed()));
+			
+			return ps;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public Request getRequest(int id, String email) {
+		String sql = "SELECT * FROM REQUEST WHERE ID = ?";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setInt(1, id);
+			List<Request> reqIter = preparedIterator(ps);
+			
+			if (!reqIter.isEmpty())
+				return reqIter.get(0);
+			else if (reqIter.get(0).getEmail() != email) {
+				System.out.println("You don't permission to view that");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Request> getAllRequest(String email) {
+		List<Request> list = new ArrayList<>();
+		
+		String sql = "SELECT * FROM REQUEST WHERE EMPLOYEEEMAIL = ?";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setString(1, email);
+			list = preparedIterator(ps);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return list;
+	}
+	
+	public int addRequest(Request Obj) {
+		PreparedStatement ps = prepareInsert(Obj);
+		try {
+			return ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	// TODO Implement RequestDAO update
+	public<T> int updateRequest(T param, String fieldName) {
+		return 0;
+	}
+	
+	public int deleteRequest(int id) {
+		// TODO Check for permission before delete
+		String sql = "DELETE FROM REQUEST WHERE ID = ?";
+		PreparedStatement ps = prepareCallable(sql);
+		try {
+			ps.setInt(1, id);
+			return ps.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return 0;
+		}
 	}
 }
