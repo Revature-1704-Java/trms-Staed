@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import stores.FieldValueWrapper;
+import com.staed.stores.FieldValueWrapper;
 
 public abstract class DAO<T> {
     static Connection conn;

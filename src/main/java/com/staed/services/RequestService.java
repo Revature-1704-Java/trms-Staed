@@ -24,8 +24,7 @@ import com.staed.dao.AttachmentDAO;
 import com.staed.dao.InfoDAO;
 import com.staed.dao.NoteDAO;
 import com.staed.dao.RequestDAO;
-
-import stores.FieldValueWrapper;
+import com.staed.stores.FieldValueWrapper;
 
 public class RequestService extends Service {
 	private static RequestDAO reqDAO;

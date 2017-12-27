@@ -1,4 +1,4 @@
-package stores;
+package com.staed.stores;
 
 import java.sql.Date;
 import java.util.AbstractMap.SimpleEntry;

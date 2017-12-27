@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.staed.beans.Request;
-
-import stores.FieldValueWrapper;
+import com.staed.stores.FieldValueWrapper;
 
 public class RequestDAO extends DAO<Request> {
 	

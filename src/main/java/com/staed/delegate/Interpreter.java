@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.staed.beans.Attachment;
+import com.staed.beans.Info;
+import com.staed.beans.Note;
 import com.staed.beans.Request;
 import com.staed.services.EmployeeService;
 import com.staed.services.RequestService;
+import com.staed.stores.FieldValueWrapper;
 
 public class Interpreter {
 	RequestService reqServ;
@@ -58,8 +62,14 @@ public class Interpreter {
 		int state, float cost, LocalDate eventDate, Period timeMissed, 
 		LocalDate lastReviewed) {
 		
-		if (reqServ.add(email, eventTypeId, gradingFormatId, state, cost,
-			eventDate, timeMissed, lastReviewed)) {
+		// TODO Pass task of generating the requisite object types upstream
+		// These objects: Request, Info, List<Attachment>, List<Note>
+		Request r = null;
+		Info i = null;
+		List<Attachment> aL = null;
+		List<Note> nL = null;
+		
+		if (reqServ.add(r, i, aL, nL)) {
     		return "Added reimbursement request successfully";
 		} else {
 			return "Failed to add reimbursement request";
@@ -68,10 +78,13 @@ public class Interpreter {
     
     /**
      * Attempts to change an existing Request
+     * @param int - The request Id
      * @return String indicating success or failure
      */
-    public String update() {
-    	if (reqServ.modifyRequest()) {
+    public String update(int id, List<FieldValueWrapper> fields) {
+    	// TODO Handle FieldValueWrappers upstream in the servlet
+    	
+    	if (reqServ.modifyRequest(id, fields)) {
 			return "Successfully updated reimbursement";
 		} else {
 			return "Failed to update reimbursement";
@@ -80,10 +93,13 @@ public class Interpreter {
     
     /**
      * Approves the request with the current user's level of power
+     * @param int - Request id
      */
-    public void approveRequest() {
+    public void approveRequest(int id, List<FieldValueWrapper> fields) {
+    	// TODO Handle FieldValueWrappers upstream in the servlet
+    	
     	// TODO Check Power for Approving
-    	reqServ.modifyRequest();
+    	reqServ.modifyRequest(id, fields);
     	
     	// TODO Notify if last Power
     	notifyEmployee();
@@ -91,11 +107,14 @@ public class Interpreter {
     
     /**
      * Rejects the request with the current user's level of power
+     * @param int - Request id
      * @return String with the reason for rejection 
      */
-    public String rejectRequest() {
+    public String rejectRequest(int id, List<FieldValueWrapper> fields) {
+    	// TODO Handle FieldValueWrappers upstream in the servlet
+    	
     	// TODO Check Power for Rejection
-    	reqServ.modifyRequest();
+    	reqServ.modifyRequest(id, fields);
     	
     	notifyEmployee();
     	
