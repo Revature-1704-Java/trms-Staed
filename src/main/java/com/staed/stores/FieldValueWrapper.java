@@ -1,6 +1,8 @@
 package com.staed.stores;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.AbstractMap.SimpleEntry;
 
 /**
@@ -16,6 +18,7 @@ public class FieldValueWrapper {
 	private SimpleEntry<String, String> varchar = null;
 	private SimpleEntry<String, Float> floating = null;
 	private SimpleEntry<String, Date> date		= null;
+	private SimpleEntry<String, Period> period	= null;
 	
 	public FieldValueWrapper(String name, int val) {
 		number = new SimpleEntry<String, Integer>(name, val);
@@ -33,6 +36,14 @@ public class FieldValueWrapper {
 		date = new SimpleEntry<String, Date>(name, val);
 	}
 	
+	public FieldValueWrapper(String name, LocalDate val) {
+		this(name, Date.valueOf(val));
+	}
+	
+	public FieldValueWrapper(String name, Period val) {
+		period = new SimpleEntry<String, Period>(name, val);
+	}
+	
 	public SimpleEntry<String, ?> get() {
 		if (number != null)
 			return number;
@@ -42,6 +53,8 @@ public class FieldValueWrapper {
 			return floating;
 		else if (date != null)
 			return date;
+		else if (period != null)
+			return period;
 		else
 			return null;
 	}

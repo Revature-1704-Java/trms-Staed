@@ -1,10 +1,15 @@
 package com.staed.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.staed.stores.FieldValueWrapper;
+
 /**
  * A BEAN containing information related to a request. It has a One-to-One 
  * relationship with requests.
  */
-public class Info {
+public class Info extends Bean {
 	private int requestId;
 	private String description;
 	private String location;
@@ -16,6 +21,16 @@ public class Info {
 		this.location = location;
 		this.justification = justification;
 	}
+	
+	@Override
+	public List<FieldValueWrapper> toFieldValueWrappers() {
+    	List<FieldValueWrapper> list = new ArrayList<>();
+    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
+    	list.add(new FieldValueWrapper(names.infoDesc, description));
+    	list.add(new FieldValueWrapper(names.location, location));
+    	list.add(new FieldValueWrapper(names.justification, justification));
+    	return list;
+    }
 	
 	@Override
 	public String toString() {

@@ -1,5 +1,9 @@
 package com.staed.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.staed.stores.FieldValueWrapper;
 
 /**
  * A BEAN containing information about files associated with a Request. It has
@@ -7,7 +11,7 @@ package com.staed.beans;
  * the file as well as it's filename and optionally, an integer representing
  * which stage of the approval process it corresponds to.
  */
-public class Attachment {
+public class Attachment extends Bean {
 	private String filename;
 	private int requestId;
 	private int approvedAtState;
@@ -26,6 +30,16 @@ public class Attachment {
 		this.approvedAtState = 0;
 		this.description = description;
 	}
+	
+	@Override
+	public List<FieldValueWrapper> toFieldValueWrappers() {
+    	List<FieldValueWrapper> list = new ArrayList<>();
+    	list.add(new FieldValueWrapper(names.attachmentIdentifier, filename));
+    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
+    	list.add(new FieldValueWrapper(names.approvedAtState, approvedAtState));
+    	list.add(new FieldValueWrapper(names.attachmentDesc, description));
+    	return list;
+    }
 
 	@Override
 	public String toString() {

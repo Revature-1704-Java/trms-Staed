@@ -1,7 +1,5 @@
 package com.staed.delegate;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,18 +61,8 @@ public class Interpreter {
      * Attempts to insert a new Request to the DB
      * @return String indicating success or failure
      */
-	public String submit(String email, int eventTypeId, int gradingFormatId,
-		int state, float cost, LocalDate eventDate, Period timeMissed, 
-		LocalDate lastReviewed) {
-		
-		// TODO Pass task of generating the requisite object types upstream
-		// These objects: Request, Info, List<Attachment>, List<Note>
-		Request r = null;
-		Info i = null;
-		List<Attachment> aL = null;
-		List<Note> nL = null;
-		
-		if (reqServ.add(r, i, aL, nL)) {
+	public String submit(Request request, Info info, List<Attachment> attachmentList, List<Note> noteList) {
+		if (reqServ.add(request, info, attachmentList, noteList)) {
     		return "Added reimbursement request successfully";
 		} else {
 			return "Failed to add reimbursement request";

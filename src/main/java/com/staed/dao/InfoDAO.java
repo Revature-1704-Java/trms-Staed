@@ -16,10 +16,10 @@ public class InfoDAO extends DAO<Info>{
 	@Override
 	Info extractRow(ResultSet rs) {
 		try {
-			int requestId = rs.getInt("REQUESTID");
-			String description = rs.getString("DESCRIPTION");
-			String location = rs.getString("LOCATION");
-			String justification = rs.getString("JUSTIFICATION");
+			int requestId = rs.getInt(names.requestIdentifier);
+			String description = rs.getString(names.infoDesc);
+			String location = rs.getString(names.location);
+			String justification = rs.getString(names.justification);
 			
 			return new Info(requestId, description, location, justification);
 		} catch (SQLException ex) {
@@ -51,7 +51,7 @@ public class InfoDAO extends DAO<Info>{
 	 * @return Either the Info desired or null
 	 */
 	public Info getInfo(int requestId) {
-		String sql = "SELECT * FROM INFO WHERE REQUESTID = ?";
+		String sql = "SELECT * FROM INFO WHERE " + names.requestIdentifier + " = ?";
 		List<Info> list = preparedIterator(prepareStatement(sql));
 		return list.isEmpty() ? null : list.get(0);
 	}
@@ -77,7 +77,7 @@ public class InfoDAO extends DAO<Info>{
 	 * @return The number of rows affected
 	 */
 	public int deleteInfo(int requestId) {
-		String sql = "DELETE FROM INFO WHERE REQUESTID = ?";
+		String sql = "DELETE FROM INFO WHERE " + names.requestIdentifier + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);

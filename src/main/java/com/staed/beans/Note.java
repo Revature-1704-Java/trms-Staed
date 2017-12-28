@@ -1,6 +1,10 @@
 package com.staed.beans;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.staed.stores.FieldValueWrapper;
 
 /**
  * A BEAN containing information tacked onto a Request. It has a Many-to-One
@@ -9,7 +13,7 @@ import java.time.LocalDate;
  * was added, and optionally, the new cost for the Request's reimbursement
  * value. 
  */
-public class Note {
+public class Note extends Bean {
 	private int id;
 	private int requestId;
 	private String managerEmail;
@@ -34,6 +38,18 @@ public class Note {
 		this.newAmount = -1;
 		this.reason = reason;
 	}
+	
+	@Override
+	public List<FieldValueWrapper> toFieldValueWrappers() {
+    	List<FieldValueWrapper> list = new ArrayList<>();
+    	list.add(new FieldValueWrapper(names.noteIdentifier, id));
+    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
+    	list.add(new FieldValueWrapper(names.managerEmail, managerEmail));
+    	list.add(new FieldValueWrapper(names.timeActedOn, timeActedOn));
+    	list.add(new FieldValueWrapper(names.newAmount, newAmount));
+    	list.add(new FieldValueWrapper(names.noteReason, reason));
+    	return list;
+    }
 
 	@Override
 	public String toString() {

@@ -17,14 +17,14 @@ public class EmployeeDAO extends DAO<Employee> {
 	@Override
 	Employee extractRow(ResultSet rs) {
 		try {
-			String email = rs.getString("EMAIL");
-			String pass = rs.getString("PASSWORD");
-			String name = rs.getString("NAME");
-			int typeId = rs.getInt("EMPLOYEETYPEID");
+			String email = rs.getString(names.employeeIdentifier);
+			String pass = rs.getString(names.pass);
+			String name = rs.getString(names.name);
+			int typeId = rs.getInt(names.employeeTypeId);
 			
-			String suEm = rs.getString("SUPER");
-			String hdEm = rs.getString("HEAD");
-			String bcEm = rs.getString("BENCO");
+			String suEm = rs.getString(names.supervisor);
+			String hdEm = rs.getString(names.deptHead);
+			String bcEm = rs.getString(names.benCo);
 			
 			return new Employee(email, pass, name, typeId, suEm, hdEm, bcEm);
 		} catch (SQLException e) {
@@ -58,7 +58,8 @@ public class EmployeeDAO extends DAO<Employee> {
 	 * @return Either the Employee matching the input or null
 	 */
 	public Employee loginInfo(String email, String pass) {
-		String sql = "SELECT * FROM EMPLOYEE WHERE EMAIL = ? AND PASS = ?";
+		String sql = "SELECT * FROM EMPLOYEE WHERE " + names.employeeIdentifier 
+				+ " = ? AND " + names.pass + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);
@@ -81,7 +82,7 @@ public class EmployeeDAO extends DAO<Employee> {
 	 * @return Either the Employee desired or null
 	 */
 	public Employee getEmployee(String email) {
-		String sql = "SELECT * FROM EMPLOYEE WHERE EMAIL = ?";
+		String sql = "SELECT * FROM EMPLOYEE WHERE " + names.employeeIdentifier + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);
@@ -101,8 +102,9 @@ public class EmployeeDAO extends DAO<Employee> {
 	 * @return A list of employees
 	 */
 	public List<Employee> getManaged(String managerEmail) {
-		String sql = "SELECT EMAIL FROM EMPLOYEE WHERE SUPERVISOR = ? "
-				+ "OR HEAD = ? OR BENCO = ?";
+		String sql = "SELECT " + names.employeeIdentifier + " FROM EMPLOYEE WHERE "
+				+ names.supervisor + " = ? "
+				+ "OR " + names.deptHead + " = ? OR " + names.benCo + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, managerEmail);
@@ -137,7 +139,7 @@ public class EmployeeDAO extends DAO<Employee> {
 	 * @return The number of rows affected
 	 */
 	public int deleteEmployee(String email) {
-		String sql = "DELETE FROM EMPLOYEE WHERE EMAIL = ?";
+		String sql = "DELETE FROM EMPLOYEE WHERE " + names.employeeIdentifier + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -24,6 +25,7 @@ import com.staed.stores.FieldValueWrapper;
  */
 public abstract class DAO<T> {
     static Connection conn;
+    static ColumnNames names;
 
     public DAO() {
         DAO.conn = getConnection();

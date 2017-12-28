@@ -1,11 +1,16 @@
 package com.staed.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.staed.stores.FieldValueWrapper;
+
 /**
  * A BEAN representing an Employee identified by their email
  * Contains their name, password, type (title grouping), and a reference to
  * the emails of their supervisor, department head, and benefit coordinators
  */
-public class Employee {
+public class Employee extends Bean {
     private String email;
     private String password;
     private String name;
@@ -25,6 +30,19 @@ public class Employee {
     	this.superEmail = superEmail;
     	this.headEmail = headEmail;
     	this.benCoEmail = benCoEmail;
+    }
+    
+    @Override
+	public List<FieldValueWrapper> toFieldValueWrappers() {
+    	List<FieldValueWrapper> list = new ArrayList<>();
+    	list.add(new FieldValueWrapper(names.employeeIdentifier, email));
+    	list.add(new FieldValueWrapper(names.pass, password));
+    	list.add(new FieldValueWrapper(names.name, name));
+    	list.add(new FieldValueWrapper(names.employeeTypeId, typeId));
+    	list.add(new FieldValueWrapper(names.supervisor, superEmail));
+    	list.add(new FieldValueWrapper(names.deptHead, headEmail));
+    	list.add(new FieldValueWrapper(names.benCo, benCoEmail));
+    	return list;
     }
 
     @Override

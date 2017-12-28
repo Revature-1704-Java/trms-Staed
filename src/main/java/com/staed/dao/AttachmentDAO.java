@@ -18,10 +18,10 @@ public class AttachmentDAO extends DAO<Attachment> {
 	@Override
 	Attachment extractRow(ResultSet rs) {
 		try {
-			String filename = rs.getString("FILENAME");
-			int requestId = rs.getInt("REQUESTID");
-			int approvedAtState = rs.getInt("APPROVEDATSTATE");
-			String description = rs.getString("DESCRIPTION");
+			String filename = rs.getString(names.attachmentIdentifier);
+			int requestId = rs.getInt(names.requestIdentifier);
+			int approvedAtState = rs.getInt(names.approvedAtState);
+			String description = rs.getString(names.attachmentDesc);
 			
 			return new Attachment(filename, requestId, approvedAtState, description);
 		} catch (SQLException ex) {
@@ -55,7 +55,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 	public List<Attachment> getAttachments(int requestId) {
 		List<Attachment> list = new ArrayList<>();
 		
-		String sql = "SELECT * FROM ATTACHMENT WHERE REQUESTID = ?";
+		String sql = "SELECT * FROM ATTACHMENT WHERE " + names.requestIdentifier + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);
@@ -83,11 +83,11 @@ public class AttachmentDAO extends DAO<Attachment> {
 	
 	/**
 	 * Attempts to delete an Attachment
-	 * @param int - The Attachment's id
+	 * @param String - The filename of the file associated with this Attachment
 	 * @return The number of rows affected
 	 */
 	public int deleteAttachment(int id) {
-		String sql = "DELETE FROM ATTACHMENT WHERE ID = ?";
+		String sql = "DELETE FROM ATTACHMENT WHERE " + names.attachmentIdentifier + " = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {
 			ps.setInt(1, id);

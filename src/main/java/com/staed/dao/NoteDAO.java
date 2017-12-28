@@ -21,12 +21,12 @@ public class NoteDAO extends DAO<Note> {
 	@Override
 	Note extractRow(ResultSet rs) {
 		try {
-			int id = rs.getInt("ID");
-			int requestId = rs.getInt("REQUESTID");
-			String managerEmail = rs.getString("MANAGEREMAIL");
-			LocalDate timeActedOn = rs.getDate("TIMEACTEDON").toLocalDate();
-			float newAmount = rs.getFloat("NEWAMOUNT");
-			String reason = rs.getString("REASON");
+			int id = rs.getInt(names.noteIdentifier);
+			int requestId = rs.getInt(names.requestIdentifier);
+			String managerEmail = rs.getString(names.managerEmail);
+			LocalDate timeActedOn = rs.getDate(names.timeActedOn).toLocalDate();
+			float newAmount = rs.getFloat(names.newAmount);
+			String reason = rs.getString(names.noteReason);
 			
 			return new Note(id, requestId, managerEmail, timeActedOn, newAmount, reason);
 		} catch (SQLException ex) {
@@ -61,7 +61,7 @@ public class NoteDAO extends DAO<Note> {
 	 */
 	public List<Note> getNotes(int requestId) {
 		List<Note> list = new ArrayList<>();
-		String sql = "SELECT * FROM NOTE WHERE REQUESTID = ?";
+		String sql = "SELECT * FROM NOTE WHERE " + names.requestIdentifier + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);
@@ -94,7 +94,7 @@ public class NoteDAO extends DAO<Note> {
 	 * @return The number of rows affected
 	 */
 	public int deleteNote(int id) {
-		String sql = "DELETE FROM NOTE WHERE ID = ?";
+		String sql = "DELETE FROM NOTE WHERE " + names.noteIdentifier + " = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {
 			ps.setInt(1, id);
