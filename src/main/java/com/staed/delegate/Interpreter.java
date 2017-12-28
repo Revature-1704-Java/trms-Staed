@@ -20,6 +20,7 @@ import com.staed.stores.FieldValueWrapper;
 public class Interpreter {
 	RequestService reqServ;
 	EmployeeService empServ;
+	private static final int lastPower = 3;
 	
 	public Interpreter() {
 		reqServ = new RequestService();
@@ -30,10 +31,7 @@ public class Interpreter {
 	 * Attempts to login with the passed in parameters
 	 * @return String indicating success or failure
 	 */
-	public String login() {
-		// TODO Get email and pass
-		String email = "", pass = "";
-		
+	public String login(String email, String pass) {
 		if (empServ.login(email, pass))
 			return "Logged in";
 		else
@@ -75,8 +73,6 @@ public class Interpreter {
      * @return String indicating success or failure
      */
     public String update(int id, List<FieldValueWrapper> fields) {
-    	// TODO Handle FieldValueWrappers upstream in the servlet
-    	
     	if (reqServ.modifyRequest(id, fields)) {
 			return "Successfully updated reimbursement";
 		} else {
@@ -88,14 +84,13 @@ public class Interpreter {
      * Approves the request with the current user's level of power
      * @param int - Request id
      */
-    public void approveRequest(int id, List<FieldValueWrapper> fields) {
-    	// TODO Handle FieldValueWrappers upstream in the servlet
+    public void approveRequest(int id) {
+    	String userEmail = empServ.getUser().getEmail();
+    	int curPower = reqServ.approve(id, empServ.getPowerLevel(),
+    			empServ.getSubordinates(userEmail));
     	
-    	// TODO Check Power for Approving
-    	reqServ.modifyRequest(id, fields);
-    	
-    	// TODO Notify if last Power
-    	notifyEmployee();
+    	if (curPower >= lastPower)
+    		notifyEmployee(true);
     }
     
     /**
@@ -103,21 +98,33 @@ public class Interpreter {
      * @param int - Request id
      * @return String with the reason for rejection 
      */
-    public String rejectRequest(int id, List<FieldValueWrapper> fields) {
-    	// TODO Handle FieldValueWrappers upstream in the servlet
+    public String rejectRequest(int id) {
+    	String userEmail = empServ.getUser().getEmail();
+    	boolean result = reqServ.reject(id, empServ.getPowerLevel(),
+    			empServ.getSubordinates(userEmail));
     	
-    	// TODO Check Power for Rejection
-    	reqServ.modifyRequest(id, fields);
+    	notifyEmployee(false);
     	
-    	notifyEmployee();
-    	
-    	return null;
+    	if (result)
+    		return "Rejected request successfully";
+    	else 
+    		return "Failed to reject the request. Perhaps due to improper permission.";
     }
     
     /**
      * Sends an email out to the employee who requested the reimbursement
      * indicating approval or rejection
      */
-    public void notifyEmployee() {
+    @SuppressWarnings("unused")
+	public void notifyEmployee(boolean result) {
+    	String email = empServ.getUser().getEmail();
+    	String contents = "Your reimbursement request has been ";
+    	
+    	if (result)
+    		contents += "approved.";
+    	else 
+    		contents += "rejected.";
+    	
+    	// Use some method here to send an email to that address with this content
     }
 }

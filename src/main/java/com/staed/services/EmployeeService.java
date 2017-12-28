@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.staed.beans.Employee;
 import com.staed.dao.EmployeeDAO;
+import com.staed.dao.EmployeeTypeDAO;
 
 /**
  * A Service that handles Employees and all the objects associated with them.
@@ -12,16 +13,19 @@ import com.staed.dao.EmployeeDAO;
  */
 public class EmployeeService extends Service {
 	private static EmployeeDAO empDAO;
+	private static EmployeeTypeDAO typeDAO;
 	private Employee user;
 	
 	public EmployeeService() {
 		empDAO = new EmployeeDAO();
+		typeDAO = new EmployeeTypeDAO();
 		user = null;
 	}
 	
 	@Override
 	public void close() {
 		empDAO.close();
+		typeDAO.close();
 		user = null;
 	}
 	
@@ -59,5 +63,17 @@ public class EmployeeService extends Service {
 		});
 		
 		return list;
+	}
+	
+	/**
+	 * Returns the power level of the current user
+	 * @return Integer representing the power level
+	 */
+	public int getPowerLevel() {
+		if (user != null) {
+			return typeDAO.getPower(user.getTypeId());
+		} else {
+			return 0;
+		}
 	}
 }

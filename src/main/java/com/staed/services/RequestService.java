@@ -22,6 +22,7 @@ import com.staed.dao.AttachmentDAO;
 import com.staed.dao.InfoDAO;
 import com.staed.dao.NoteDAO;
 import com.staed.dao.RequestDAO;
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -29,6 +30,9 @@ import com.staed.stores.FieldValueWrapper;
  * It handles the messy details of actually providing the services required.
  */
 public class RequestService extends Service {
+	private static ColumnNames names;
+	private static final int rejectPower = 4;
+	
 	private static RequestDAO reqDAO;
 	private Request request;
 	
@@ -112,7 +116,7 @@ public class RequestService extends Service {
 	}
 	
 	/**
-	 * Modify the specificed fields of a Reimbursement request with the passed
+	 * Modify the specified fields of a Reimbursement request with the passed
 	 * in field values
 	 * @param int - The Id of the request being modified
 	 * @param List&lt;FieldValueWrapper&gt; - A list containing wrappers that
@@ -156,4 +160,60 @@ public class RequestService extends Service {
 		return gson.toJson(prev);
 	}
 	
+	/**
+	 * Checks if the request was created by one of the employees in the list
+	 * @param Request - The Request
+	 * @param relatedEmployees - A list of employees possibly related to the
+	 * request
+	 * @return Whether they have permission over the request
+	 */
+	public boolean checkPermission(Request req, List<String> relatedEmployees) {
+		if (req != null && relatedEmployees.contains(req.getEmail())) {
+			return true;
+		} else
+			return false;
+	}
+	
+	/**
+	 * Checks if the request was created by one of the employees in the list
+	 * If it is and the Power level passed in is higher than the current state
+	 * of the request, approve the Request to that Power level
+	 * @param requestId - The id of the request in question
+	 * @param powerLevel - The power level to attempt to approve to
+	 * @param relatedEmployees - A list of employees who are possibly related
+	 * to this request
+	 * @return The post-operation power level of the request, 0 if the request
+	 * doesn't exist
+	 */
+	public int approve(int requestId, int powerLevel, List<String> relatedEmployees) {
+		Request req = reqDAO.getRequest(requestId);
+		
+		if (!checkPermission(req, relatedEmployees))
+			return 0;
+		else if (req.getState() < powerLevel) {
+			FieldValueWrapper fvw = new FieldValueWrapper(names.state, powerLevel);
+			List<FieldValueWrapper> list = new ArrayList<>();
+			list.add(fvw);
+				
+			if (modifyRequest(requestId, list))
+				return powerLevel;
+		}
+		
+		return req.getState();
+	}
+	
+	public boolean reject(int requestId, int powerLevel, List<String> relatedEmployees) {
+		Request req = reqDAO.getRequest(requestId);
+		
+		if (!checkPermission(req, relatedEmployees))
+			return false;
+		else if (req.getState() < powerLevel) {
+			FieldValueWrapper fvw = new FieldValueWrapper(names.state, rejectPower);
+			List<FieldValueWrapper> list = new ArrayList<>();
+			list.add(fvw);
+			
+			return modifyRequest(requestId, list);
+		}
+		return false;
+	}
 }

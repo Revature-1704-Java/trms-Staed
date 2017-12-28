@@ -60,6 +60,24 @@ public class RequestDAO extends DAO<Request> {
 		}
 		return null;
 	}
+	
+	/**
+	 * Attempts to retrieve a request regardless of user permission
+	 * @param int - The id of the request
+	 * @return Either the request desired or null
+	 */
+	public Request getRequest(int id) {
+		String sql = "SELECT * FROM REQUEST WHERE " + names.requestIdentifier + " = ?";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setInt(1,  id);
+			List<Request> reqIter = preparedIterator(ps);
+			return reqIter.isEmpty() ? null : reqIter.get(0);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	 * Attempt to retrieve the specified request only if it exists
@@ -75,15 +93,14 @@ public class RequestDAO extends DAO<Request> {
 			ps.setInt(1, id);
 			List<Request> reqIter = preparedIterator(ps);
 			
-			if (!reqIter.isEmpty())
+			if (!reqIter.isEmpty() && reqIter.get(0).getEmail() == email)
 				return reqIter.get(0);
-			else if (reqIter.get(0).getEmail() != email) {
-				System.out.println("You don't permission to view that");
-			}
+			else
+				return null;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
