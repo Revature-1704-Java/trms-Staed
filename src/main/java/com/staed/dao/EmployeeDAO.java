@@ -7,6 +7,11 @@ import java.util.List;
 
 import com.staed.beans.Employee;
 
+/**
+ * A DAO variant working with Employee objects
+ * @see DAO
+ * @see Employee
+ */
 public class EmployeeDAO extends DAO<Employee> {
 
 	@Override
@@ -45,8 +50,15 @@ public class EmployeeDAO extends DAO<Employee> {
 		return null;
 	}
 	
+	/**
+	 * Returns the Employee that matches that email and password.
+	 * If a non-null result is returned, it means they exist.
+	 * @param String - The Employee's email
+	 * @param String - The Employee's password
+	 * @return Either the Employee matching the input or null
+	 */
 	public Employee loginInfo(String email, String pass) {
-		String sql = "SELECT * FROM EMPLOYEE WHERE USERNAME = ? AND PASS = ?";
+		String sql = "SELECT * FROM EMPLOYEE WHERE EMAIL = ? AND PASS = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);
@@ -63,6 +75,11 @@ public class EmployeeDAO extends DAO<Employee> {
 		return null;
 	}
 	
+	/**
+	 * Retrieves the Employee with that email
+	 * @param String - The employee's email
+	 * @return Either the Employee desired or null
+	 */
 	public Employee getEmployee(String email) {
 		String sql = "SELECT * FROM EMPLOYEE WHERE EMAIL = ?";
 		PreparedStatement ps = prepareStatement(sql);
@@ -77,6 +94,12 @@ public class EmployeeDAO extends DAO<Employee> {
 		return null;
 	}
 	
+	/**
+	 * Retrieves a list of employees that have this email as
+	 * their supervisor, department head, or benefits coordinator
+	 * @param String - The email of this manager
+	 * @return A list of employees
+	 */
 	public List<Employee> getManaged(String managerEmail) {
 		String sql = "SELECT EMAIL FROM EMPLOYEE WHERE SUPERVISOR = ? "
 				+ "OR HEAD = ? OR BENCO = ?";
@@ -91,5 +114,37 @@ public class EmployeeDAO extends DAO<Employee> {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Attempts to add an Employee to the database
+	 * @param Employee - The Employee to be inserted
+	 * @return The number of rows affected
+	 */
+	public int addEmployee(Employee employee) {
+		PreparedStatement ps = prepareInsert(employee);
+		try {
+			return ps.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return 0;
+		}
+	}
+	
+	/**
+	 * Attempts to delete an employee
+	 * @param String - The email of the employee to be deleted
+	 * @return The number of rows affected
+	 */
+	public int deleteEmployee(String email) {
+		String sql = "DELETE FROM EMPLOYEE WHERE EMAIL = ?";
+		PreparedStatement ps = prepareStatement(sql);
+		try {
+			ps.setString(1, email);
+			return ps.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return 0;
+		}
 	}
 }

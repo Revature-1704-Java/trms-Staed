@@ -14,6 +14,11 @@ import com.staed.services.EmployeeService;
 import com.staed.services.RequestService;
 import com.staed.stores.FieldValueWrapper;
 
+/**
+ * Passes along the given inputs to the appropriate service.
+ * In a sense, a manager for services. It interprets and returns the results of 
+ * actions on the services.
+ */
 public class Interpreter {
 	RequestService reqServ;
 	EmployeeService empServ;

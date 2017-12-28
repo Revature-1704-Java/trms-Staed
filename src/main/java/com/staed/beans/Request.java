@@ -3,7 +3,11 @@ package com.staed.beans;
 import java.time.LocalDate;
 import java.time.Period;
 
-
+/**
+ * A BEAN representing only the essential information pertaining to a Request.
+ * It contains a reference to the email of the employee who submitted the
+ * request, the event type, grading method, and other details.
+ */
 public class Request {;
 	
 	private int id;

@@ -1,8 +1,6 @@
 package com.staed.services;
 
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +24,10 @@ import com.staed.dao.NoteDAO;
 import com.staed.dao.RequestDAO;
 import com.staed.stores.FieldValueWrapper;
 
+/**
+ * A Service that handles Requests and all the objects associated with them.
+ * It handles the messy details of actually providing the services required.
+ */
 public class RequestService extends Service {
 	private static RequestDAO reqDAO;
 	private Request request;

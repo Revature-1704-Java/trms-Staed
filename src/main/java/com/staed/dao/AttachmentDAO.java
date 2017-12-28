@@ -8,6 +8,11 @@ import java.util.List;
 
 import com.staed.beans.Attachment;
 
+/**
+ * A DAO variant working with Attachment objects
+ * @see DAO
+ * @see Attachment
+ */
 public class AttachmentDAO extends DAO<Attachment> {
 
 	@Override
@@ -42,6 +47,11 @@ public class AttachmentDAO extends DAO<Attachment> {
 		return null;
 	}
 	
+	/**
+	 * Retrieves all the attachments associated with a specified request
+	 * @param int - The id of the request
+	 * @return The list of attachments
+	 */
 	public List<Attachment> getAttachments(int requestId) {
 		List<Attachment> list = new ArrayList<>();
 		
@@ -56,8 +66,13 @@ public class AttachmentDAO extends DAO<Attachment> {
 		return list;
 	}
 	
-	public int addAttachment(Attachment t) {
-		PreparedStatement ps = prepareInsert(t);
+	/**
+	 * Attempts to insert an Attachment
+	 * @param Attachment The Attachment to be inserted
+	 * @return The number of rows affected
+	 */
+	public int addAttachment(Attachment attachment) {
+		PreparedStatement ps = prepareInsert(attachment);
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
@@ -66,6 +81,11 @@ public class AttachmentDAO extends DAO<Attachment> {
 		}
 	}
 	
+	/**
+	 * Attempts to delete an Attachment
+	 * @param int - The Attachment's id
+	 * @return The number of rows affected
+	 */
 	public int deleteAttachment(int id) {
 		String sql = "DELETE FROM ATTACHMENT WHERE ID = ?";
 		PreparedStatement ps = prepareCallable(sql);

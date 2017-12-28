@@ -16,6 +16,12 @@ import java.util.Properties;
 
 import com.staed.stores.FieldValueWrapper;
 
+/**
+ * A data access object (DAO) that handles connections and operations
+ * on a SQL database for a specific object. The object can correspond
+ * partially or complete with a table or multitude of tables.
+ * @param <T> The object this instance manages
+ */
 public abstract class DAO<T> {
     static Connection conn;
 

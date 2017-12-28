@@ -3,6 +3,14 @@ package com.staed.stores;
 import java.sql.Date;
 import java.util.AbstractMap.SimpleEntry;
 
+/**
+ * A wrapper class for a Pair of Field name and type
+ * This is meant to match an SQL database such that the
+ * field names are the column names of a table. 
+ * 
+ * Upon requesting it's value, it will return either a
+ * field type of Integer, String, Float, or Date
+ */
 public class FieldValueWrapper {
 	private SimpleEntry<String, Integer> number = null;
 	private SimpleEntry<String, String> varchar = null;

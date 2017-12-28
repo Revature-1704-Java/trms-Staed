@@ -1,5 +1,12 @@
 package com.staed.beans;
 
+
+/**
+ * A BEAN containing information about files associated with a Request. It has
+ * a Many-to-One relationship with Requests. They contain the description of
+ * the file as well as it's filename and optionally, an integer representing
+ * which stage of the approval process it corresponds to.
+ */
 public class Attachment {
 	private String filename;
 	private int requestId;

@@ -1,5 +1,9 @@
 package com.staed.beans;
 
+/**
+ * A BEAN containing information related to a request. It has a One-to-One 
+ * relationship with requests.
+ */
 public class Info {
 	private int requestId;
 	private String description;

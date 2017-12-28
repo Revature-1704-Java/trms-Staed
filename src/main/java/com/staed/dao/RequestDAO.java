@@ -12,6 +12,11 @@ import java.util.List;
 import com.staed.beans.Request;
 import com.staed.stores.FieldValueWrapper;
 
+/**
+ * A DAO variant working with Request objects
+ * @see DAO
+ * @see Request
+ */
 public class RequestDAO extends DAO<Request> {
 	
 	@Override
@@ -56,6 +61,13 @@ public class RequestDAO extends DAO<Request> {
 		return null;
 	}
 
+	/**
+	 * Attempt to retrieve the specified request only if it exists
+	 * and the user was the employee that created it
+	 * @param int - The id of the request
+	 * @param String - The email of the requester
+	 * @return Either the Request desired or null
+	 */
 	public Request getRequest(int id, String email) {
 		String sql = "SELECT * FROM REQUEST WHERE ID = ?";
 		PreparedStatement ps = prepareStatement(sql);
@@ -74,6 +86,12 @@ public class RequestDAO extends DAO<Request> {
 		return null;
 	}
 
+	/**
+	 * Given the details of a request, excluding the request id,
+	 * find the corresponding request id.
+	 * @param Request - The details of the request
+	 * @return The request id
+	 */
 	public int getAddedRequestId(Request request) {
 		String sql = "SELECT * FROM REQUEST WHERE EMPLOYEEEMAIL=? AND "
 			+ "STATE=? AND COST=? AND EVENTDATE=? AND LASTREVIEWED=?";
@@ -93,6 +111,11 @@ public class RequestDAO extends DAO<Request> {
 		return 0;
 	}
 	
+	/**
+	 * Shows the user all the requests they created
+	 * @param email - The email of the user
+	 * @return A list of the requests returned
+	 */
 	public List<Request> getAllRequest(String email) {
 		List<Request> list = new ArrayList<>();
 		
@@ -107,8 +130,13 @@ public class RequestDAO extends DAO<Request> {
 		return list;
 	}
 	
-	public int addRequest(Request Obj) {
-		PreparedStatement ps = prepareInsert(Obj);
+	/**
+	 * Attempts to insert a Request into the database
+	 * @param Request - The request to insert
+	 * @return The number of rows affected
+	 */
+	public int addRequest(Request request) {
+		PreparedStatement ps = prepareInsert(request);
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException e) {
@@ -116,7 +144,14 @@ public class RequestDAO extends DAO<Request> {
 			return 0;
 		}
 	}
-	
+
+	/**
+	 * Attempt to update the specificed Request with a given list of name,
+	 * value, and type of fields
+	 * @param int - The id of the request to update
+	 * @param List&lt;FieldValueWrapper&gt; - The list of field name, value, and type
+	 * @return The number of rows affected
+	 */
 	public int updateRequest(int id, List<FieldValueWrapper> fields) {
 		String sql = "UPDATE REQUEST SET ";
 		for (FieldValueWrapper field : fields) {
@@ -128,6 +163,11 @@ public class RequestDAO extends DAO<Request> {
 		return super.update(sql, fields);
 	}
 	
+	/**
+	 * Attempts to delete a specified request, validity is not checked
+	 * @param int - The id of the request to be deleted
+	 * @return The number of rows affected
+	 */
 	public int deleteRequest(int id) {
 		String sql = "DELETE FROM REQUEST WHERE ID = ?";
 		PreparedStatement ps = prepareCallable(sql);

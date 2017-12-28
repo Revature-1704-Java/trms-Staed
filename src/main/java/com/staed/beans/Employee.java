@@ -1,5 +1,10 @@
 package com.staed.beans;
 
+/**
+ * A BEAN representing an Employee identified by their email
+ * Contains their name, password, type (title grouping), and a reference to
+ * the emails of their supervisor, department head, and benefit coordinators
+ */
 public class Employee {
     private String email;
     private String password;

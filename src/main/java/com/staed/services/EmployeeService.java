@@ -6,6 +6,10 @@ import java.util.List;
 import com.staed.beans.Employee;
 import com.staed.dao.EmployeeDAO;
 
+/**
+ * A Service that handles Employees and all the objects associated with them.
+ * It handles the messy details of actually providing the services required.
+ */
 public class EmployeeService extends Service {
 	private static EmployeeDAO empDAO;
 	private Employee user;

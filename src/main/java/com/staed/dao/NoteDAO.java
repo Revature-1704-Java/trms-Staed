@@ -10,6 +10,12 @@ import java.util.List;
 
 import com.staed.beans.Note;
 
+/**
+ * A DAO variant working with Note objects
+ * @see DAO
+ * @see Note
+ *
+ */
 public class NoteDAO extends DAO<Note> {
 
 	@Override
@@ -47,7 +53,12 @@ public class NoteDAO extends DAO<Note> {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Retrieve all the notes associated with the specified request
+	 * @param int - The id of the request
+	 * @return A list of notes
+	 */
 	public List<Note> getNotes(int requestId) {
 		List<Note> list = new ArrayList<>();
 		String sql = "SELECT * FROM NOTE WHERE REQUESTID = ?";
@@ -62,8 +73,13 @@ public class NoteDAO extends DAO<Note> {
 		return list;
 	}
 	
-	public int addNote(Note t) {
-		PreparedStatement ps = prepareInsert(t);
+	/**
+	 * Attempts to add a Note to the database
+	 * @param Note - The Note to be inserted
+	 * @return The number of rows affected
+	 */
+	public int addNote(Note note) {
+		PreparedStatement ps = prepareInsert(note);
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
@@ -72,6 +88,11 @@ public class NoteDAO extends DAO<Note> {
 		}
 	}
 	
+	/**
+	 * Attempts to delete the specified Note
+	 * @param int - The id of the Note to be deleted
+	 * @return The number of rows affected
+	 */
 	public int deleteNote(int id) {
 		String sql = "DELETE FROM NOTE WHERE ID = ?";
 		PreparedStatement ps = prepareCallable(sql);

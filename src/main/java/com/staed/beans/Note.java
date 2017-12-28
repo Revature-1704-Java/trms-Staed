@@ -2,6 +2,13 @@ package com.staed.beans;
 
 import java.time.LocalDate;
 
+/**
+ * A BEAN containing information tacked onto a Request. It has a Many-to-One
+ * relationship with Requests. They contain a reference to the request
+ * associated with it, a string with the contents of the note, the date it
+ * was added, and optionally, the new cost for the Request's reimbursement
+ * value. 
+ */
 public class Note {
 	private int id;
 	private int requestId;

@@ -4,9 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import com.staed.beans.Info;
 
+/**
+ * A DAO variant working with Info objects
+ * @see DAO
+ * @see Info
+ */
 public class InfoDAO extends DAO<Info>{
 
 	@Override
@@ -41,14 +45,24 @@ public class InfoDAO extends DAO<Info>{
 		return null;
 	}
 	
+	/**
+	 * Retrieve the info associated with that request
+	 * @param int - The request id
+	 * @return Either the Info desired or null
+	 */
 	public Info getInfo(int requestId) {
 		String sql = "SELECT * FROM INFO WHERE REQUESTID = ?";
 		List<Info> list = preparedIterator(prepareStatement(sql));
 		return list.isEmpty() ? null : list.get(0);
 	}
 	
-	public int addInfo(Info t) {
-		PreparedStatement ps = prepareInsert(t);
+	/**
+	 * Attempts to insert an Info object into the database
+	 * @param Info - The Info to be inserted
+	 * @return The number of rows affected
+	 */
+	public int addInfo(Info info) {
+		PreparedStatement ps = prepareInsert(info);
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
@@ -57,6 +71,11 @@ public class InfoDAO extends DAO<Info>{
 		}
 	}
 	
+	/**
+	 * Deletes all Info associated with the specified Request
+	 * @param int - The request Id
+	 * @return The number of rows affected
+	 */
 	public int deleteInfo(int requestId) {
 		String sql = "DELETE FROM INFO WHERE REQUESTID = ?";
 		PreparedStatement ps = prepareStatement(sql);
