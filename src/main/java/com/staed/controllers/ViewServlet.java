@@ -9,10 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 import com.staed.delegate.Interpreter;
 
 public class ViewServlet extends HttpServlet {
-	Interpreter interpreter = new Interpreter(); 
+	Interpreter interpreter = new Interpreter();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String command = request.getParameter("command");
+		
+		String email = request.getSession().getAttribute("email").toString();
+		
+		// TODO Switch here for different commands
+	}
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String command = request.getParameter("command");
+    	
+    	String email = request.getParameter("user");
+    	String pass = request.getParameter("pass");
+    	
+    	// TODO Switch here for different commands
+    	//		Also Handle saving possible file attachments here
     }
-    
-    //protected void doGet(...)
 }

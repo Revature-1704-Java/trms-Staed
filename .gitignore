@@ -7,6 +7,10 @@ scratch.md
 scratch.txt
 connection.properties
 
+### Node ###
+node_installation/
+package-lock.json
+
 ### Eclipse ###
 
 .metadata
@@ -178,6 +182,7 @@ nbdist/
 .nb-gradle/
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

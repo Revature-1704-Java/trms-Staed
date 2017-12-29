@@ -184,11 +184,11 @@ public abstract class DAO<T> {
 	<V> void prepareField(PreparedStatement ps, int index, V param) throws SQLException {
 		Class<? extends Object> type = ((Object) param).getClass();
 		if (type == Integer.class) {
-			ps.setInt(index, (int) param);
+			ps.setInt(index, (Integer) param);
 		} else if (type == String.class) {
 			ps.setString(index, (String) param);
 		} else if (type == Float.class) {
-			ps.setFloat(index, (float) param);
+			ps.setFloat(index, (Float) param);
 		} else if (type == Date.class) {
 			ps.setDate(index, (Date) param);
 		}
