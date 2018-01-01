@@ -1,6 +1,6 @@
-export interface Reimbursement {
+export interface Reimb {
     id: number;
     email: string;
     description: string;
-    amount: number;
+    cost: number;
 }

@@ -2,14 +2,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ReimbursementDetailComponent } from './reimbursement-detail/reimbursement-detail.component';
-import { ReimbursementListComponent } from './reimbursement-list/reimbursement-list.component';
-import { ReimbursementService } from './shared/reimbursement.service';
+
+import { ReimbItemComponent } from './reimb-item/reimb-item.component';
+
+import { ReimbService } from './shared/reimb.service';
 
 @NgModule({
   declarations: [
@@ -17,18 +19,17 @@ import { ReimbursementService } from './shared/reimbursement.service';
     HomeComponent,
     FooterComponent,
     NavbarComponent,
-    ReimbursementDetailComponent,
-    ReimbursementListComponent
+    ReimbItemComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     RouterModule.forRoot([
-      {path: '', component: HomeComponent},
-      {path: 'reimbursements/:reimbursementId', component: ReimbursementListComponent}
+      { path: '', component: HomeComponent }
     ])
   ],
-  providers: [ReimbursementService],
+  providers: [ReimbService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

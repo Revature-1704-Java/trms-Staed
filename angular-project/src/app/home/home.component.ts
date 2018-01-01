@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Reimbursement } from '../shared/reimbursement';
-import { ReimbursementService } from '../shared/reimbursement.service';
+import { Observable } from 'rxjs/Observable';
+
+import { ReimbService } from '../shared/reimb.service';
+import { Reimb } from '../shared/reimb';
 
 @Component({
   selector: 'app-home',
@@ -9,12 +11,12 @@ import { ReimbursementService } from '../shared/reimbursement.service';
 })
 export class HomeComponent implements OnInit {
 
-  reimbursements: Reimbursement[] = [];
+  reimbs: Observable<Reimb>;
 
-  constructor(private reimbursementService: ReimbursementService) { }
+  constructor(private reimbService: ReimbService) { }
 
   ngOnInit() {
-    this.reimbursements = this.reimbursementService.getReimbursements();
+    this.reimbs = this.reimbService.getReimbs();
   }
 
 }

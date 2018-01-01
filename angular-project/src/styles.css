@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100%;
+}
+
+.page-wrap {
+    min-height: 100%;
+    margin-bottom: -50px;
+}
+
+.site-footer {
+    height: 50px;
+}
+
+.card-header a, 
+.card-header a:link, 
+.card-header a:visited, 
+.card-header a:hover, 
+.card-header a:focus, 
+.card-header a:active {
+    color: black !important;
+    text-decoration: none !important;
+}

@@ -1,0 +1,13 @@
+a, a:hover {
+    text-decoration: none;
+}
+
+.details {
+    float: right;
+}
+
+.modal-dialog {
+    transform: translate(0, -30%);
+    top: 30%;
+    margin: 0 auto;
+}

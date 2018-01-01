@@ -1,0 +1,17 @@
+ngb-accordion {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.row-body {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
