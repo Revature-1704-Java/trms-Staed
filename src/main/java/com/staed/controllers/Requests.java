@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.staed.delegate.Interpreter;
 
-@WebServlet("/requests")
+@WebServlet("/")
 public class Requests extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Interpreter interpreter = new Interpreter();

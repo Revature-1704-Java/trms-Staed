@@ -5,7 +5,7 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
-  <servlet>
+  <!-- <servlet>
   	<servlet-name>RequestsServlet</servlet-name>
   	<servlet-class>com.staed.controllers.RequestsServlet</servlet-class>
   </servlet>
@@ -13,5 +13,5 @@
   <servlet-mapping>
   	<servlet-name>RequestsServlet</servlet-name>
   	<url-pattern>/requests</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
 </web-app>

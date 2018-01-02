@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
     let uPass: string = this.user.password;
     console.log(`Tried to login: ${uEmail}, ${uPass}`);
 
-    this.http.post('TRMS/src/main/java/controllers/ViewServlet', {
+    this.http.post('TRMS/login', {
       command: 'login',
       email: uEmail,
       password: uPass
