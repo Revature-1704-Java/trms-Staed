@@ -6,12 +6,12 @@
   </welcome-file-list>
   
   <servlet>
-  	<servlet-name>ViewServlet</servlet-name>
-  	<servlet-class>com.staed.controllers.ViewServlet</servlet-class>
+  	<servlet-name>RequestsServlet</servlet-name>
+  	<servlet-class>com.staed.controllers.RequestsServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>ViewServlet</servlet-name>
-  	<url-pattern>*</url-pattern>
+  	<servlet-name>RequestsServlet</servlet-name>
+  	<url-pattern>/requests</url-pattern>
   </servlet-mapping>
 </web-app>

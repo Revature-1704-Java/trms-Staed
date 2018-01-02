@@ -3,14 +3,12 @@
   <groupId>com.staed</groupId>
   <artifactId>TRMS</artifactId>
   <version>0.1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
   
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-	<angular.project.location>angular-project</angular.project.location>
-	<angular.project.nodeinstallation>node_installation</angular.project.nodeinstallation>
   </properties>
 
   <dependencies>
@@ -66,6 +64,20 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<directory>target</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.0</version>
 				<configuration>
@@ -86,43 +98,53 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.6</version>
-				<configuration>
-					<workingDirectory>${angular.project.location}</workingDirectory>
-					<installDirectory>${angular.project.nodeinstallation}</installDirectory>
-				</configuration>
-
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
 				<executions>
 					<execution>
-						<id>install node and npm</id>
+						<id>npm install (initialize)</id>
+						<phase>generate-sources</phase>
 						<goals>
-							<goal>install-node-and-npm</goal>
+							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v9.2.1</nodeVersion>
-							<npmVersion>5.5.1</npmVersion>
+							<workingDirectory>${project.basedir}/angular-project</workingDirectory>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+							</arguments>
 						</configuration>
 					</execution>
 
 					<execution>
-						<id>npm install</id>
+						<id>npm install (clean)</id>
 						<goals>
-							<goal>npm</goal>
+							<goal>exec</goal>
 						</goals>
+						<phase>pre-clean</phase>
 						<configuration>
-							<arguments>install</arguments>
+							<workingDirectory>${project.basedir}/angular-project</workingDirectory>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+							</arguments>
 						</configuration>
 					</execution>
 
 					<execution>
-						<id>npm build</id>
+						<id>npm run build (compile)</id>
 						<goals>
-							<goal>npm</goal>
+							<goal>exec</goal>
 						</goals>
+						<phase>compile</phase>
 						<configuration>
-							<arguments>run build</arguments>
+							<workingDirectory>${project.basedir}/angular-project</workingDirectory>
+							<executable>npm</executable>
+							<arguments>
+								<argument>run</argument>
+								<argument>build</argument>
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -134,8 +156,8 @@
 				<version>3.0.2</version>
 				<executions>
 					<execution>
-						<id>default-copy-resources</id>
-						<phase>process-resources</phase>
+						<id>copy-resources</id>
+						<phase>validate</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -145,9 +167,12 @@
 								${project.build.directory}/${project.artifactId}-${project.version}
 							</outputDirectory>
 							<resources>
-								<directory>
-									${project.basedir}/${angular.project.location}/dist
-								</directory>
+								<resource>
+									<directory>
+										${project.basedir}/angular-project/dist
+									</directory>
+									<filtering>true</filtering>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>

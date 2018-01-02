@@ -46,6 +46,8 @@ public class Interpreter {
     	Gson gson = new Gson();
     	List<Request> list = new ArrayList<>();
     	
+    	list.addAll(reqServ.displayAll(managerEmail));
+    	
     	empServ.getSubordinates(managerEmail).forEach(email -> {
     		reqServ.displayAll(email).forEach(request -> {
     			list.add(request);

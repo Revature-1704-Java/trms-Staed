@@ -1,6 +1,5 @@
 package com.staed.dao;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Statement;
@@ -16,6 +15,8 @@ import java.util.Properties;
 
 import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
+
+import oracle.jdbc.OracleDriver;
 
 /**
  * A data access object (DAO) that handles connections and operations
@@ -37,12 +38,14 @@ public abstract class DAO<T> {
     protected static Connection getConnection() {
         try {
             Properties prop = new Properties();
-            InputStream in = new FileInputStream("src/main/resources/connection.properties");
+            InputStream in = DAO.class.getResourceAsStream("/connections.properties");
             prop.load(in);
 
             String url = prop.getProperty("url");
             String user = prop.getProperty("user");
             String password = prop.getProperty("password");
+        	
+            DriverManager.registerDriver(new OracleDriver());
             return DriverManager.getConnection(url, user, password);
         } catch (Exception ex) {
             ex.printStackTrace();

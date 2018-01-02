@@ -12,6 +12,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ReimbItemComponent } from './reimb-item/reimb-item.component';
 
 import { ReimbService } from './shared/reimb.service';
+import { ThisSession } from './shared/session';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { ReimbService } from './shared/reimb.service';
       { path: '', component: HomeComponent }
     ])
   ],
-  providers: [ReimbService],
+  providers: [ReimbService, ThisSession],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

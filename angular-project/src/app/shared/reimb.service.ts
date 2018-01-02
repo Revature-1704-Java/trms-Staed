@@ -6,16 +6,20 @@ import 'rxjs/add/operator/filter';
 
 
 import { Reimb } from './reimb';
+import { ThisSession } from './session';
 
 @Injectable()
 export class ReimbService {
     private _postsURL = 'https://jsonplaceholder.typicode.com/posts';
+    private relativeURL = '/api/requests';
 
-    constructor(private http: Http) { }
+    constructor(private sess: ThisSession, private http: Http) { }
 
     getReimbs(): Observable<Reimb> {
+        this.sess.store('command', 'getRequests');
+
         return this.http
-            .get(this._postsURL)
+            .get(this.relativeURL)
             .map(res => res.json());
     }
 }
