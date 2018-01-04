@@ -21,6 +21,10 @@ public class Info extends Bean {
 		this.location = location;
 		this.justification = justification;
 	}
+
+	public Info(String description, String location, String justification) {
+		this(0, description, location, justification);
+	}
 	
 	@Override
 	public List<FieldValueWrapper> toFieldValueWrappers() {

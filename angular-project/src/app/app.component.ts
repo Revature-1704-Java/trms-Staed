@@ -13,8 +13,6 @@ export class AppComponent {
       this.sess.store('email', '');
       this.sess.store('valid', 'false');
     }
-    if (!this.sess.exists('command'))
-      this.sess.store('command', '');
   }
 
   title = 'Tuition Reimbursement Management System';

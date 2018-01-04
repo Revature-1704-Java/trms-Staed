@@ -5,8 +5,9 @@ package com.staed.stores;
  * column without changing it's functionality, just change the name once here
  */
 public class ColumnNames {
-	// Request
+	/* Request Table */
 	public final String requestIdentifier = "REQUESTID";
+	// 					emailIdentifer
 	public final String eventTypeId = "EVENTTYPEID";
 	public final String formatId = "GRADEFORMATID";
 	public final String state = "STATE";
@@ -15,19 +16,31 @@ public class ColumnNames {
 	public final String workMissed = "WORKTIMEMISSED";
 	public final String lastReviewed = "LASTREVIEWED";
 	
-	// Note
+	/* EventType Table */
+	//					eventTypeId
+	//					eventTypeName
+	//					compensation
+
+	/* GradingFormat Table */
+	//					gradingFormatId
+	//					type
+	//					cutoff
+
+	/* Note Table */
 	public final String noteIdentifier = "NOTEID";
+	// 					requestIdentifier
 	public final String managerEmail = "MANAGEREMAIL";
 	public final String timeActedOn = "TIMEACTEDON";
 	public final String newAmount = "NEWAMOUNT";
 	public final String noteReason = "REASON";
 	
-	// Info
+	/* Info Table */
+	//					requestIdentifier
 	public final String infoDesc = "DESCRIPTION";
 	public final String location = "LOCATION";
 	public final String justification = "JUSTIFICATION";
 	
-	// Employee
+	/* Employee Table */
 	public final String employeeIdentifier = "EMAIL";
 	public final String pass = "PASSWORD";
 	public final String name = "NAME";
@@ -35,9 +48,15 @@ public class ColumnNames {
 	public final String supervisor = "SUPER";
 	public final String deptHead = "HEAD";
 	public final String benCo = "BENCO";
+
+	/* EmployeeType Table */
+	//					employeeTypeId
+	//					name
+	//					power
 	
-	// Attachment
+	/* Attachment Table */
 	public final String attachmentIdentifier = "FILENAME";
+	//					requestIdentifier
 	public final String approvedAtState = "APPROVEDATSTATE";
 	public final String attachmentDesc = "DESCRIPTION";
 }

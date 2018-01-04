@@ -86,33 +86,50 @@ public class RequestService extends Service {
 		
 		return mergeJson(req, info, notes, attachments);
 	}
-	
+
 	/**
-	 * Add a reimbursement to the table as well as all it's related data
+	 * Adds a reimbursement to the table with it's related data
 	 * @param Request
 	 * @param Info
 	 * @param List&lt;Attachment&gt;
-	 * @param List&lt;Note&gt;
 	 * @return Boolean indicating success or failure
 	 */
-	public boolean add(Request request, Info info, List<Attachment> files, List<Note> notes) {
+	public boolean add(Request request, Info info, List<Attachment> files) {
 		reqDAO.addRequest(request);
 		int requestId = reqDAO.getAddedRequestId(request);
+		if (requestId == 0)
+			return false;
 
+		// Try to add Info, clean up if it fails
 		info.setRequestId(requestId);
-		infoDAO.addInfo(info);
+		if (infoDAO.addInfo(info) == 0) {
+			reqDAO.deleteRequest(requestId);
+			return false;
+		}
 
 		for (Attachment file : files) {
 			file.setRequestId(requestId);
-			attachDAO.addAttachment(file);
+			if (attachDAO.addAttachment(file) == 0)
+				return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * Add notes related to an entry in the Reimbursement table
+	 * @param int - The id of the request
+	 * @param List&lt;Note&gt;
+	 * @return Boolean indicating success or failure
+	 */
+	public boolean addNotes(int requestId, List<Note> notes) {
 		for (Note note : notes) {
 			note.setRequestId(requestId);
-			noteDAO.addNote(note);
+			if (noteDAO.addNote(note) == 0)
+				return false;
 		}
 
-		return false;
+		return true;
 	}
 	
 	/**

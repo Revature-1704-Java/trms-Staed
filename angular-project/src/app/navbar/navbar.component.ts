@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { FormGroup } from '@angular/forms/src/model';
 
 import { ThisSession } from '../shared/session';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -13,22 +13,21 @@ export class NavbarComponent implements OnInit {
   public user = { email: '', password: ''};
   public myform: FormGroup = this.myform;
 
-  constructor(private sess: ThisSession, private http: Http) { }
+  constructor(private sess: ThisSession, private http: HttpClient) { }
 
   ngOnInit() {
   }
 
   login(): void {
-    let uEmail: string = this.user.email;
-    let uPass: string = this.user.password;
+    const uEmail: string = this.user.email;
+    const uPass: string = this.user.password;
     console.log(`Tried to login: ${uEmail}, ${uPass}`);
 
     this.http.post('TRMS/login', {
-      command: 'login',
       email: uEmail,
       password: uPass
     }).subscribe(res => {
-      this.sess.store('valid', res.json().valid);
+      this.sess.store('valid', res['valid']);
       this.sess.store('email', uEmail);
       console.log(res);
     }, err => console.log(err));

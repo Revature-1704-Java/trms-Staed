@@ -8,17 +8,19 @@ export class ThisSession {
     }
 
     public exists(key: string): boolean {
-        if (sessionStorage.getItem(key) !== null)
+        if (sessionStorage.getItem(key) !== null) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public checkEqual(key: string, value: string): boolean {
-        if (sessionStorage.getItem(key) === value)
+        if (sessionStorage.getItem(key) === value) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public clear(): void {
