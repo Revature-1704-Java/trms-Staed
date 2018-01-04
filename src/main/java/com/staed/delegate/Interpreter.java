@@ -77,8 +77,8 @@ public class Interpreter {
      */
 	public JsonObject submit(HashMap<String, String> requestMap, List<HashMap<String, String>> attachmentMaps) {
 		String employeeEmail = requestMap.containsKey("email") ? requestMap.get("email") : null;
-		int evtTypeId = 0;	// TODO: Will be name?
-		int formatId = 0;	// TODO: Will be name?
+		int evtTypeId = requestMap.containsKey("event type") ? reqServ.eventTypeNameToId(requestMap.get("event type")) : null;
+		int formatId = requestMap.containsKey("grading format") ? reqServ.gradingFormatNameToId(requestMap.get("grading format")) : null;
 		int state = requestMap.containsKey("state") ? Integer.parseInt(requestMap.get("state")) : null;
 		float cost = requestMap.containsKey("cost") ? Float.parseFloat(requestMap.get("cost")) : null;
 		LocalDate evtDate = requestMap.containsKey("event date") ? LocalDate.parse(requestMap.get("event date")) : null;

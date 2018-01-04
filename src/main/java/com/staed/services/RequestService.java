@@ -19,6 +19,8 @@ import com.staed.beans.Note;
 import com.staed.beans.Request;
 import com.staed.beans.Info;
 import com.staed.dao.AttachmentDAO;
+import com.staed.dao.EventTypeDAO;
+import com.staed.dao.FormatDAO;
 import com.staed.dao.InfoDAO;
 import com.staed.dao.NoteDAO;
 import com.staed.dao.RequestDAO;
@@ -36,6 +38,9 @@ public class RequestService extends Service {
 	private static RequestDAO reqDAO;
 	private Request request;
 	
+	private static EventTypeDAO typeDAO;
+	private static FormatDAO formatDAO;
+	
 	private static AttachmentDAO attachDAO;
 	private static NoteDAO noteDAO;
 	private static InfoDAO infoDAO;
@@ -43,6 +48,9 @@ public class RequestService extends Service {
 	public RequestService() {
 		reqDAO = new RequestDAO();
 		request = null;
+		
+		typeDAO = new EventTypeDAO();
+		formatDAO = new FormatDAO();
 		
 		attachDAO = new AttachmentDAO();
 		noteDAO = new NoteDAO();
@@ -232,5 +240,13 @@ public class RequestService extends Service {
 			return modifyRequest(requestId, list);
 		}
 		return false;
+	}
+	
+	public int gradingFormatNameToId(String name) {
+		return formatDAO.idFromName(name);
+	}
+	
+	public int eventTypeNameToId(String name) {
+		return typeDAO.idFromName(name);
 	}
 }

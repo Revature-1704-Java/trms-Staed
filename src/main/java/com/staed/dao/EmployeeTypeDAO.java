@@ -38,7 +38,6 @@ public class EmployeeTypeDAO extends DAO<Integer> {
 	 */
 	@Override
 	PreparedStatement prepareInsert(Integer t) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

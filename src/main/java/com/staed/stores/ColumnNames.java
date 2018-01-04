@@ -9,7 +9,7 @@ public class ColumnNames {
 	public final String requestIdentifier = "REQUESTID";
 	// 					emailIdentifer
 	public final String eventTypeId = "EVENTTYPEID";
-	public final String formatId = "GRADEFORMATID";
+	public final String formatId = "GRADINGFORMATID";
 	public final String state = "STATE";
 	public final String cost = "COST";
 	public final String eventDate = "EVENTDATE";
@@ -18,13 +18,13 @@ public class ColumnNames {
 	
 	/* EventType Table */
 	//					eventTypeId
-	//					eventTypeName
-	//					compensation
+	public final String eventTypeName = "EVENTTYPENAME";
+	public final String compensation = "COMPENSATION";
 
 	/* GradingFormat Table */
-	//					gradingFormatId
-	//					type
-	//					cutoff
+	//					formatId
+	public final String formatType = "TYPE";
+	public final String cutoff = "CUTOFF";
 
 	/* Note Table */
 	public final String noteIdentifier = "NOTEID";

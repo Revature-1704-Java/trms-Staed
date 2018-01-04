@@ -16,7 +16,9 @@ public class RequestsServlet extends Servlet {
 		if (session.getAttribute("email") != null) {
 			String email = session.getAttribute("email").toString();
 			String json = gson.toJson(interpret.display(email).get("content"));
-			response.getWriter().write(json);
+			response.getWriter().append(json);
+		} else {
+			response.getWriter().append("Please login");
 		}
 	}
 }

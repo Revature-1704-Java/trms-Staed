@@ -41,7 +41,7 @@ public class Request extends Bean {;
     public Request(String employeeEmail, int evtTypeId, int formatId,
     		int state, float cost, LocalDate evtDate, Period timeMissed, 
     		LocalDate lastReviewed) {
-    	this(0, employeeEmail, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed));
+    	this(0, employeeEmail, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
     }
     
     @Override
