@@ -30,7 +30,11 @@ public class FrontController extends Servlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        response.sendRedirect("RequestsServlet");
+        try {
+            response.sendRedirect("RequestsServlet");
+        } catch (IOException | IllegalStateException ex) {
+            ex.printStackTrace();
+        }
 	}
 
 	@Override
@@ -46,15 +50,19 @@ public class FrontController extends Servlet {
             }
         }
 
-        switch (p) {
-            case LOGIN:
-                response.sendRedirect("LoginServlet");
-                break;
-            case SUBMIT:
-                response.sendRedirect("SubmitServlet");
-                break;
-            default:
-                break;
+        try {
+            switch (p) {
+                case LOGIN:
+                    response.sendRedirect("LoginServlet");
+                    break;
+                case SUBMIT:
+                    response.sendRedirect("SubmitServlet");
+                    break;
+                default:
+                    break;
+            }
+        } catch (IOException | IllegalStateException ex) {
+            ex.printStackTrace();
         }
 	}
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.staed.beans.Attachment;
+import com.staed.stores.ColumnNames;
 
 /**
  * A DAO variant working with Attachment objects
@@ -18,10 +19,10 @@ public class AttachmentDAO extends DAO<Attachment> {
 	@Override
 	Attachment extractRow(ResultSet rs) {
 		try {
-			String filename = rs.getString(names.attachmentIdentifier);
-			int requestId = rs.getInt(names.requestIdentifier);
-			int approvedAtState = rs.getInt(names.approvedAtState);
-			String description = rs.getString(names.attachmentDesc);
+			String filename = rs.getString(ColumnNames.ATTACHMENTIDENTIFIER);
+			int requestId = rs.getInt(ColumnNames.REQUESTIDENTIFIER);
+			int approvedAtState = rs.getInt(ColumnNames.APPROVEDATSTATE);
+			String description = rs.getString(ColumnNames.ATTACHMENTDESC);
 			
 			return new Attachment(filename, requestId, approvedAtState, description);
 		} catch (SQLException ex) {
@@ -55,7 +56,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 	public List<Attachment> getAttachments(int requestId) {
 		List<Attachment> list = new ArrayList<>();
 		
-		String sql = "SELECT * FROM ATTACHMENT WHERE " + names.requestIdentifier + " = ?";
+		String sql = "SELECT * FROM ATTACHMENT WHERE " + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);
@@ -87,7 +88,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 	 * @return The number of rows affected
 	 */
 	public int deleteAttachment(int id) {
-		String sql = "DELETE FROM ATTACHMENT WHERE " + names.attachmentIdentifier + " = ?";
+		String sql = "DELETE FROM ATTACHMENT WHERE " + ColumnNames.ATTACHMENTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {
 			ps.setInt(1, id);

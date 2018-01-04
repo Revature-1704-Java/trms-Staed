@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.staed.beans.EventType;
+import com.staed.stores.ColumnNames;
 
 public class EventTypeDAO extends DAO<EventType> {
 	@Override
 	EventType extractRow(ResultSet rs) {
 		try {
-			int id = rs.getInt(names.eventTypeId);
-			String type = rs.getString(names.eventTypeName);
-			int compensation = rs.getInt(names.compensation);
+			int id = rs.getInt(ColumnNames.EVENTTYPEID);
+			String type = rs.getString(ColumnNames.EVENTTYPENAME);
+			int compensation = rs.getInt(ColumnNames.COMPENSATION);
 			return new EventType(id, type, compensation);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -37,7 +38,7 @@ public class EventTypeDAO extends DAO<EventType> {
 	}
 	
 	public int idFromName(String name) {
-		String sql = "SELECT " + names.eventTypeId + " FROM EVENTTYPE WHERE " + names.eventTypeName + " = ?";
+		String sql = "SELECT " + ColumnNames.EVENTTYPEID + " FROM EVENTTYPE WHERE " + ColumnNames.EVENTTYPENAME + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		
 		try {

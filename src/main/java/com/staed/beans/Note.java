@@ -3,7 +3,7 @@ package com.staed.beans;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -13,7 +13,7 @@ import com.staed.stores.FieldValueWrapper;
  * was added, and optionally, the new cost for the Request's reimbursement
  * value. 
  */
-public class Note extends Bean {
+public class Note implements Bean {
 	private int id;
 	private int requestId;
 	private String managerEmail;
@@ -42,12 +42,12 @@ public class Note extends Bean {
 	@Override
 	public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
-    	list.add(new FieldValueWrapper(names.noteIdentifier, id));
-    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
-    	list.add(new FieldValueWrapper(names.managerEmail, managerEmail));
-    	list.add(new FieldValueWrapper(names.timeActedOn, timeActedOn));
-    	list.add(new FieldValueWrapper(names.newAmount, newAmount));
-    	list.add(new FieldValueWrapper(names.noteReason, reason));
+    	list.add(new FieldValueWrapper(ColumnNames.NOTEIDENTIFIER, id));
+    	list.add(new FieldValueWrapper(ColumnNames.REQUESTIDENTIFIER, requestId));
+    	list.add(new FieldValueWrapper(ColumnNames.MANAGEREMAIL, managerEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.TIMEACTEDON, timeActedOn));
+    	list.add(new FieldValueWrapper(ColumnNames.NEWAMOUNT, newAmount));
+    	list.add(new FieldValueWrapper(ColumnNames.NOTEREASON, reason));
     	return list;
     }
 

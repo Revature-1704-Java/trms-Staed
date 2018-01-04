@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import com.staed.beans.Info;
+import com.staed.stores.ColumnNames;
 
 /**
  * A DAO variant working with Info objects
@@ -16,10 +17,10 @@ public class InfoDAO extends DAO<Info>{
 	@Override
 	Info extractRow(ResultSet rs) {
 		try {
-			int requestId = rs.getInt(names.requestIdentifier);
-			String description = rs.getString(names.infoDesc);
-			String location = rs.getString(names.location);
-			String justification = rs.getString(names.justification);
+			int requestId = rs.getInt(ColumnNames.REQUESTIDENTIFIER);
+			String description = rs.getString(ColumnNames.INFODESC);
+			String location = rs.getString(ColumnNames.LOCATION);
+			String justification = rs.getString(ColumnNames.JUSTIFICATION);
 			
 			return new Info(requestId, description, location, justification);
 		} catch (SQLException ex) {
@@ -51,9 +52,17 @@ public class InfoDAO extends DAO<Info>{
 	 * @return Either the Info desired or null
 	 */
 	public Info getInfo(int requestId) {
-		String sql = "SELECT * FROM INFO WHERE " + names.requestIdentifier + " = ?";
-		List<Info> list = preparedIterator(prepareStatement(sql));
-		return list.isEmpty() ? null : list.get(0);
+		String sql = "SELECT * FROM INFO WHERE " + ColumnNames.REQUESTIDENTIFIER + " = ?";
+		PreparedStatement ps = prepareStatement(sql);
+
+		try {
+			ps.setInt(1, requestId);
+			List<Info> list = preparedIterator(ps);
+			return list.isEmpty() ? null : list.get(0);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -77,7 +86,7 @@ public class InfoDAO extends DAO<Info>{
 	 * @return The number of rows affected
 	 */
 	public int deleteInfo(int requestId) {
-		String sql = "DELETE FROM INFO WHERE " + names.requestIdentifier + " = ?";
+		String sql = "DELETE FROM INFO WHERE " + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);

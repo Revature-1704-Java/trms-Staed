@@ -31,30 +31,21 @@ import com.staed.stores.FieldValueWrapper;
  * A Service that handles Requests and all the objects associated with them.
  * It handles the messy details of actually providing the services required.
  */
-public class RequestService extends Service {
-	private static ColumnNames names;
-	private static final int rejectPower = 4;
+public class RequestService implements Service {
+	private static final int REJECTPOWER = 4;
 	
-	private static RequestDAO reqDAO;
+	private static RequestDAO reqDAO = new RequestDAO();
 	private Request request;
 	
-	private static EventTypeDAO typeDAO;
-	private static FormatDAO formatDAO;
+	private static EventTypeDAO typeDAO = new EventTypeDAO();
+	private static FormatDAO formatDAO = new FormatDAO();
 	
-	private static AttachmentDAO attachDAO;
-	private static NoteDAO noteDAO;
-	private static InfoDAO infoDAO;
+	private static AttachmentDAO attachDAO = new AttachmentDAO();
+	private static NoteDAO noteDAO = new NoteDAO();
+	private static InfoDAO infoDAO = new InfoDAO();
 	
 	public RequestService() {
-		reqDAO = new RequestDAO();
 		request = null;
-		
-		typeDAO = new EventTypeDAO();
-		formatDAO = new FormatDAO();
-		
-		attachDAO = new AttachmentDAO();
-		noteDAO = new NoteDAO();
-		infoDAO = new InfoDAO();
 	}
 	
 	@Override
@@ -176,9 +167,7 @@ public class RequestService extends Service {
 				.collect(Collectors.toMap(
 						Entry::getKey,
 						Entry::getValue,
-						(oldEntry, newEntry) -> { 
-							return oldEntry; 
-						}
+						(oldEntry, newEntry) -> oldEntry
 				));
 		}
 		
@@ -193,10 +182,7 @@ public class RequestService extends Service {
 	 * @return Whether they have permission over the request
 	 */
 	public boolean checkPermission(Request req, List<String> relatedEmployees) {
-		if (req != null && relatedEmployees.contains(req.getEmail())) {
-			return true;
-		} else
-			return false;
+		return req != null && relatedEmployees.contains(req.getEmail());
 	}
 	
 	/**
@@ -216,7 +202,7 @@ public class RequestService extends Service {
 		if (!checkPermission(req, relatedEmployees))
 			return 0;
 		else if (req.getState() < powerLevel) {
-			FieldValueWrapper fvw = new FieldValueWrapper(names.state, powerLevel);
+			FieldValueWrapper fvw = new FieldValueWrapper(ColumnNames.STATE, powerLevel);
 			List<FieldValueWrapper> list = new ArrayList<>();
 			list.add(fvw);
 				
@@ -233,7 +219,7 @@ public class RequestService extends Service {
 		if (!checkPermission(req, relatedEmployees))
 			return false;
 		else if (req.getState() < powerLevel) {
-			FieldValueWrapper fvw = new FieldValueWrapper(names.state, rejectPower);
+			FieldValueWrapper fvw = new FieldValueWrapper(ColumnNames.STATE, REJECTPOWER);
 			List<FieldValueWrapper> list = new ArrayList<>();
 			list.add(fvw);
 			

@@ -2,10 +2,10 @@ package com.staed.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
-public class GradingFormat extends Bean {
+public class GradingFormat implements Bean {
 	private int id;
 	private String type;
 	private int cutoff;
@@ -17,11 +17,11 @@ public class GradingFormat extends Bean {
 	}
 
 	@Override
-	List<FieldValueWrapper> toFieldValueWrappers() {
+	public List<FieldValueWrapper> toFieldValueWrappers() {
 		List<FieldValueWrapper> list = new ArrayList<>();
-		list.add(new FieldValueWrapper(names.formatId, id));
-		list.add(new FieldValueWrapper(names.formatType, type));
-		list.add(new FieldValueWrapper(names.cutoff, cutoff));
+		list.add(new FieldValueWrapper(ColumnNames.FORMATID, id));
+		list.add(new FieldValueWrapper(ColumnNames.FORMATTYPE, type));
+		list.add(new FieldValueWrapper(ColumnNames.CUTOFF, cutoff));
 		return list;
 	}
 

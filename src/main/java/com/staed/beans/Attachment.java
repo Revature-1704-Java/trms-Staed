@@ -2,7 +2,7 @@ package com.staed.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -11,7 +11,7 @@ import com.staed.stores.FieldValueWrapper;
  * the file as well as it's filename and optionally, an integer representing
  * which stage of the approval process it corresponds to.
  */
-public class Attachment extends Bean {
+public class Attachment implements Bean {
 	private String filename;
 	private int requestId;
 	private int approvedAtState;
@@ -34,10 +34,10 @@ public class Attachment extends Bean {
 	@Override
 	public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
-    	list.add(new FieldValueWrapper(names.attachmentIdentifier, filename));
-    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
-    	list.add(new FieldValueWrapper(names.approvedAtState, approvedAtState));
-    	list.add(new FieldValueWrapper(names.attachmentDesc, description));
+    	list.add(new FieldValueWrapper(ColumnNames.ATTACHMENTIDENTIFIER, filename));
+    	list.add(new FieldValueWrapper(ColumnNames.REQUESTIDENTIFIER, requestId));
+    	list.add(new FieldValueWrapper(ColumnNames.APPROVEDATSTATE, approvedAtState));
+    	list.add(new FieldValueWrapper(ColumnNames.ATTACHMENTDESC, description));
     	return list;
     }
 

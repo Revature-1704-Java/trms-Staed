@@ -21,19 +21,19 @@ public class FieldValueWrapper {
 	private SimpleEntry<String, Period> period	= null;
 	
 	public FieldValueWrapper(String name, int val) {
-		number = new SimpleEntry<String, Integer>(name, val);
+		number = new SimpleEntry<>(name, val);
 	}
 	
 	public FieldValueWrapper(String name, String val) {
-		varchar = new SimpleEntry<String, String>(name, val);
+		varchar = new SimpleEntry<>(name, val);
 	}
 	
 	public FieldValueWrapper(String name, float val) {
-		floating = new SimpleEntry<String, Float>(name, val);
+		floating = new SimpleEntry<>(name, val);
 	}
 	
 	public FieldValueWrapper(String name, Date val) {
-		date = new SimpleEntry<String, Date>(name, val);
+		date = new SimpleEntry<>(name, val);
 	}
 	
 	public FieldValueWrapper(String name, LocalDate val) {
@@ -41,7 +41,7 @@ public class FieldValueWrapper {
 	}
 	
 	public FieldValueWrapper(String name, Period val) {
-		period = new SimpleEntry<String, Period>(name, val);
+		period = new SimpleEntry<>(name, val);
 	}
 	
 	public SimpleEntry<String, ?> get() {

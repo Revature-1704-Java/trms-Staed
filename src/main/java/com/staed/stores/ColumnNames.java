@@ -5,58 +5,62 @@ package com.staed.stores;
  * column without changing it's functionality, just change the name once here
  */
 public class ColumnNames {
+	private ColumnNames() {
+		throw new IllegalStateException("ColumnNames class");
+	}
+
 	/* Request Table */
-	public final String requestIdentifier = "REQUESTID";
-	// 					emailIdentifer
-	public final String eventTypeId = "EVENTTYPEID";
-	public final String formatId = "GRADINGFORMATID";
-	public final String state = "STATE";
-	public final String cost = "COST";
-	public final String eventDate = "EVENTDATE";
-	public final String workMissed = "WORKTIMEMISSED";
-	public final String lastReviewed = "LASTREVIEWED";
+	public static final String REQUESTIDENTIFIER = "REQUESTID";
+	// 					EMAILIDENTIFER
+	public static final String EVENTTYPEID = "EVENTTYPEID";
+	public static final String FORMATID = "GRADINGFORMATID";
+	public static final String STATE = "STATE";
+	public static final String COST = "COST";
+	public static final String EVENTDATE = "EVENTDATE";
+	public static final String WORKMISSED = "WORKTIMEMISSED";
+	public static final String LASTREVIEWED = "LASTREVIEWED";
 	
 	/* EventType Table */
-	//					eventTypeId
-	public final String eventTypeName = "EVENTTYPENAME";
-	public final String compensation = "COMPENSATION";
+	//					EVENTTYPEID
+	public static final String EVENTTYPENAME = "EVENTTYPENAME";
+	public static final String COMPENSATION = "COMPENSATION";
 
 	/* GradingFormat Table */
-	//					formatId
-	public final String formatType = "TYPE";
-	public final String cutoff = "CUTOFF";
+	//					FORMATID
+	public static final String FORMATTYPE = "TYPE";
+	public static final String CUTOFF = "CUTOFF";
 
 	/* Note Table */
-	public final String noteIdentifier = "NOTEID";
-	// 					requestIdentifier
-	public final String managerEmail = "MANAGEREMAIL";
-	public final String timeActedOn = "TIMEACTEDON";
-	public final String newAmount = "NEWAMOUNT";
-	public final String noteReason = "REASON";
+	public static final String NOTEIDENTIFIER = "NOTEID";
+	// 					REQUESTIDENTIFIER
+	public static final String MANAGEREMAIL = "MANAGEREMAIL";
+	public static final String TIMEACTEDON = "TIMEACTEDON";
+	public static final String NEWAMOUNT = "NEWAMOUNT";
+	public static final String NOTEREASON = "REASON";
 	
 	/* Info Table */
-	//					requestIdentifier
-	public final String infoDesc = "DESCRIPTION";
-	public final String location = "LOCATION";
-	public final String justification = "JUSTIFICATION";
+	//					REQUESTIDENTIFIER
+	public static final String INFODESC = "DESCRIPTION";
+	public static final String LOCATION = "LOCATION";
+	public static final String JUSTIFICATION = "JUSTIFICATION";
 	
 	/* Employee Table */
-	public final String employeeIdentifier = "EMAIL";
-	public final String pass = "PASSWORD";
-	public final String name = "NAME";
-	public final String employeeTypeId = "EMPLOYEETYPEID";
-	public final String supervisor = "SUPER";
-	public final String deptHead = "HEAD";
-	public final String benCo = "BENCO";
+	public static final String EMPLOYEEIDENTIFIER = "EMAIL";
+	public static final String PASS = "PASSWORD";
+	public static final String NAME = "NAME";
+	public static final String EMPLOYEETYPEID = "EMPLOYEETYPEID";
+	public static final String SUPERVISOR = "SUPER";
+	public static final String DEPTHEAD = "HEAD";
+	public static final String BENCO = "BENCO";
 
 	/* EmployeeType Table */
-	//					employeeTypeId
-	//					name
-	//					power
+	//					EMPLOYEETYPEID
+	//					NAME
+	//					POWER
 	
 	/* Attachment Table */
-	public final String attachmentIdentifier = "FILENAME";
-	//					requestIdentifier
-	public final String approvedAtState = "APPROVEDATSTATE";
-	public final String attachmentDesc = "DESCRIPTION";
+	public static final String ATTACHMENTIDENTIFIER = "FILENAME";
+	//					REQUESTIDENTIFIER
+	public static final String APPROVEDATSTATE = "APPROVEDATSTATE";
+	public static final String ATTACHMENTDESC = "DESCRIPTION";
 }

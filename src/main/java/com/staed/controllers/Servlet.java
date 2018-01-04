@@ -14,11 +14,17 @@ public abstract class Servlet extends HttpServlet {
 	
 	protected static Interpreter interpret = new Interpreter();
 	protected static Gson gson = new Gson();
+
+	protected static final String EMAIL = "email";
+	protected static final String DESC = "description";
+	protected static final String FILENAME = "filename";
 	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Do Nothing
 	}
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Do Nothing
 	}

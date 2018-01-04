@@ -25,7 +25,11 @@ public class LoginServlet extends Servlet {
             session.setAttribute("valid", "false");
         }
 
-        response.getWriter().append(gson.toJson(obj));
+        try {
+            response.getWriter().append(gson.toJson(obj));
+        } catch (IOException | IllegalStateException ex) {
+            ex.printStackTrace();
+        }
 	}
 
 }

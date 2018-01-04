@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.staed.beans.GradingFormat;
+import com.staed.stores.ColumnNames;
 
 public class FormatDAO extends DAO<GradingFormat> {
 	@Override
 	GradingFormat extractRow(ResultSet rs) {
 		try {
-			int id = rs.getInt(names.formatId);
-			String type = rs.getString(names.formatType);
-			int cutoff = rs.getInt(names.cutoff);
+			int id = rs.getInt(ColumnNames.FORMATID);
+			String type = rs.getString(ColumnNames.FORMATTYPE);
+			int cutoff = rs.getInt(ColumnNames.CUTOFF);
 			return new GradingFormat(id, type, cutoff);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -37,7 +38,7 @@ public class FormatDAO extends DAO<GradingFormat> {
 	}
 	
 	public int idFromName(String name) {
-		String sql = "SELECT " + names.formatId + " FROM GRADINGFORMAT WHERE " + names.formatType + " = ?";
+		String sql = "SELECT " + ColumnNames.FORMATID + " FROM GRADINGFORMAT WHERE " + ColumnNames.FORMATTYPE + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		
 		try {

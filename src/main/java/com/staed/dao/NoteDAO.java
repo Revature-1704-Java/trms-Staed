@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.staed.beans.Note;
+import com.staed.stores.ColumnNames;
 
 /**
  * A DAO variant working with Note objects
@@ -21,12 +22,12 @@ public class NoteDAO extends DAO<Note> {
 	@Override
 	Note extractRow(ResultSet rs) {
 		try {
-			int id = rs.getInt(names.noteIdentifier);
-			int requestId = rs.getInt(names.requestIdentifier);
-			String managerEmail = rs.getString(names.managerEmail);
-			LocalDate timeActedOn = rs.getDate(names.timeActedOn).toLocalDate();
-			float newAmount = rs.getFloat(names.newAmount);
-			String reason = rs.getString(names.noteReason);
+			int id = rs.getInt(ColumnNames.NOTEIDENTIFIER);
+			int requestId = rs.getInt(ColumnNames.REQUESTIDENTIFIER);
+			String managerEmail = rs.getString(ColumnNames.MANAGEREMAIL);
+			LocalDate timeActedOn = rs.getDate(ColumnNames.TIMEACTEDON).toLocalDate();
+			float newAmount = rs.getFloat(ColumnNames.NEWAMOUNT);
+			String reason = rs.getString(ColumnNames.NOTEREASON);
 			
 			return new Note(id, requestId, managerEmail, timeActedOn, newAmount, reason);
 		} catch (SQLException ex) {
@@ -61,7 +62,7 @@ public class NoteDAO extends DAO<Note> {
 	 */
 	public List<Note> getNotes(int requestId) {
 		List<Note> list = new ArrayList<>();
-		String sql = "SELECT * FROM NOTE WHERE " + names.requestIdentifier + " = ?";
+		String sql = "SELECT * FROM NOTE WHERE " + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, requestId);
@@ -94,7 +95,7 @@ public class NoteDAO extends DAO<Note> {
 	 * @return The number of rows affected
 	 */
 	public int deleteNote(int id) {
-		String sql = "DELETE FROM NOTE WHERE " + names.noteIdentifier + " = ?";
+		String sql = "DELETE FROM NOTE WHERE " + ColumnNames.NOTEIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {
 			ps.setInt(1, id);

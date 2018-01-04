@@ -2,14 +2,14 @@ package com.staed.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
  * A BEAN containing information related to a request. It has a One-to-One 
  * relationship with requests.
  */
-public class Info extends Bean {
+public class Info implements Bean {
 	private int requestId;
 	private String description;
 	private String location;
@@ -29,10 +29,10 @@ public class Info extends Bean {
 	@Override
 	public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
-    	list.add(new FieldValueWrapper(names.requestIdentifier, requestId));
-    	list.add(new FieldValueWrapper(names.infoDesc, description));
-    	list.add(new FieldValueWrapper(names.location, location));
-    	list.add(new FieldValueWrapper(names.justification, justification));
+    	list.add(new FieldValueWrapper(ColumnNames.REQUESTIDENTIFIER, requestId));
+    	list.add(new FieldValueWrapper(ColumnNames.INFODESC, description));
+    	list.add(new FieldValueWrapper(ColumnNames.LOCATION, location));
+    	list.add(new FieldValueWrapper(ColumnNames.JUSTIFICATION, justification));
     	return list;
     }
 	

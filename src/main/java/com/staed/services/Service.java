@@ -1,5 +1,5 @@
 package com.staed.services;
 
-public abstract class Service {
+public interface Service {
 	abstract void close();
 }

@@ -11,14 +11,12 @@ import com.staed.dao.EmployeeTypeDAO;
  * A Service that handles Employees and all the objects associated with them.
  * It handles the messy details of actually providing the services required.
  */
-public class EmployeeService extends Service {
-	private static EmployeeDAO empDAO;
-	private static EmployeeTypeDAO typeDAO;
+public class EmployeeService implements Service {
+	private static EmployeeDAO empDAO = new EmployeeDAO();
+	private static EmployeeTypeDAO typeDAO = new EmployeeTypeDAO();
 	private Employee user;
 	
 	public EmployeeService() {
-		empDAO = new EmployeeDAO();
-		typeDAO = new EmployeeTypeDAO();
 		user = null;
 	}
 	
@@ -42,11 +40,7 @@ public class EmployeeService extends Service {
 	 */
 	public boolean login(String email, String pass) {
 		user = empDAO.loginInfo(email, pass);
-		
-		if (user != null)
-			return true;
-		else
-			return false;
+		return user != null;
 	}
 	
 	/**
@@ -58,9 +52,7 @@ public class EmployeeService extends Service {
 	public List<String> getSubordinates(String email) {
 		List<String> list = new ArrayList<>();
 		
-		empDAO.getManaged(email).forEach(emp -> {
-			list.add(emp.getEmail());
-		});
+		empDAO.getManaged(email).forEach(emp -> list.add(emp.getEmail()));
 		
 		return list;
 	}

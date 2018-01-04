@@ -25,12 +25,8 @@ import oracle.jdbc.OracleDriver;
  * @param <T> The object this instance manages
  */
 public abstract class DAO<T> {
-    static Connection conn;
+    static Connection conn = getConnection();
     static ColumnNames names;
-
-    public DAO() {
-        DAO.conn = getConnection();
-    }
 
     /**
      * Creates the Connection with the DB via JDBC
@@ -59,10 +55,6 @@ public abstract class DAO<T> {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void finalize() {
-        close();
     }
 
     /**
@@ -121,22 +113,23 @@ public abstract class DAO<T> {
      */
     <V extends Statement> List<T> resultIterator(V stmt) {
         List<T> list = new ArrayList<>();
-
+        
+        Class<? extends Object> type = stmt.getClass();
         try {
-            Class<? extends Object> type = ((Object) stmt).getClass();
-	        if (stmt.getClass() == CallableStatement.class) {
-	            ((CallableStatement) stmt).execute();
-	        } else if (type == PreparedStatement.class) {
-	            ResultSet rs = ((PreparedStatement) stmt).executeQuery();
-	            while (rs.next()) {
-	                list.add(extractRow(rs));
-	            }
-	            rs.close();
-	        }
-	        stmt.close();
+            if (stmt.getClass() == CallableStatement.class) {
+                ((CallableStatement) stmt).execute();
+            } else if (type == PreparedStatement.class) {
+                try (ResultSet rs = ((PreparedStatement) stmt).executeQuery()) {
+                    while (rs.next()) {
+                        list.add(extractRow(rs));
+                    }
+                }
+            }
+            stmt.close();
         } catch (SQLException ex) {
-        	ex.printStackTrace();
+            ex.printStackTrace();
         }
+
 
         return list;
     }
@@ -185,7 +178,7 @@ public abstract class DAO<T> {
      * @param V - The value inserted represented by a generic
      */
 	<V> void prepareField(PreparedStatement ps, int index, V param) throws SQLException {
-		Class<? extends Object> type = ((Object) param).getClass();
+		Class<? extends Object> type = param.getClass();
 		if (type == Integer.class) {
 			ps.setInt(index, (Integer) param);
 		} else if (type == String.class) {

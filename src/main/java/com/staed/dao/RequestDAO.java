@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.staed.beans.Request;
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -18,19 +19,21 @@ import com.staed.stores.FieldValueWrapper;
  * @see Request
  */
 public class RequestDAO extends DAO<Request> {
+	private static final String SELECT = "SELECT * FROM REQUEST WHERE ";
+	private static final String TARGET_AND = "=? AND";
 	
 	@Override
 	Request extractRow(ResultSet rs) {
 		try {
-			int id = rs.getInt(names.requestIdentifier);
-			String email = rs.getString(names.employeeIdentifier);
-			int evtTypeId = rs.getInt(names.eventTypeId);
-			int formatId = rs.getInt(names.formatId);
-			int state = rs.getInt(names.state);
-			float cost = rs.getFloat(names.cost);
-			LocalDate evtDate = rs.getDate(names.eventDate).toLocalDate();
-			Period timeMissed = Period.parse(rs.getString(names.workMissed));
-			LocalDate lastReviewed = rs.getDate(names.lastReviewed).toLocalDate();
+			int id = rs.getInt(ColumnNames.REQUESTIDENTIFIER);
+			String email = rs.getString(ColumnNames.EMPLOYEEIDENTIFIER);
+			int evtTypeId = rs.getInt(ColumnNames.EVENTTYPEID);
+			int formatId = rs.getInt(ColumnNames.FORMATID);
+			int state = rs.getInt(ColumnNames.STATE);
+			float cost = rs.getFloat(ColumnNames.COST);
+			LocalDate evtDate = rs.getDate(ColumnNames.EVENTDATE).toLocalDate();
+			Period timeMissed = Period.parse(rs.getString(ColumnNames.WORKMISSED));
+			LocalDate lastReviewed = rs.getDate(ColumnNames.LASTREVIEWED).toLocalDate();
 			
 			return new Request(id, email, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
 		} catch (SQLException ex) {
@@ -67,7 +70,7 @@ public class RequestDAO extends DAO<Request> {
 	 * @return Either the request desired or null
 	 */
 	public Request getRequest(int id) {
-		String sql = "SELECT * FROM REQUEST WHERE " + names.requestIdentifier + " = ?";
+		String sql = SELECT + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1,  id);
@@ -87,7 +90,7 @@ public class RequestDAO extends DAO<Request> {
 	 * @return Either the Request desired or null
 	 */
 	public Request getRequest(int id, String email) {
-		String sql = "SELECT * FROM REQUEST WHERE " + names.requestIdentifier + " = ?";
+		String sql = SELECT + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setInt(1, id);
@@ -110,9 +113,9 @@ public class RequestDAO extends DAO<Request> {
 	 * @return The request id
 	 */
 	public int getAddedRequestId(Request request) {
-		String sql = "SELECT * FROM REQUEST WHERE " + names.employeeIdentifier
-			+ "=? AND " + names.state + "=? AND " + names.cost + "=? AND"
-			+ names.eventDate + "=? AND " + names.lastReviewed + "=?";
+		String sql = SELECT + ColumnNames.EMPLOYEEIDENTIFIER + TARGET_AND 
+			+ ColumnNames.STATE + TARGET_AND + ColumnNames.COST + TARGET_AND + ColumnNames.EVENTDATE
+			+ TARGET_AND + ColumnNames.LASTREVIEWED + "=?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, request.getEmail());
@@ -137,7 +140,7 @@ public class RequestDAO extends DAO<Request> {
 	public List<Request> getAllRequest(String email) {
 		List<Request> list = new ArrayList<>();
 		
-		String sql = "SELECT * FROM REQUEST WHERE " + names.employeeIdentifier + " = ?";
+		String sql = SELECT + ColumnNames.EMPLOYEEIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);
@@ -171,14 +174,16 @@ public class RequestDAO extends DAO<Request> {
 	 * @return The number of rows affected
 	 */
 	public int updateRequest(int id, List<FieldValueWrapper> fields) {
-		String sql = "UPDATE REQUEST SET ";
+		StringBuilder sql = new StringBuilder("UPDATE REQUEST SET ");
 		for (FieldValueWrapper field : fields) {
-			sql += field.get().getKey() + " = ?,";
+			sql.append(field.get().getKey() + " = ?,");
 		}
-		sql = sql.substring(0, sql.lastIndexOf(','));
-		sql += " WHERE ID = ?";
+		sql = sql.deleteCharAt(sql.length() - 1);
+		sql.append(" WHERE ID = ?");
+
+		fields.add(new FieldValueWrapper("ID", id));
 		
-		return super.update(sql, fields);
+		return super.update(sql.toString(), fields);
 	}
 	
 	/**
@@ -187,7 +192,7 @@ public class RequestDAO extends DAO<Request> {
 	 * @return The number of rows affected
 	 */
 	public int deleteRequest(int id) {
-		String sql = "DELETE FROM REQUEST WHERE " + names.requestIdentifier + " = ?";
+		String sql = "DELETE FROM REQUEST WHERE " + ColumnNames.REQUESTIDENTIFIER + " = ?";
 		PreparedStatement ps = prepareCallable(sql);
 		try {
 			ps.setInt(1, id);

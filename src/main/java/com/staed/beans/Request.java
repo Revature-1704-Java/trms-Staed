@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -12,7 +12,7 @@ import com.staed.stores.FieldValueWrapper;
  * It contains a reference to the email of the employee who submitted the
  * request, the event type, grading method, and other details.
  */
-public class Request extends Bean {;
+public class Request implements Bean {
 	
 	private int id;
     private String employeeEmail;
@@ -47,14 +47,14 @@ public class Request extends Bean {;
     @Override
     public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
-    	list.add(new FieldValueWrapper(names.requestIdentifier, id));
-    	list.add(new FieldValueWrapper(names.employeeIdentifier, employeeEmail));
-    	list.add(new FieldValueWrapper(names.formatId, formatId));
-    	list.add(new FieldValueWrapper(names.state, state));
-    	list.add(new FieldValueWrapper(names.cost, cost));
-    	list.add(new FieldValueWrapper(names.eventDate, evtDate));
-    	list.add(new FieldValueWrapper(names.workMissed, timeMissed));
-    	list.add(new FieldValueWrapper(names.lastReviewed, lastReviewed));
+    	list.add(new FieldValueWrapper(ColumnNames.REQUESTIDENTIFIER, id));
+    	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEEIDENTIFIER, employeeEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.FORMATID, formatId));
+    	list.add(new FieldValueWrapper(ColumnNames.STATE, state));
+    	list.add(new FieldValueWrapper(ColumnNames.COST, cost));
+    	list.add(new FieldValueWrapper(ColumnNames.EVENTDATE, evtDate));
+    	list.add(new FieldValueWrapper(ColumnNames.WORKMISSED, timeMissed));
+    	list.add(new FieldValueWrapper(ColumnNames.LASTREVIEWED, lastReviewed));
     	return list;
     }
 

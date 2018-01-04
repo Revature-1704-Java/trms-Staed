@@ -2,7 +2,7 @@ package com.staed.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
 
 /**
@@ -10,7 +10,7 @@ import com.staed.stores.FieldValueWrapper;
  * Contains their name, password, type (title grouping), and a reference to
  * the emails of their supervisor, department head, and benefit coordinators
  */
-public class Employee extends Bean {
+public class Employee implements Bean {
     private String email;
     private String password;
     private String name;
@@ -35,13 +35,13 @@ public class Employee extends Bean {
     @Override
 	public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
-    	list.add(new FieldValueWrapper(names.employeeIdentifier, email));
-    	list.add(new FieldValueWrapper(names.pass, password));
-    	list.add(new FieldValueWrapper(names.name, name));
-    	list.add(new FieldValueWrapper(names.employeeTypeId, typeId));
-    	list.add(new FieldValueWrapper(names.supervisor, superEmail));
-    	list.add(new FieldValueWrapper(names.deptHead, headEmail));
-    	list.add(new FieldValueWrapper(names.benCo, benCoEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEEIDENTIFIER, email));
+    	list.add(new FieldValueWrapper(ColumnNames.PASS, password));
+    	list.add(new FieldValueWrapper(ColumnNames.NAME, name));
+    	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEETYPEID, typeId));
+    	list.add(new FieldValueWrapper(ColumnNames.SUPERVISOR, superEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.DEPTHEAD, headEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.BENCO, benCoEmail));
     	return list;
     }
 
