@@ -30,7 +30,6 @@ public class SubmitServlet extends Servlet {
             parsedRequest.put("state", request.getParameter("state"));
             parsedRequest.put("cost", request.getParameter("cost"));
             parsedRequest.put("event date", request.getParameter("event date"));
-            System.out.println("EventDate: " + request.getParameter("event date"));
             parsedRequest.put("work time missed", request.getParameter("work time missed"));
             parsedRequest.put("last reviewed date", request.getParameter("last reviewed date"));
             

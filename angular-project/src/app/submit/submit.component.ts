@@ -81,5 +81,7 @@ export class SubmitComponent implements OnInit {
         this.sess.store('submit', null);
         this.modalClose.nativeElement.click();
       }, err => console.log(err));
+
+    location.reload();
   }
 }
