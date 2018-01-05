@@ -1,13 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="dropdown col-sm-3 col-md-3 col-lg-3">
     <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-      TRMS
+      TRMS:
+      <span *ngIf="this.sess.retrieve('valid') == 'true'" class="navbar-text">
+      	{{this.sess.retrieve('email')}}
+      </span>
     </a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Profile</a>
       <div [ngSwitch]="userLoggedIn()">
-        <div *ngSwitchDefault class="dropdown-item" type="button" data-toggle="modal" data-target="#loginModal"><span class="oi oi-account-login"></span> Login</div>
-        <div *ngSwitchCase="true" class="dropdown-item" id="logoutButton" type="button" onclick="logout"><span class="oi oi-account-logout"></span> Sign Out</div>
+        <button *ngSwitchDefault class="dropdown-item btn-link" data-toggle="modal" data-target="#loginModal"><span class="oi oi-account-login"></span> Login</button>
+        <button *ngSwitchCase="true" class="dropdown-item btn-link" id="logoutButton" (click)="logout()"><span class="oi oi-account-logout"></span> Sign Out</button>
       </div>
     </div>
   </div>
@@ -23,7 +25,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">Login</div>
-                <button type="button" class="close" data-dismiss="modal">
+                <button type="button" class="close" data-dismiss="modal" #loginClose>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

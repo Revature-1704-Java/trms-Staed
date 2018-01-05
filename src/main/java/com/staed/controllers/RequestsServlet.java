@@ -10,28 +10,15 @@ public class RequestsServlet extends Servlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		System.out.println(session.getAttribute("email"));
-		//TODO: The Servlet cannot retrieve values from Angular requests for some reason, fix this
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// HttpSession session = request.getSession(true);
+		System.out.println("email: " + request.getParameter("email"));
 		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(gson.toJson(interpret.display("lure@them.all").get("content").getAsString()));
-		
-		/*
-		try {
-			if (session.getAttribute("email") != null) {
-				String email = session.getAttribute("email").toString();
-				String json = gson.toJson(interpret.display(email).get("content"));
-				
-				response.getWriter().write(json);
-			} else {	
-				response.getWriter().write(badResponse("Please login"));
-			}
-		} catch (IOException | IllegalStateException ex) {
-			ex.printStackTrace();
-			response.getWriter().write(badResponse("Exception encountered in RequestsServlet"));
-		}*/
+		if (request.getParameter("email") != null && request.getParameter("valid") != null && request.getParameter("valid").toString().equals("true")) {
+			String email = request.getParameter("email").toString();
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(gson.toJson(interpret.display(email).get("content").getAsString()));
+		}
 	}
 }

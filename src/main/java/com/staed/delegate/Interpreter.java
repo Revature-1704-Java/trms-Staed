@@ -218,6 +218,7 @@ public class Interpreter {
 		obj.addProperty("success", flag);
 	}
 
+	@SuppressWarnings("unused")
 	/**
 	 * @param JsonObject - The object to add the property to
 	 * @param JsonObject - The object to put in the contents

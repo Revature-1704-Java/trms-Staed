@@ -13,16 +13,10 @@ public class LoginServlet extends Servlet {
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        
-        System.out.println("Post: " + request.getParameterMap().isEmpty());
+        HttpSession session = request.getSession(true);
         
         String email = request.getParameter("email");
-        String pass  = request.getParameter("pass");
-        System.out.println(email + ", " + pass);
-        
-        email = "down@smash.com";
-        pass = "smashing";
+        String pass  = request.getParameter("password");
 
         JsonObject obj = interpret.login(email, pass);
         if (obj.get("success").getAsBoolean()) {

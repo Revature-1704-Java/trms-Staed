@@ -107,7 +107,7 @@
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.0</version>
 				<configuration>
-					<workingDirectory>angular</workingDirectory>
+					<workingDirectory>angular-project</workingDirectory>
 					<installDirectory>temp</installDirectory>
 				</configuration>
 				<executions>
