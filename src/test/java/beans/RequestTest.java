@@ -2,14 +2,19 @@ package beans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.staed.beans.Request;
+import com.staed.beans.Request;
+import com.staed.stores.FieldValueWrapper;
 
 class RequestTest {
 	private LocalDate now;
@@ -83,5 +88,37 @@ class RequestTest {
 				+ ", Work Time Missed: " + time + ", Date of Last Review: "
 				+ now;
 		assertEquals(expected, a.toString());
+	}
+	
+	@DisplayName("Request toFieldValueWrappers")
+	@Test
+	void fieldValueTest() {
+		LocalDate g = LocalDate.now();
+		LocalDate n = g.plusDays(1);
+		Request b = new Request(3, "hh", 1, 2, 4, 5.0f, g, Period.ZERO, n);
+		List<FieldValueWrapper> list = b.toFieldValueWrappers();
+		
+		int fields = 0;
+		Iterator<FieldValueWrapper> iter = list.iterator();
+		while(iter.hasNext()) {
+			FieldValueWrapper tmp = iter.next();
+			if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 3) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("hh")) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 1) {
+				fields++;
+			}  else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 2) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 4) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Float.class && ((Float) tmp.get().getValue()) == 5.0f) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Period.class && ((Period) tmp.get().getValue()) == Period.ZERO) {
+				fields++;
+			}
+		}
+		
+		assertEquals(7, fields);
 	}
 }

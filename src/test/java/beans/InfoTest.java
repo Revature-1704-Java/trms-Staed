@@ -2,11 +2,15 @@ package beans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.staed.beans.Info;
+import com.staed.stores.FieldValueWrapper;
 
 class InfoTest {
 	private Info a;
@@ -20,7 +24,10 @@ class InfoTest {
 	@Test
 	void constructorTest() {
 		Info b = new Info(1, "Party", "Main Office", "Christmas");
+		Info c = new Info("j", "k", "l");
+		
 		assertNotNull(b);
+		assertNotNull(c);
 	}
 	
 	@DisplayName("Info Getters and Setters")
@@ -49,5 +56,29 @@ class InfoTest {
 		String expected = "RequestInfo [requestId=1, description=Party, "
 				+ "location=Main Office, justification=Christmas]";
 		assertEquals(expected, a.toString());
+	}
+	
+	@DisplayName("Info toFieldValueWrappers")
+	@Test
+	void fieldValueTest() {
+		Info b = new Info(3, "hh", "kk", "nn");
+		List<FieldValueWrapper> list = b.toFieldValueWrappers();
+		
+		int fields = 0;
+		Iterator<FieldValueWrapper> iter = list.iterator();
+		while(iter.hasNext()) {
+			FieldValueWrapper tmp = iter.next();
+			if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 3) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("hh")) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("kk")) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("nn")) {
+				fields++;
+			}
+		}
+		
+		assertEquals(4, fields);
 	}
 }

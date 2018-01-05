@@ -49,6 +49,7 @@ public class Request implements Bean {
     	List<FieldValueWrapper> list = new ArrayList<>();
     	list.add(new FieldValueWrapper(ColumnNames.REQUESTIDENTIFIER, id));
     	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEEIDENTIFIER, employeeEmail));
+    	list.add(new FieldValueWrapper(ColumnNames.EVENTTYPEID, evtTypeId));
     	list.add(new FieldValueWrapper(ColumnNames.FORMATID, formatId));
     	list.add(new FieldValueWrapper(ColumnNames.STATE, state));
     	list.add(new FieldValueWrapper(ColumnNames.COST, cost));

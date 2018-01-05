@@ -2,13 +2,17 @@ package beans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.staed.beans.Note;
+import com.staed.stores.FieldValueWrapper;
 
 class NoteTest {
 	private LocalDate now;
@@ -67,5 +71,32 @@ class NoteTest {
 				+ "managerEmail=john@gmail.com, timeActedOn=" + now
 				+ ", newAmount=10.0, reason=Clap]";
 		assertEquals(expected, b.toString());
+	}
+	
+	@DisplayName("Note toFieldValueWrappers")
+	@Test
+	void fieldValueTest() {
+		LocalDate g = LocalDate.now();
+		Note b = new Note(3, 2, "hh", g, 5.0f, "nn");
+		List<FieldValueWrapper> list = b.toFieldValueWrappers();
+		
+		int fields = 0;
+		Iterator<FieldValueWrapper> iter = list.iterator();
+		while(iter.hasNext()) {
+			FieldValueWrapper tmp = iter.next();
+			if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 3) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 2) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("hh")) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == Float.class && ((Float) tmp.get().getValue()) == 5.0f) {
+				fields++;
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("nn")) {
+				fields++;
+			}
+		}
+		
+		assertEquals(5, fields);
 	}
 }

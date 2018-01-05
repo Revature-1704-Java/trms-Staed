@@ -9,40 +9,40 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.staed.beans.EventType;
+import com.staed.beans.GradingFormat;
 import com.staed.stores.FieldValueWrapper;
 
-class EventTypeTest {
-	@DisplayName("EventType Constructor")
+class GradingFormatTest {
+	@DisplayName("GradingFormat Constructor")
 	@Test
 	void constructorTest() {
-		EventType a = new EventType(5, "Higgs", 60);
+		GradingFormat a = new GradingFormat(5, "Dance", 60);
 		
 		assertNotNull(a);
 	}
 	
-	@DisplayName("EventType Getters and Setters")
+	@DisplayName("GradingFormat Getters and Setters")
 	@Test
 	void getterSetterTest() {
-		EventType b = new EventType(3, "Clap", 30);
+		GradingFormat b = new GradingFormat(3, "Jumping", 30);
 		
 		assertEquals(3, b.getId());
 		b.setId(2);
 		assertEquals(2, b.getId());
 		
-		assertEquals("Clap", b.getName());
-		b.setName("Mayne");
-		assertEquals("Mayne", b.getName());
+		assertEquals("Jumping", b.getType());
+		b.setType("Crawling");
+		assertEquals("Crawling", b.getType());
 		
-		assertEquals(30, b.getCompensation());
-		b.setCompensation(80);
-		assertEquals(80, b.getCompensation());
+		assertEquals(30, b.getCutoff());
+		b.setCutoff(10);
+		assertEquals(10, b.getCutoff());
 	}
 	
-	@DisplayName("EventType toFieldValueWrappers")
+	@DisplayName("GradingFormat toFieldValueWrappers")
 	@Test
 	void fieldValueTest() {
-		EventType b = new EventType(3, "Party", 99);
+		GradingFormat b = new GradingFormat(3, "Jumping", 30);
 		List<FieldValueWrapper> list = b.toFieldValueWrappers();
 		
 		int fields = 0;
@@ -51,9 +51,9 @@ class EventTypeTest {
 			FieldValueWrapper tmp = iter.next();
 			if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 3) {
 				fields++;
-			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("Party")) {
+			} else if (tmp.get().getValue().getClass() == String.class && ((String) tmp.get().getValue()).equals("Jumping")) {
 				fields++;
-			} else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 99) {
+			} else if (tmp.get().getValue().getClass() == Integer.class && (Integer) tmp.get().getValue() == 30) {
 				fields++;
 			}
 		}
