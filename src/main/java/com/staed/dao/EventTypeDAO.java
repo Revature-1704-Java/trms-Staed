@@ -5,10 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.staed.beans.EventType;
 import com.staed.stores.ColumnNames;
 
 public class EventTypeDAO extends DAO<EventType> {
+	private final static Logger logger = Logger.getLogger(EventTypeDAO.class);
+	
 	@Override
 	EventType extractRow(ResultSet rs) {
 		try {
@@ -17,7 +21,7 @@ public class EventTypeDAO extends DAO<EventType> {
 			int compensation = rs.getInt(ColumnNames.COMPENSATION);
 			return new EventType(id, type, compensation);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - Check your SQL params", ex);
 			return null;
 		}
 	}
@@ -32,7 +36,7 @@ public class EventTypeDAO extends DAO<EventType> {
 			ps.setInt(2, eventType.getCompensation());
 			return ps;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in prepareInsert - Check your SQL params", ex);
 			return null;
 		}
 	}
@@ -49,7 +53,7 @@ public class EventTypeDAO extends DAO<EventType> {
 			else
 				return fmtIter.get(0).getId();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in idFromName - Check your SQL params, did you pass in a String?", ex);
 			return 0;
 		}
 	}

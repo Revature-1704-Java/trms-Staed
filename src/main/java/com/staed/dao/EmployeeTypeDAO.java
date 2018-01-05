@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class EmployeeTypeDAO extends DAO<Integer> {
+	private final static Logger logger = Logger.getLogger(EmployeeTypeDAO.class);
 	
 	/**
 	 * Fetches the Power level associated with that employee type
@@ -23,7 +26,7 @@ public class EmployeeTypeDAO extends DAO<Integer> {
 			List<Integer> list = preparedIterator(ps);
 			return list.isEmpty() ? 0 : list.get(0);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getPower - likely preparedIterator issues", ex);
 			return 0;
 		}
 	}
@@ -33,7 +36,7 @@ public class EmployeeTypeDAO extends DAO<Integer> {
 		try {
 			return rs.getInt("POWER");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - POWER column issues, likely on DB side", ex);
 			return 0;
 		}
 	}

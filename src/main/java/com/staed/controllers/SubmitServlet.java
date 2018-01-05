@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 public class SubmitServlet extends Servlet {
+	private static final Logger logger = Logger.getLogger(SubmitServlet.class);
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -56,7 +59,7 @@ public class SubmitServlet extends Servlet {
 	                }
             	}
             } catch (JsonParseException ex) {
-                ex.printStackTrace();
+            	logger.error("Exception in doPost - Likely in the Json parsing bit", ex);
             }
             
             writeResults(response, session, interpret.submit(parsedRequest, attachments), "submit");

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.staed.beans.Employee;
 import com.staed.stores.ColumnNames;
 
@@ -15,6 +17,7 @@ import com.staed.stores.ColumnNames;
  * @see Employee
  */
 public class EmployeeDAO extends DAO<Employee> {
+	private final static Logger logger = Logger.getLogger(EmployeeDAO.class);
 
 	@Override
 	Employee extractRow(ResultSet rs) {
@@ -28,8 +31,8 @@ public class EmployeeDAO extends DAO<Employee> {
 			String bcEm = rs.getString(ColumnNames.BENCO);
 			
 			return new Employee(email, pass, name, typeId, suEm, hdEm, bcEm);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			logger.error("Exception in extractRow - Either param types or null column names", ex);
 		}
 		return null;
 	}
@@ -45,8 +48,8 @@ public class EmployeeDAO extends DAO<Employee> {
 			ps.setInt(4, t.getTypeId());
 			
 			return ps;
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			logger.error("Exception in prepareInsert - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -72,7 +75,7 @@ public class EmployeeDAO extends DAO<Employee> {
 			else
 				return empIter.get(0);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in loginInfo - Check your Email/Password params", ex);
 		}
 		return null;
 	}
@@ -91,7 +94,7 @@ public class EmployeeDAO extends DAO<Employee> {
 			List<Employee> empIter = preparedIterator(ps);
 			return empIter.isEmpty() ? null : empIter.get(0);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getEmployee - Check your Email params", ex);
 		}
 		return null;
 	}
@@ -113,7 +116,7 @@ public class EmployeeDAO extends DAO<Employee> {
 			ps.setString(3, managerEmail);
 			return preparedIterator(ps);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getManaged - Could be SQL params, but more likely to be preparedIterator issues", ex);
 		}
 		
 		return new ArrayList<>();
@@ -129,7 +132,7 @@ public class EmployeeDAO extends DAO<Employee> {
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in addEmployee - Some issue with prepareInsert", ex);
 			return 0;
 		}
 	}
@@ -146,7 +149,7 @@ public class EmployeeDAO extends DAO<Employee> {
 			ps.setString(1, email);
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in deleteEmployee - Check your SQL params", ex);
 			return 0;
 		}
 	}

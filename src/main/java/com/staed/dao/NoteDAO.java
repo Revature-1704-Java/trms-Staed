@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.staed.beans.Note;
 import com.staed.stores.ColumnNames;
 
@@ -18,6 +20,7 @@ import com.staed.stores.ColumnNames;
  *
  */
 public class NoteDAO extends DAO<Note> {
+	public final static Logger logger = Logger.getLogger(NoteDAO.class);
 
 	@Override
 	Note extractRow(ResultSet rs) {
@@ -31,7 +34,7 @@ public class NoteDAO extends DAO<Note> {
 			
 			return new Note(id, requestId, managerEmail, timeActedOn, newAmount, reason);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -50,7 +53,7 @@ public class NoteDAO extends DAO<Note> {
 			
 			return ps;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in prepareInsert - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -68,7 +71,7 @@ public class NoteDAO extends DAO<Note> {
 			ps.setInt(1, requestId);
 			list = preparedIterator(ps);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getNotes - Likely some issue with preparedIterator", ex);
 		}
 		
 		return list;
@@ -84,7 +87,7 @@ public class NoteDAO extends DAO<Note> {
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in addNote - Some issue with prepareInsert", ex);
 			return 0;
 		}
 	}
@@ -101,7 +104,7 @@ public class NoteDAO extends DAO<Note> {
 			ps.setInt(1, id);
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in deleteNote - Some issue with prepareCallable from DAO (abstract parent)", ex);
 			return 0;
 		}
 	}

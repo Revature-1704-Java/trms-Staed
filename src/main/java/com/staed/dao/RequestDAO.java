@@ -9,6 +9,8 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.staed.beans.Request;
 import com.staed.stores.ColumnNames;
 import com.staed.stores.FieldValueWrapper;
@@ -19,6 +21,7 @@ import com.staed.stores.FieldValueWrapper;
  * @see Request
  */
 public class RequestDAO extends DAO<Request> {
+	private static final Logger logger = Logger.getLogger(RequestDAO.class);
 	private static final String SELECT = "SELECT * FROM REQUEST WHERE ";
 	private static final String TARGET_AND = " = ? AND ";
 	
@@ -47,7 +50,7 @@ public class RequestDAO extends DAO<Request> {
 			
 			return new Request(id, email, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - Check your SQL params, likely an issue with LocalDate or Period parsing, were they in the correct format?", ex);
 		}
 		
 		return null;
@@ -73,7 +76,7 @@ public class RequestDAO extends DAO<Request> {
 			
 			return ps;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in prepareInsert - Check your SQL params, likely Date.valueOf(...) is throwing this", ex);
 		}
 		return null;
 	}
@@ -91,7 +94,7 @@ public class RequestDAO extends DAO<Request> {
 			List<Request> reqIter = preparedIterator(ps);
 			return reqIter.isEmpty() ? null : reqIter.get(0);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getRequest - Likely an issue with prepareStatement", ex);
 			return null;
 		}
 	}
@@ -115,7 +118,7 @@ public class RequestDAO extends DAO<Request> {
 			else
 				return null;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getRequest - Likely an issue with prepareStatement", ex);
 			return null;
 		}
 	}
@@ -141,7 +144,7 @@ public class RequestDAO extends DAO<Request> {
 			List<Request> reqIter = preparedIterator(ps);
 			return !reqIter.isEmpty() ? reqIter.get(0).getId() : 0;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getAddedRequest - Check your SQL params, likely Date.valueOf(...) throws it", ex);
 		}
 		return 0;
 	}
@@ -160,7 +163,7 @@ public class RequestDAO extends DAO<Request> {
 			ps.setString(1, email);
 			list = preparedIterator(ps);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getAllRequests - Likely issue with prepareStatement", ex);
 		}
 		return list;
 	}
@@ -174,8 +177,8 @@ public class RequestDAO extends DAO<Request> {
 		PreparedStatement ps = prepareInsert(request);
 		try {
 			return ps.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			logger.error("Exception in addRequest - Some issue with prepareInsert", ex);
 			return 0;
 		}
 	}
@@ -212,7 +215,7 @@ public class RequestDAO extends DAO<Request> {
 			ps.setInt(1, id);
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in deleteRequest - Check your SQL params", ex);
 			return 0;
 		}
 	}

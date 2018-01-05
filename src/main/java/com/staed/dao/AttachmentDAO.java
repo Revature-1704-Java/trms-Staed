@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.staed.beans.Attachment;
 import com.staed.stores.ColumnNames;
 
@@ -15,6 +17,7 @@ import com.staed.stores.ColumnNames;
  * @see Attachment
  */
 public class AttachmentDAO extends DAO<Attachment> {
+	private final static Logger logger = Logger.getLogger(AttachmentDAO.class);
 
 	@Override
 	Attachment extractRow(ResultSet rs) {
@@ -26,7 +29,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 			
 			return new Attachment(filename, requestId, approvedAtState, description);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - Likely some issue with getting null column names", ex);
 			return null;
 		}
 	}
@@ -43,7 +46,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 			
 			return ps;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in prepareInsert - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -62,7 +65,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 			ps.setInt(1, requestId);
 			list = preparedIterator(ps);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getAttachments - Check your SQL params", ex);
 		}
 		return list;
 	}
@@ -77,7 +80,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in addAttachment - Problem in your SQL Insert query", ex);
 			return 0;
 		}
 	}
@@ -94,7 +97,7 @@ public class AttachmentDAO extends DAO<Attachment> {
 			ps.setInt(1, id);
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in deleteAttachment - Check your SQL params", ex);
 			return 0;
 		}
 	}

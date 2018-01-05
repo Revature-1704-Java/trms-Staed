@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.staed.beans.Info;
 import com.staed.stores.ColumnNames;
 
@@ -13,6 +16,7 @@ import com.staed.stores.ColumnNames;
  * @see Info
  */
 public class InfoDAO extends DAO<Info>{
+	private final static Logger logger = Logger.getLogger(InfoDAO.class);
 
 	@Override
 	Info extractRow(ResultSet rs) {
@@ -24,7 +28,7 @@ public class InfoDAO extends DAO<Info>{
 			
 			return new Info(requestId, description, location, justification);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in extractRow - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -41,7 +45,7 @@ public class InfoDAO extends DAO<Info>{
 			
 			return ps;
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in prepareInsert - Check your SQL params", ex);
 		}
 		return null;
 	}
@@ -60,7 +64,7 @@ public class InfoDAO extends DAO<Info>{
 			List<Info> list = preparedIterator(ps);
 			return list.isEmpty() ? null : list.get(0);
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in getInfo - Likely an issue with preparedIterator", ex);
 			return null;
 		}
 	}
@@ -75,7 +79,7 @@ public class InfoDAO extends DAO<Info>{
 		try {
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in addInfo - Some issue with prepareInsert", ex);
 			return 0;
 		}
 	}
@@ -92,7 +96,7 @@ public class InfoDAO extends DAO<Info>{
 			ps.setInt(1, requestId);
 			return ps.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			logger.error("Exception in deleteInfo - Check your SQL params", ex);
 			return 0;
 		}
 	}
