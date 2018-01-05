@@ -1,0 +1,70 @@
+<div class="modal fade" id="submitModal" tabIndex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">Submit A New Reimbursement Request</div>
+				<button type="button" class="close" data-dismiss="modal" #loginClose>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+			</div>
+			
+			<div class="modal-body">
+              <form #submitForm="ngForm" novalidate>
+                <div class="form-group row">
+                  <label for="eventType" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Event Type</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="submission.eventType" name="eventType" type="text" class="form-control" required />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="gradingFormat" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Password</label>
+                  <div class="col-sm-8">
+                    <input [(ngModel)]="submission.gradingFormat" name="gradingFormat" type="text" class="form-control" required />
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                	<label for="state" class="col-sm-4 col-md-4 col-lg-4 col-form-label">State</label>
+                	<div class="col-sm-8">
+                		<input [(ngModel)]="submission.state" name="state" type="text" class="form-control" required />
+                	</div>
+                </div>
+                
+                <div class="form-group row">
+                	<label for="cost" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Amount</label>
+                	<div class="col-sm-8">
+                		<input [(ngModel)]="submission.cost" name="cost" type="text" class="form-control" required />
+                	</div>
+                </div>
+                
+                <div class="form-group row">
+                	<label for="eventDate" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Event Date</label>
+                	<div class="col-sm-8">
+                		<input [(ngModel)]="submission.eventDate" name="eventDate" type="text" class="form-control" required />
+                	</div>
+                </div>
+                
+                <div class="form-group row">
+                	<label for="workMissed" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Missed Work Time</label>
+                	<div class="col-sm-8">
+                		<input [(ngModel)]="submission.workMissed" name="workMissed" type="text" class="form-control" required />
+                	</div>
+                </div>
+                
+                <div class="form-group row">
+                	<label for="lastReview" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Last Review Date</label>
+                	<div class="col-sm-8">
+                		<input [(ngModel)]="submission.lastReview" name="lastReview" type="text" class="form-control" required />
+                	</div>
+                </div>
+                
+                <button class="btn btn-primary" type="submit">
+                	Submit
+                </button>
+                
+              </form>
+            </div>
+		</div>
+	</div>
+</div>

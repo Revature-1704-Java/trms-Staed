@@ -12,7 +12,7 @@ public class RequestsServlet extends Servlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// HttpSession session = request.getSession(true);
-		System.out.println("email: " + request.getParameter("email"));
+		//System.out.println("email: " + request.getParameter("email"));
 		
 		if (request.getParameter("email") != null && request.getParameter("valid") != null && request.getParameter("valid").toString().equals("true")) {
 			String email = request.getParameter("email").toString();

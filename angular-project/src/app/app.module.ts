@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './login/login.component';
+import { SubmitComponent } from './submit/submit.component';
 
 import { ReimbItemComponent } from './reimb-item/reimb-item.component';
 
@@ -20,6 +22,8 @@ import { ThisSession } from './shared/session';
     HomeComponent,
     FooterComponent,
     NavbarComponent,
+    LoginComponent,
+    SubmitComponent,
     ReimbItemComponent
   ],
   imports: [

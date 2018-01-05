@@ -21,10 +21,10 @@ public class SubmitServlet extends Servlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute(EMAIL) != null) {
+        if (request.getParameter(EMAIL) != null) {
             HashMap<String, String> parsedRequest = new HashMap<>();
 
-            parsedRequest.put(EMAIL, session.getAttribute(EMAIL).toString());
+            parsedRequest.put(EMAIL, request.getParameter(EMAIL).toString());
             parsedRequest.put("event type", request.getParameter("event type"));
             parsedRequest.put("grading format", request.getParameter("grading format"));
             parsedRequest.put("state", request.getParameter("state"));
