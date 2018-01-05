@@ -38,5 +38,7 @@ export class LoginComponent implements OnInit {
         console.log('Valid: ' + this.sess.retrieve('valid'));
         this.loginClose.nativeElement.click();
       }, err => console.log(err));
+
+    location.reload();
   }
 }

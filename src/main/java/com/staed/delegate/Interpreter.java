@@ -2,6 +2,7 @@ package com.staed.delegate;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,14 +79,16 @@ public class Interpreter {
      * @return A JsonObject of the form {state: ..., content: ...}
      */
 	public JsonObject submit(Map<String, String> requestMap, List<HashMap<String, String>> attachmentMaps) {
+		DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				
 		String employeeEmail = requestMap.get("email");
 		int evtTypeId = requestMap.containsKey("event type") ? reqServ.eventTypeNameToId(requestMap.get("event type")) : 0;
 		int formatId = requestMap.containsKey("grading format") ? reqServ.gradingFormatNameToId(requestMap.get("grading format")) : 0;
 		int state = requestMap.containsKey("state") ? Integer.parseInt(requestMap.get("state")) : 0;
 		float cost = requestMap.containsKey("cost") ? Float.parseFloat(requestMap.get("cost")) : 0;
-		LocalDate evtDate = requestMap.containsKey("event date") ? LocalDate.parse(requestMap.get("event date")) : null;
+		LocalDate evtDate = requestMap.containsKey("event date") ? LocalDate.parse(requestMap.get("event date"), DATE_FORMAT) : null;
 		Period timeMissed = requestMap.containsKey("work time missed") ? Period.parse(requestMap.get("work time missed")) : null;
-		LocalDate lastReviewed = requestMap.containsKey("last reviewed date") ? LocalDate.parse(requestMap.get("last reviewed date")) : null;
+		LocalDate lastReviewed = requestMap.containsKey("last reviewed date") ? LocalDate.parse(requestMap.get("last reviewed date"), DATE_FORMAT) : null;
 
 		Request request = new Request(employeeEmail, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
 

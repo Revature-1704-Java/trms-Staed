@@ -3,31 +3,41 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="modal-title">Submit A New Reimbursement Request</div>
-				<button type="button" class="close" data-dismiss="modal" #loginClose>
+				<button type="button" class="close" data-dismiss="modal" #modalClose>
                     <span aria-hidden="true">&times;</span>
                 </button>
 			</div>
 			
 			<div class="modal-body">
-              <form #submitForm="ngForm" novalidate>
+              <form #submitForm="ngForm" (ngSubmit)="submit(); submitForm.reset()" novalidate>
                 <div class="form-group row">
                   <label for="eventType" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Event Type</label>
                   <div class="col-sm-8">
-                    <input [(ngModel)]="submission.eventType" name="eventType" type="text" class="form-control" required />
+                    <select [(ngModel)]="submission.eventType" name="eventType" type="text" class="custom-select form-control">
+                    	<option selected value="Other">Other</option>
+                    	<option value="University Course">University Course</option>
+                    	<option value="Seminar">Seminar</option>
+                    	<option value="Certification Preparation Course">Certification Preparation Course</option>
+                    	<option value="Certification">Certification</option>
+                    	<option value="Technical Training">Technical Training</option>
+                    </select>
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="gradingFormat" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Password</label>
+                  <label for="gradingFormat" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Grading Format</label>
                   <div class="col-sm-8">
-                    <input [(ngModel)]="submission.gradingFormat" name="gradingFormat" type="text" class="form-control" required />
+                    <select [(ngModel)]="submission.gradingFormat" name="gradingFormat" type="text" class="custom-select form-control">
+                    	<option selected value="Grade">Grade</option>
+                    	<option value="Presentation">Presentation</option>
+                    </select>
                   </div>
                 </div>
                 
                 <div class="form-group row">
                 	<label for="state" class="col-sm-4 col-md-4 col-lg-4 col-form-label">State</label>
                 	<div class="col-sm-8">
-                		<input [(ngModel)]="submission.state" name="state" type="text" class="form-control" required />
+                		<input [(ngModel)]="submission.state" name="state" type="text" class="form-control" placeholder="0" required />
                 	</div>
                 </div>
                 
@@ -39,23 +49,34 @@
                 </div>
                 
                 <div class="form-group row">
-                	<label for="eventDate" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Event Date</label>
-                	<div class="col-sm-8">
-                		<input [(ngModel)]="submission.eventDate" name="eventDate" type="text" class="form-control" required />
+                	<label for="eventDay" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Event Date</label>
+                	<div class="input-group col-sm-8">
+                		<input [(ngModel)]="submission.eventDate" class="form-control" placeholder="yyyy-mm-dd" name="eventDate" ngbDatepicker #evtDate="ngbDatepicker" required />
+                		<div class="input-group-append">
+                			<button class="btn btn-outlie-secondary" (click)="evtDate.toggle()" type="button">
+                				<span class="oi oi-calendar"></span>
+                			</button>
+                		</div>
                 	</div>
+                	
                 </div>
                 
                 <div class="form-group row">
-                	<label for="workMissed" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Missed Work Time</label>
+                	<label for="workMissed" class="col-sm-4 col-md-4 col-lg-4 col-form-label">No. of Missed Workdays</label>
                 	<div class="col-sm-8">
-                		<input [(ngModel)]="submission.workMissed" name="workMissed" type="text" class="form-control" required />
+                		<input [(ngModel)]="submission.workMissed" name="workMissed" type="text" class="form-control" placeholder="0" value="0" required />
                 	</div>
                 </div>
                 
                 <div class="form-group row">
                 	<label for="lastReview" class="col-sm-4 col-md-4 col-lg-4 col-form-label">Last Review Date</label>
-                	<div class="col-sm-8">
-                		<input [(ngModel)]="submission.lastReview" name="lastReview" type="text" class="form-control" required />
+                	<div class="input-group col-sm-8">
+                		<input [(ngModel)]="submission.lastReview" name="lastReview" class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #lastDate="ngbDatepicker" required />
+                		<div class="input-group-append">
+                			<button class="btn btn-outlie-secondary" (click)="lastDate.toggle()" type="button">
+                				<span class="oi oi-calendar"></span>
+                			</button>
+                		</div>
                 	</div>
                 </div>
                 

@@ -38,7 +38,7 @@ public class EventTypeDAO extends DAO<EventType> {
 	}
 	
 	public int idFromName(String name) {
-		String sql = "SELECT " + ColumnNames.EVENTTYPEID + " FROM EVENTTYPE WHERE " + ColumnNames.EVENTTYPENAME + " = ?";
+		String sql = "SELECT * FROM EVENTTYPE WHERE " + ColumnNames.EVENTTYPENAME + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		
 		try {

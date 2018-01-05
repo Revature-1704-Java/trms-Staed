@@ -20,7 +20,7 @@ import com.staed.stores.FieldValueWrapper;
  */
 public class RequestDAO extends DAO<Request> {
 	private static final String SELECT = "SELECT * FROM REQUEST WHERE ";
-	private static final String TARGET_AND = "=? AND";
+	private static final String TARGET_AND = " = ? AND ";
 	
 	@Override
 	Request extractRow(ResultSet rs) {
@@ -55,17 +55,21 @@ public class RequestDAO extends DAO<Request> {
 
 	@Override
 	PreparedStatement prepareInsert(Request t) {
-		String sql = "INSERT INTO REQUEST VALUES (?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO REQUEST (" + ColumnNames.EMPLOYEEIDENTIFIER
+				+ ", " + ColumnNames.EVENTTYPEID + ", " + ColumnNames.FORMATID
+				+ ", " + ColumnNames.STATE + ", " + ColumnNames.COST + ", "
+				+ ColumnNames.EVENTDATE + ", " + ColumnNames.WORKMISSED + ", "
+				+ ColumnNames.LASTREVIEWED + ") VALUES (?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
-			ps.setString(2, t.getEmail());
-			ps.setInt(3, t.getEventTypeId());
-			ps.setInt(4, t.getFormatId());
-			ps.setInt(5, t.getState());
-			ps.setFloat(6, t.getCost());
-			ps.setDate(7, Date.valueOf(t.getEventDate()));
-			ps.setString(8, t.getTimeMissed().toString());
-			ps.setDate(9, Date.valueOf(t.getLastReviewed()));
+			ps.setString(1, t.getEmail());
+			ps.setInt(2, t.getEventTypeId());
+			ps.setInt(3, t.getFormatId());
+			ps.setInt(4, t.getState());
+			ps.setFloat(5, t.getCost());
+			ps.setDate(6, Date.valueOf(t.getEventDate()));
+			ps.setString(7, t.getTimeMissed().toString());
+			ps.setDate(8, Date.valueOf(t.getLastReviewed()));
 			
 			return ps;
 		} catch (SQLException ex) {
@@ -125,7 +129,7 @@ public class RequestDAO extends DAO<Request> {
 	public int getAddedRequestId(Request request) {
 		String sql = SELECT + ColumnNames.EMPLOYEEIDENTIFIER + TARGET_AND 
 			+ ColumnNames.STATE + TARGET_AND + ColumnNames.COST + TARGET_AND + ColumnNames.EVENTDATE
-			+ TARGET_AND + ColumnNames.LASTREVIEWED + "=?";
+			+ TARGET_AND + ColumnNames.LASTREVIEWED + "= ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, request.getEmail());

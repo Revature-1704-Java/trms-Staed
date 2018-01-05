@@ -34,10 +34,10 @@ public class InfoDAO extends DAO<Info>{
 		String sql = "INSERT INTO INFO VALUES (?,?,?,?)";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
-			ps.setInt(2, t.getRequestId());
-			ps.setString(3, t.getDescription());
-			ps.setString(4, t.getLocation());
-			ps.setString(5, t.getJustification());
+			ps.setInt(1, t.getRequestId());
+			ps.setString(2, t.getDescription());
+			ps.setString(3, t.getLocation());
+			ps.setString(4, t.getJustification());
 			
 			return ps;
 		} catch (SQLException ex) {

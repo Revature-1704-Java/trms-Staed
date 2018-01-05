@@ -38,7 +38,7 @@ public class FormatDAO extends DAO<GradingFormat> {
 	}
 	
 	public int idFromName(String name) {
-		String sql = "SELECT " + ColumnNames.FORMATID + " FROM GRADINGFORMAT WHERE " + ColumnNames.FORMATTYPE + " = ?";
+		String sql = "SELECT * FROM GRADINGFORMAT WHERE " + ColumnNames.FORMATTYPE + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		
 		try {

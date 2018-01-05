@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -32,7 +33,8 @@ import { ThisSession } from './shared/session';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent }
-    ])
+    ]),
+    NgbModule.forRoot()
   ],
   providers: [ReimbService, ThisSession],
   bootstrap: [AppComponent]

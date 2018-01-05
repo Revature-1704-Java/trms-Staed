@@ -30,6 +30,7 @@ public class SubmitServlet extends Servlet {
             parsedRequest.put("state", request.getParameter("state"));
             parsedRequest.put("cost", request.getParameter("cost"));
             parsedRequest.put("event date", request.getParameter("event date"));
+            System.out.println("EventDate: " + request.getParameter("event date"));
             parsedRequest.put("work time missed", request.getParameter("work time missed"));
             parsedRequest.put("last reviewed date", request.getParameter("last reviewed date"));
             
@@ -42,23 +43,26 @@ public class SubmitServlet extends Servlet {
             String[] attachmentJsons = request.getParameterValues("attachment");
 
             try {
-                for (String attachmentJson : attachmentJsons) {
-                    JsonObject obj = parser.parse(attachmentJson).getAsJsonObject();
-                    if (obj.get(FILENAME) == null)
-                        continue;
-                    
-                    HashMap<String, String> attachment = new HashMap<>();
-                    attachment.put(FILENAME, obj.get(FILENAME).getAsString());
-                    attachment.put("approved for state", obj.get("approval for state").getAsString());
-                    attachment.put("description", obj.get("description").getAsString());
-                    attachments.add(attachment);
-                }
+            	if (attachmentJsons != null) {
+	                for (String attachmentJson : attachmentJsons) {
+	                    JsonObject obj = parser.parse(attachmentJson).getAsJsonObject();
+	                    if (obj.get(FILENAME) == null)
+	                        continue;
+	                    
+	                    HashMap<String, String> attachment = new HashMap<>();
+	                    attachment.put(FILENAME, obj.get(FILENAME).getAsString());
+	                    attachment.put("approved for state", obj.get("approval for state").getAsString());
+	                    attachment.put("description", obj.get("description").getAsString());
+	                    attachments.add(attachment);
+	                }
+            	}
             } catch (JsonParseException ex) {
                 ex.printStackTrace();
             }
             
-            interpret.submit(parsedRequest, attachments);
+            writeResults(response, session, interpret.submit(parsedRequest, attachments), "submit");
         }
+        
         
         //TODO: Handle submit notes
     }

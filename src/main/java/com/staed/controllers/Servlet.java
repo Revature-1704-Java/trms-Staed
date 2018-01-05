@@ -5,8 +5,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.staed.delegate.Interpreter;
 
@@ -33,5 +35,19 @@ public abstract class Servlet extends HttpServlet {
 	
 	Interpreter getInterpreter() {
 		return interpret;
+	}
+	
+	protected void writeResults(HttpServletResponse response, HttpSession session, JsonObject obj, String attrib) {
+        if (obj.get("success").getAsBoolean()) {
+            session.setAttribute(attrib, "true");
+        } else {
+            session.setAttribute(attrib, "false");
+        }
+
+        try {
+            response.getWriter().append(gson.toJson(obj));
+        } catch (IOException | IllegalStateException ex) {
+            ex.printStackTrace();
+        }
 	}
 }

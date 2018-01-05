@@ -13,6 +13,10 @@
   	<servlet-name>LoginServlet</servlet-name>
   	<servlet-class>com.staed.controllers.LoginServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>SubmitServlet</servlet-name>
+  	<servlet-class>com.staed.controllers.SubmitServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>RequestsServlet</servlet-name>
@@ -21,6 +25,10 @@
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
   	<url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SubmitServlet</servlet-name>
+  	<url-pattern>/submit</url-pattern>
   </servlet-mapping>
   
 </web-app>

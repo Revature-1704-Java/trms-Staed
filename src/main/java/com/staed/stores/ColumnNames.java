@@ -27,7 +27,7 @@ public class ColumnNames {
 
 	/* GradingFormat Table */
 	//					FORMATID
-	public static final String FORMATTYPE = "TYPE";
+	public static final String FORMATTYPE = "FORMATTYPE";
 	public static final String CUTOFF = "CUTOFF";
 
 	/* Note Table */

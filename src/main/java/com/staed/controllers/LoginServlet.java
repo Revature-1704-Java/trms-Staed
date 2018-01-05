@@ -1,6 +1,5 @@
 package com.staed.controllers;
 
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,18 +17,7 @@ public class LoginServlet extends Servlet {
         String email = request.getParameter("email");
         String pass  = request.getParameter("password");
 
-        JsonObject obj = interpret.login(email, pass);
-        if (obj.get("success").getAsBoolean()) {
-            session.setAttribute("valid", "true");
-        } else {
-            session.setAttribute("valid", "false");
-        }
-
-        try {
-            response.getWriter().append(gson.toJson(obj));
-        } catch (IOException | IllegalStateException ex) {
-            ex.printStackTrace();
-        }
+        writeResults(response, session, interpret.login(email, pass), "valid");
 	}
 
 }

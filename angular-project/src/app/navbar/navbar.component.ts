@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.sess.store('valid', 'false');
     this.sess.store('email', '');
+    location.reload();
   }
 
   userLoggedIn(): boolean {
