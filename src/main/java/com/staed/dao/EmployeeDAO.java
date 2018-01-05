@@ -20,10 +20,9 @@ public class EmployeeDAO extends DAO<Employee> {
 	Employee extractRow(ResultSet rs) {
 		try {
 			String email = rs.getString(ColumnNames.EMPLOYEEIDENTIFIER);
-			String pass = rs.getString(ColumnNames.PASS);
+			String pass = rs.getString(ColumnNames.EMPLOYEEPASSWORD);
 			String name = rs.getString(ColumnNames.NAME);
 			int typeId = rs.getInt(ColumnNames.EMPLOYEETYPEID);
-			
 			String suEm = rs.getString(ColumnNames.SUPERVISOR);
 			String hdEm = rs.getString(ColumnNames.DEPTHEAD);
 			String bcEm = rs.getString(ColumnNames.BENCO);
@@ -61,7 +60,7 @@ public class EmployeeDAO extends DAO<Employee> {
 	 */
 	public Employee loginInfo(String email, String pass) {
 		String sql = "SELECT * FROM EMPLOYEE WHERE " + ColumnNames.EMPLOYEEIDENTIFIER 
-				+ " = ? AND " + ColumnNames.PASS + " = ?";
+				+ " = ? AND " + ColumnNames.EMPLOYEEPASSWORD + " = ?";
 		PreparedStatement ps = prepareStatement(sql);
 		try {
 			ps.setString(1, email);
@@ -104,7 +103,7 @@ public class EmployeeDAO extends DAO<Employee> {
 	 * @return A list of employees
 	 */
 	public List<Employee> getManaged(String managerEmail) {
-		String sql = "SELECT " + ColumnNames.EMPLOYEEIDENTIFIER + " FROM EMPLOYEE WHERE "
+		String sql = "SELECT * FROM EMPLOYEE WHERE "
 				+ ColumnNames.SUPERVISOR + " = ? "
 				+ "OR " + ColumnNames.DEPTHEAD + " = ? OR " + ColumnNames.BENCO + " = ?";
 		PreparedStatement ps = prepareStatement(sql);

@@ -11,7 +11,7 @@ import { Reimb } from '../shared/reimb';
 })
 export class HomeComponent implements OnInit {
 
-  reimbs: Observable<Reimb>;
+  reimbs: Reimb[];
 
   constructor(private reimbService: ReimbService) { }
 

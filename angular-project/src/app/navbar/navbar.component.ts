@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms/src/model';
 
 import { ThisSession } from '../shared/session';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit {
   public user = { email: '', password: ''};
   public myform: FormGroup = this.myform;
 
-  constructor(private sess: ThisSession, private http: HttpClient) { }
+  constructor(private sess: ThisSession, private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
@@ -23,14 +23,19 @@ export class NavbarComponent implements OnInit {
     const uPass: string = this.user.password;
     console.log(`Tried to login: ${uEmail}, ${uPass}`);
 
-    this.http.post('TRMS/login', {
-      email: uEmail,
-      password: uPass
-    }).subscribe(res => {
-      this.sess.store('valid', res['valid']);
-      this.sess.store('email', uEmail);
-      console.log(res);
-    }, err => console.log(err));
+    const body = new HttpParams()
+      .set('email', uEmail)
+      .set('password', uPass);
+
+    const header = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded');
+
+    this.httpClient.post('/api/login', body, { headers: header })
+      .subscribe(res => {
+        this.sess.store('valid', res['valid']);
+        this.sess.store('email', uEmail);
+        console.log(res);
+      }, err => console.log(err));
   }
 
   logout(): void {

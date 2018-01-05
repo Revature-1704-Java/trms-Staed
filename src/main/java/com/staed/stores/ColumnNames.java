@@ -15,9 +15,9 @@ public class ColumnNames {
 	public static final String EVENTTYPEID = "EVENTTYPEID";
 	public static final String FORMATID = "GRADINGFORMATID";
 	public static final String STATE = "STATE";
-	public static final String COST = "COST";
+	public static final String COST = "REQUESTCOST";
 	public static final String EVENTDATE = "EVENTDATE";
-	public static final String WORKMISSED = "WORKTIMEMISSED";
+	public static final String WORKMISSED = "WORKMISSED";
 	public static final String LASTREVIEWED = "LASTREVIEWED";
 	
 	/* EventType Table */
@@ -40,14 +40,14 @@ public class ColumnNames {
 	
 	/* Info Table */
 	//					REQUESTIDENTIFIER
-	public static final String INFODESC = "DESCRIPTION";
-	public static final String LOCATION = "LOCATION";
+	public static final String INFODESC = "INFODESC";
+	public static final String LOCATION = "INFOLOCATION";
 	public static final String JUSTIFICATION = "JUSTIFICATION";
 	
 	/* Employee Table */
 	public static final String EMPLOYEEIDENTIFIER = "EMAIL";
-	public static final String PASS = "PASSWORD";
-	public static final String NAME = "NAME";
+	public static final String EMPLOYEEPASSWORD = "EMPPASS";
+	public static final String NAME = "EMPLOYEENAME";
 	public static final String EMPLOYEETYPEID = "EMPLOYEETYPEID";
 	public static final String SUPERVISOR = "SUPER";
 	public static final String DEPTHEAD = "HEAD";
@@ -55,12 +55,12 @@ public class ColumnNames {
 
 	/* EmployeeType Table */
 	//					EMPLOYEETYPEID
-	//					NAME
-	//					POWER
+	//					EMPLOYEETYPENAME
+	//					EMPLOYEETYPEPOWER
 	
 	/* Attachment Table */
 	public static final String ATTACHMENTIDENTIFIER = "FILENAME";
 	//					REQUESTIDENTIFIER
 	public static final String APPROVEDATSTATE = "APPROVEDATSTATE";
-	public static final String ATTACHMENTDESC = "DESCRIPTION";
+	public static final String ATTACHMENTDESC = "ATTACHMENTDESC";
 }

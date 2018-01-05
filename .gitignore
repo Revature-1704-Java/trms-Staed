@@ -6,6 +6,7 @@ requirements.md
 scratch.md
 scratch.txt
 connection.properties
+temp/
 
 ### Node ###
 node_installation/

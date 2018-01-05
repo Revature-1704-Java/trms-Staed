@@ -84,7 +84,7 @@ public abstract class DAO<T> {
 			return null;
 		}
     }
-
+    
     /**
      * Iterates through a ResultSet and adds the data to a List after
      * the raw data into a useful form.
@@ -92,7 +92,17 @@ public abstract class DAO<T> {
      * @return - A List of generics containing the transformed data
      */
     List<T> preparedIterator(PreparedStatement stmt) {
-        return resultIterator(stmt);
+    	//return resultIterator(stmt);
+    	
+    	List<T> list = new ArrayList<>();
+    	try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(extractRow(rs));
+            }
+        } catch (SQLException ex) {
+        	ex.printStackTrace();
+        }
+    	return list;
     }
 
     /**
@@ -104,6 +114,7 @@ public abstract class DAO<T> {
         resultIterator(stmt);
     }
 
+    // TODO: ResultIterator generic does not work properly due to mismatched getClass() comparisons
     /**
      * A generic iterator over the results of Statements, specifically
      * the PreparedStatement and CallableStatement classes, after execution
@@ -116,7 +127,7 @@ public abstract class DAO<T> {
         
         Class<? extends Object> type = stmt.getClass();
         try {
-            if (stmt.getClass() == CallableStatement.class) {
+            if (type == CallableStatement.class) {
                 ((CallableStatement) stmt).execute();
             } else if (type == PreparedStatement.class) {
                 try (ResultSet rs = ((PreparedStatement) stmt).executeQuery()) {

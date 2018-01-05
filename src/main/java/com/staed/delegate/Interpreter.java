@@ -68,7 +68,7 @@ public class Interpreter {
     			.flatMap(List::stream)
     			.collect(Collectors.toList()));
 		
-		addContent(res, gson.toJsonTree(list).getAsJsonObject());
+		addContent(res, gson.toJson(list));
 		addState(res, true);
     	return res;
     }

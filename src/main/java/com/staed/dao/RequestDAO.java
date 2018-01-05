@@ -26,14 +26,24 @@ public class RequestDAO extends DAO<Request> {
 	Request extractRow(ResultSet rs) {
 		try {
 			int id = rs.getInt(ColumnNames.REQUESTIDENTIFIER);
+			
 			String email = rs.getString(ColumnNames.EMPLOYEEIDENTIFIER);
+			
 			int evtTypeId = rs.getInt(ColumnNames.EVENTTYPEID);
+			
 			int formatId = rs.getInt(ColumnNames.FORMATID);
+			
 			int state = rs.getInt(ColumnNames.STATE);
+			
 			float cost = rs.getFloat(ColumnNames.COST);
+			
 			LocalDate evtDate = rs.getDate(ColumnNames.EVENTDATE).toLocalDate();
-			Period timeMissed = Period.parse(rs.getString(ColumnNames.WORKMISSED));
-			LocalDate lastReviewed = rs.getDate(ColumnNames.LASTREVIEWED).toLocalDate();
+			
+			String tMissed = rs.getString(ColumnNames.WORKMISSED);
+			Period timeMissed = (tMissed == null ? Period.ZERO : Period.parse(tMissed));
+			
+			java.sql.Date lReview = rs.getDate(ColumnNames.LASTREVIEWED);
+			LocalDate lastReviewed = lReview == null ? LocalDate.now() : lReview.toLocalDate();
 			
 			return new Request(id, email, evtTypeId, formatId, state, cost, evtDate, timeMissed, lastReviewed);
 		} catch (SQLException ex) {

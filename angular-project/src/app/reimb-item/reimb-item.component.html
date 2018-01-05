@@ -1,6 +1,8 @@
-<div class="card-body rounded" type="button" data-toggle="modal" attr.data-target="#reimbModal{{reimb.id}}">
-    #{{reimb.id}} from {{reimb.email}} for {{reimb.cost | currency}}
-     <span class="details close btn oi oi-ellipses" ></span>
+<div class="card" type="button" data-toggle="modal" attr.data-target="#reimbModal{{reimb.id}}">
+    <div class="card-header">
+        Request <strong>#{{reimb.id}}</strong> <small>from</small> <span class="email">{{reimb.email}}</span> <small>for</small> <strong>{{reimb.cost | currency}}</strong>
+        <span class="details close btn oi oi-ellipses" ></span>
+    </div>
 </div>
 
 <div class="modal fade" id="reimbModal{{reimb.id}}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -15,8 +17,10 @@
     
             <div class="modal-body">
                 Email of Requester: {{reimb.email}}<br/>
-                Description: {{reimb.description}}<br/>
-                Cost: {{reimb.cost}}
+                State: {{reimb.state}}<br/>
+                Cost: {{reimb.cost}}<br/>
+                Event Date: {{reimb.date}}<br/>
+                Date of Last Review: {{reimb.last}}
             </div>
         </div>
     </div>

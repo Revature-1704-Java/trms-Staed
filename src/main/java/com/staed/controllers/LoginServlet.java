@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 public class LoginServlet extends Servlet {
     private static final long serialVersionUID = 1L;
 
@@ -15,8 +14,15 @@ public class LoginServlet extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
+        System.out.println("Post: " + request.getParameterMap().isEmpty());
+        
         String email = request.getParameter("email");
         String pass  = request.getParameter("pass");
+        System.out.println(email + ", " + pass);
+        
+        email = "down@smash.com";
+        pass = "smashing";
 
         JsonObject obj = interpret.login(email, pass);
         if (obj.get("success").getAsBoolean()) {

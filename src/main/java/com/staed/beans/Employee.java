@@ -36,7 +36,7 @@ public class Employee implements Bean {
 	public List<FieldValueWrapper> toFieldValueWrappers() {
     	List<FieldValueWrapper> list = new ArrayList<>();
     	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEEIDENTIFIER, email));
-    	list.add(new FieldValueWrapper(ColumnNames.PASS, password));
+    	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEEPASSWORD, password));
     	list.add(new FieldValueWrapper(ColumnNames.NAME, name));
     	list.add(new FieldValueWrapper(ColumnNames.EMPLOYEETYPEID, typeId));
     	list.add(new FieldValueWrapper(ColumnNames.SUPERVISOR, superEmail));
