@@ -40,7 +40,6 @@ export class SubmitComponent implements OnInit {
       eDay = '0' + eDay;
     }
     const eDate: string = this.submission.eventDate['year'] + '-' + eMonth + '-' + eDay;
-    console.log(eDate);
 
     const missed: string = 'P' + this.submission.workMissed + 'D';
 
@@ -53,7 +52,6 @@ export class SubmitComponent implements OnInit {
       lDay = '0' + lDay;
     }
     const last: string = this.submission.lastReview['year'] + '-' + lMonth + '-' + lDay;
-    console.log(last);
 
     if (this.sess.retrieve('email').length < 1) {
       console.log('Tried to submit reimbursement without logging in.');
@@ -77,7 +75,6 @@ export class SubmitComponent implements OnInit {
     this.httpClient.post('/api/submit', body, { headers: header })
       .subscribe(res => {
         this.sess.store('submit', res['success']);
-        console.log('Submit: ' + this.sess.retrieve('valid'));
         this.sess.store('submit', null);
         this.modalClose.nativeElement.click();
       }, err => console.log(err));

@@ -13,7 +13,6 @@ import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class ReimbService {
-    private _postsURL = 'https://jsonplaceholder.typicode.com/posts';
     private relativeURL = '/api/requests';
 
     constructor(private sess: ThisSession, private httpClient: HttpClient) { }
@@ -40,6 +39,6 @@ export class ReimbService {
           }
         });
 
-        return reimbs;
+      return reimbs;
     }
 }

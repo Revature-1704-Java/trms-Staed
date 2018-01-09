@@ -1,7 +1,17 @@
 <div class="card" type="button" data-toggle="modal" attr.data-target="#reimbModal{{reimb.id}}">
-    <div class="card-header">
-        Request <strong>#{{reimb.id}}</strong> <small>from</small> <span class="email">{{reimb.email}}</span> <small>for</small> <strong>{{reimb.cost | currency}}</strong>
+    <div ngClass="card-header mask">
+        Request 
+        <strong>#{{reimb.id}}</strong> 
+        <small>from</small> 
+        <span class="email">{{reimb.email}}</span> 
+        <small>for</small> 
+        <strong>{{reimb.cost | currency}} </strong>
         <span class="details close btn oi oi-ellipses" ></span>
+        <span [ngSwitch]="reimb.state" class="details">
+            <span *ngSwitchDefault class="status pending">Pending</span>
+            <span *ngSwitchCase="4" class="status approved">Approved</span>
+            <span *ngSwitchCase="5" class="status rejected">Rejected</span>
+        </span>
     </div>
 </div>
 
@@ -10,6 +20,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">#{{reimb.id}}</div>
+
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,11 +28,21 @@
     
             <div class="modal-body">
                 Email of Requester: {{reimb.email}}<br/>
-                State: {{reimb.state}}<br/>
                 Cost: {{reimb.cost}}<br/>
                 Event Date: {{reimb.date}}<br/>
                 Date of Last Review: {{reimb.last}}
             </div>
+
+            <div class="modal-footer">
+                    <div class="button-group">
+                        <button class="btn btn-success" (onClick)="approve(reimb.id)">
+                            <span class="oi oi-circle-check"></span>
+                        </button>
+                        <button class="btn btn-danger" (onClick)="reject(reimb.id)">
+                            <span class="oi oi-circle-x"></span>
+                        </button>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

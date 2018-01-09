@@ -75,13 +75,12 @@ public class RequestService implements Service {
 	 */
 	public String displayOne(int id, String email) {
 		request = reqDAO.getRequest(id, email);
-		int rid = request.getId();
 		
 		Gson gson = new Gson();
 		String req = gson.toJson(request);
-		String info = gson.toJson(infoDAO.getInfo(rid));
-		String notes = gson.toJson(noteDAO.getNotes(rid));
-		String attachments = gson.toJson(attachDAO.getAttachments(rid));
+		String info = gson.toJson(infoDAO.getInfo(id));
+		String notes = gson.toJson(noteDAO.getNotes(id));
+		String attachments = gson.toJson(attachDAO.getAttachments(id));
 		
 		return mergeJson(req, info, notes, attachments);
 	}
